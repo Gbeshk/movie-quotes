@@ -1,78 +1,57 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
-  backend:
-    name: Backend (PHP-CS-Fixer + Pest)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    ci:
+        name: Lint, type-check, build and test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, dom, fileinfo, pdo_sqlite, sqlite3
-          coverage: none
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mbstring, dom, fileinfo, pdo_sqlite, sqlite3
+                  coverage: none
 
-      - name: Copy env file
-        run: cp .env.example .env
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
 
-      - name: Install composer dependencies
-        run: composer install --no-interaction --prefer-dist
+            - name: Copy env file
+              run: cp .env.example .env
 
-      - name: Generate app key
-        run: php artisan key:generate
+            - name: Install composer dependencies
+              run: composer install --no-interaction --prefer-dist
 
-      - name: Check code style
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
+            - name: Install npm dependencies
+              run: npm ci
 
-      - name: Run Pest tests
-        run: composer test
+            - name: Generate app key
+              run: php artisan key:generate
 
-  frontend:
-    name: Frontend (ESLint + Prettier + TypeScript build)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+            - name: Use local sqlite for the build step
+              run: |
+                  touch database/database.sqlite
+                  sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, dom, fileinfo, pdo_sqlite, sqlite3
-          coverage: none
+            - name: Check PHP code style
+              run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
 
-      - name: Copy env file
-        run: cp .env.example .env
+            - name: Run ESLint
+              run: npx eslint resources/js --ext .ts,.tsx
 
-      - name: Install composer dependencies
-        run: composer install --no-interaction --prefer-dist
+            - name: Check formatting
+              run: npx prettier --check resources/js
 
-      - name: Generate app key
-        run: php artisan key:generate
+            - name: Type-check and build frontend assets
+              run: npm run build
 
-      - name: Use local sqlite for the build step
-        run: |
-          touch database/database.sqlite
-          sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npx eslint resources/js --ext .ts,.tsx
-
-      - name: Check formatting
-        run: npx prettier --check resources/js
-
-      - name: Type-check and build
-        run: npm run build
+            - name: Run Pest tests
+              run: composer test
