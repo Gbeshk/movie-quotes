@@ -5,7 +5,16 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
-    { ignores: ['vendor', 'node_modules', 'public/build'] },
+    {
+        ignores: [
+            'vendor',
+            'node_modules',
+            'public/build',
+            'resources/js/actions',
+            'resources/js/routes',
+            'resources/js/wayfinder',
+        ],
+    },
     js.configs.recommended,
     ...tseslint.configs.recommended,
     {

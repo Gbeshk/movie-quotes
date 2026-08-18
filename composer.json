@@ -55,7 +55,7 @@
             "@php artisan dev"
         ],
         "format-all": [
-            "./vendor/bin/php-cs-fixer fix ./ --using-cache=no"
+            "./vendor/bin/php-cs-fixer fix --using-cache=no"
         ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",

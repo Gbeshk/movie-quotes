@@ -1,8 +1,14 @@
 <?php
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
+$finder = Finder::create()
+	->in(__DIR__)
+	->exclude(['vendor', 'node_modules', 'storage', 'bootstrap/cache', 'public']);
 
 return (new Config())
+	->setFinder($finder)
 	->setRules([
 		'@PSR2'                       => true,
 		'array_indentation'           => true,
