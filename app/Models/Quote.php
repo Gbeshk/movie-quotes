@@ -10,12 +10,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['movie_id', 'user_id', 'text_ka', 'text_en'])]
+#[Fillable(['movie_id', 'user_id', 'text'])]
 class Quote extends Model implements HasMedia
 {
 	/** @use HasFactory<QuoteFactory> */
-	use HasFactory, InteractsWithMedia;
+	use HasFactory, HasTranslations, InteractsWithMedia;
+
+	/**
+	 * @var array<int, string>
+	 */
+	public array $translatable = ['text'];
 
 	/**
 	 * @return BelongsTo<Movie, $this>

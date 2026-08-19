@@ -10,12 +10,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['user_id', 'title_ka', 'title_en', 'director_ka', 'director_en', 'genre', 'release_year', 'description_ka', 'description_en'])]
+#[Fillable(['user_id', 'title', 'director', 'genre', 'release_year', 'description'])]
 class Movie extends Model implements HasMedia
 {
 	/** @use HasFactory<MovieFactory> */
-	use HasFactory, InteractsWithMedia;
+	use HasFactory, HasTranslations, InteractsWithMedia;
+
+	/**
+	 * @var array<int, string>
+	 */
+	public array $translatable = ['title', 'director', 'description'];
 
 	/**
 	 * Get the attributes that should be cast.

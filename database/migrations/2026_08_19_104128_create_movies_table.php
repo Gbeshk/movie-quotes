@@ -13,14 +13,11 @@ return new class extends Migration {
 		Schema::create('movies', function (Blueprint $table) {
 			$table->id();
 			$table->foreignId('user_id')->constrained()->cascadeOnDelete();
-			$table->string('title_ka');
-			$table->string('title_en');
-			$table->string('director_ka');
-			$table->string('director_en');
+			$table->json('title');
+			$table->json('director');
 			$table->string('genre');
 			$table->year('release_year');
-			$table->text('description_ka');
-			$table->text('description_en');
+			$table->json('description');
 			$table->timestamps();
 		});
 	}

@@ -22,12 +22,14 @@ class QuoteFactory extends Factory
 		return [
 			'movie_id' => Movie::factory(),
 			'user_id'  => User::factory(),
-			'text_ka'  => fake()->randomElement([
-				'ცხოვრება ლამაზია.',
-				'იმედი კარგი რამაა.',
-				'ყველაფერი შესაძლებელია.',
-			]),
-			'text_en' => fake()->sentence(),
+			'text'     => [
+				'ka' => fake()->randomElement([
+					'ცხოვრება ლამაზია.',
+					'იმედი კარგი რამაა.',
+					'ყველაფერი შესაძლებელია.',
+				]),
+				'en' => fake()->sentence(),
+			],
 		];
 	}
 }
