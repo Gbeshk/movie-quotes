@@ -10,8 +10,7 @@
 /.idea
 /.nova
 /.phpunit.cache
-/.vscode/*
-!/.vscode/settings.json
+/.vscode
 /.zed
 /auth.json
 /node_modules
@@ -34,3 +33,5 @@ Thumbs.db
 # Laravel Boost
 /CLAUDE.md
 /boost.json
+/.claude/
+/.mcp.json
