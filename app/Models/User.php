@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['username', 'email', 'password', 'google_id'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
 	/** @use HasFactory<UserFactory> */
-	use HasFactory, Notifiable;
+	use HasFactory, InteractsWithMedia, Notifiable;
 
 	/**
 	 * Get the attributes that should be cast.
