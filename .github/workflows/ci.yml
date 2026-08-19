@@ -1,0 +1,57 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    ci:
+        name: Lint, type-check, build and test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mbstring, dom, fileinfo, exif, gd, pdo_sqlite, sqlite3
+                  coverage: none
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+
+            - name: Copy env file
+              run: cp .env.example .env
+
+            - name: Install composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Install npm dependencies
+              run: npm ci
+
+            - name: Generate app key
+              run: php artisan key:generate
+
+            - name: Use local sqlite for the build step
+              run: |
+                  touch database/database.sqlite
+                  sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
+
+            - name: Check PHP code style
+              run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
+
+            - name: Run ESLint
+              run: npx eslint resources/js --ext .ts,.tsx
+
+            - name: Check formatting
+              run: npx prettier --check resources/js
+
+            - name: Type-check and build frontend assets
+              run: npm run build
+
+            - name: Run Pest tests
+              run: composer test

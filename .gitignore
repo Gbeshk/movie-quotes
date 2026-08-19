@@ -29,3 +29,9 @@ Thumbs.db
 # Wayfinder
 /resources/js/actions
 /resources/js/routes
+
+# Laravel Boost
+/CLAUDE.md
+/boost.json
+/.claude/
+/.mcp.json
