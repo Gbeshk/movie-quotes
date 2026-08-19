@@ -41,6 +41,14 @@ class Quote extends Model implements HasMedia
 		return $this->hasMany(Like::class);
 	}
 
+	/**
+	 * @return HasMany<Comment, $this>
+	 */
+	public function comments(): HasMany
+	{
+		return $this->hasMany(Comment::class);
+	}
+
 	public function registerMediaCollections(): void
 	{
 		$this->addMediaCollection('image')->singleFile();
