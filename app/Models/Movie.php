@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-#[Fillable(['user_id', 'title', 'director', 'genre', 'release_year', 'description'])]
+#[Fillable(['user_id', 'title_ka', 'title_en', 'director_ka', 'director_en', 'genre', 'release_year', 'description_ka', 'description_en'])]
 class Movie extends Model implements HasMedia
 {
 	/** @use HasFactory<MovieFactory> */
