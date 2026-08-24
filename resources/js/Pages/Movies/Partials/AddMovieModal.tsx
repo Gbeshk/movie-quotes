@@ -48,9 +48,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                             id="title_en"
                             className="mt-1 block w-full"
                             value={data.title.en}
-                            onChange={(e) =>
-                                setData('title', { ...data.title, en: e.target.value })
-                            }
+                            onChange={(e) => setData('title.en', e.target.value)}
                         />
                         <InputError message={errors['title.en']} className="mt-2" />
                     </div>
@@ -61,9 +59,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                             id="title_ka"
                             className="mt-1 block w-full"
                             value={data.title.ka}
-                            onChange={(e) =>
-                                setData('title', { ...data.title, ka: e.target.value })
-                            }
+                            onChange={(e) => setData('title.ka', e.target.value)}
                         />
                         <InputError message={errors['title.ka']} className="mt-2" />
                     </div>
@@ -74,9 +70,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                             id="director_en"
                             className="mt-1 block w-full"
                             value={data.director.en}
-                            onChange={(e) =>
-                                setData('director', { ...data.director, en: e.target.value })
-                            }
+                            onChange={(e) => setData('director.en', e.target.value)}
                         />
                         <InputError message={errors['director.en']} className="mt-2" />
                     </div>
@@ -87,9 +81,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                             id="director_ka"
                             className="mt-1 block w-full"
                             value={data.director.ka}
-                            onChange={(e) =>
-                                setData('director', { ...data.director, ka: e.target.value })
-                            }
+                            onChange={(e) => setData('director.ka', e.target.value)}
                         />
                         <InputError message={errors['director.ka']} className="mt-2" />
                     </div>
@@ -124,9 +116,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             rows={3}
                             value={data.description.en}
-                            onChange={(e) =>
-                                setData('description', { ...data.description, en: e.target.value })
-                            }
+                            onChange={(e) => setData('description.en', e.target.value)}
                         />
                         <InputError message={errors['description.en']} className="mt-2" />
                     </div>
@@ -138,9 +128,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             rows={3}
                             value={data.description.ka}
-                            onChange={(e) =>
-                                setData('description', { ...data.description, ka: e.target.value })
-                            }
+                            onChange={(e) => setData('description.ka', e.target.value)}
                         />
                         <InputError message={errors['description.ka']} className="mt-2" />
                     </div>
