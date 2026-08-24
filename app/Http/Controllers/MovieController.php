@@ -5,18 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class MovieController extends Controller
 {
-	/**
-	 * Display the authenticated user's own movies.
-	 */
+	use AuthorizesRequests;
+
 	public function index(Request $request): Response
 	{
 		$movies = Movie::query()
@@ -30,9 +29,6 @@ class MovieController extends Controller
 		]);
 	}
 
-	/**
-	 * Display a single movie and its quotes. Viewable by any signed-in user.
-	 */
 	public function show(Movie $movie): Response
 	{
 		$movie->load(['quotes.user', 'user']);
@@ -42,9 +38,6 @@ class MovieController extends Controller
 		]);
 	}
 
-	/**
-	 * Store a newly created movie.
-	 */
 	public function store(StoreMovieRequest $request): RedirectResponse
 	{
 		$movie = Movie::create([
@@ -57,11 +50,10 @@ class MovieController extends Controller
 		return Redirect::route('movies.index');
 	}
 
-	/**
-	 * Update an existing movie. Authorized to the owner only.
-	 */
 	public function update(UpdateMovieRequest $request, Movie $movie): RedirectResponse
 	{
+		$this->authorize('update', $movie);
+
 		$movie->update($request->safe()->except('poster'));
 
 		if ($request->hasFile('poster')) {
@@ -71,12 +63,9 @@ class MovieController extends Controller
 		return Redirect::route('movies.show', $movie);
 	}
 
-	/**
-	 * Delete a movie. Authorized to the owner only.
-	 */
-	public function destroy(Request $request, Movie $movie): RedirectResponse
+	public function destroy(Movie $movie): RedirectResponse
 	{
-		Gate::authorize('delete', $movie);
+		$this->authorize('delete', $movie);
 
 		$movie->delete();
 
