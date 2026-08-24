@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,10 +15,10 @@ class MovieController extends Controller
 {
 	use AuthorizesRequests;
 
-	public function index(Request $request): Response
+	public function index(): Response
 	{
 		$movies = Movie::query()
-			->where('user_id', $request->user()->id)
+			->where('user_id', auth()->id())
 			->withCount('quotes')
 			->latest()
 			->get();
