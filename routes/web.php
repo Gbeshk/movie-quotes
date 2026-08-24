@@ -20,10 +20,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 		return Inertia::render('Dashboard');
 	})->name('dashboard');
 
-	Route::controller(ProfileController::class)->group(function () {
-		Route::get('/profile', 'edit')->name('profile.edit');
-		Route::patch('/profile', 'update')->name('profile.update');
-		Route::delete('/profile', 'destroy')->name('profile.destroy');
+	Route::controller(ProfileController::class)->name('profile.')->group(function () {
+		Route::get('/profile', 'edit')->name('edit');
+		Route::patch('/profile', 'update')->name('update');
+		Route::delete('/profile', 'destroy')->name('destroy');
 	});
 
 	Route::resource('movies', MovieController::class)->except(['create', 'edit']);
