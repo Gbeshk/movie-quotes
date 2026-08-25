@@ -87,7 +87,7 @@ const Content = ({
                     onClick={() => setOpen(false)}
                 >
                     <div
-                        className={`rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses}
+                        className={`ring-opacity-5 rounded-md ring-1 ring-black ` + contentClasses}
                     >
                         {children}
                     </div>

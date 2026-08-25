@@ -12,7 +12,7 @@ export default function Index({ movies }: { movies: Movie[] }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">My Movies</h2>
+                    <h2 className="text-xl leading-tight font-semibold text-gray-800">My Movies</h2>
                     <PrimaryButton onClick={() => setShowAddMovie(true)}>Add Movie</PrimaryButton>
                 </div>
             }

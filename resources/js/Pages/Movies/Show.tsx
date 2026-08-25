@@ -24,7 +24,7 @@ export default function Show({ movie }: { movie: Movie }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    <h2 className="text-xl leading-tight font-semibold text-gray-800">
                         {movie.title.en}
                     </h2>
 
