@@ -1,6 +1,5 @@
-import DangerButton from '@/Components/DangerButton';
+import Button from '@/Components/Shared/Button';
 import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Movie, PageProps } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
@@ -30,12 +29,12 @@ export default function Show({ movie }: { movie: Movie }) {
 
                     {isOwner && (
                         <div className="flex gap-3">
-                            <SecondaryButton onClick={() => setShowEdit(true)}>
+                            <Button variant="secondary" onClick={() => setShowEdit(true)}>
                                 Edit
-                            </SecondaryButton>
-                            <DangerButton onClick={() => setShowDeleteConfirm(true)}>
+                            </Button>
+                            <Button variant="danger" onClick={() => setShowDeleteConfirm(true)}>
                                 Delete
-                            </DangerButton>
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -55,12 +54,12 @@ export default function Show({ movie }: { movie: Movie }) {
                     </p>
 
                     <div className="mt-6 flex justify-end gap-3">
-                        <SecondaryButton onClick={() => setShowDeleteConfirm(false)}>
+                        <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
                             Cancel
-                        </SecondaryButton>
-                        <DangerButton onClick={confirmDelete} disabled={processing}>
+                        </Button>
+                        <Button variant="danger" onClick={confirmDelete} disabled={processing}>
                             Delete
-                        </DangerButton>
+                        </Button>
                     </div>
                 </div>
             </Modal>
