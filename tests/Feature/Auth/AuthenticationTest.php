@@ -10,11 +10,11 @@ class AuthenticationTest extends TestCase
 {
 	use RefreshDatabase;
 
-	public function test_login_screen_can_be_rendered(): void
+	public function test_the_login_route_redirects_to_the_welcome_page(): void
 	{
 		$response = $this->get('/login');
 
-		$response->assertStatus(200);
+		$response->assertRedirect(route('welcome'));
 	}
 
 	public function test_users_can_authenticate_using_the_login_screen(): void
@@ -50,5 +50,13 @@ class AuthenticationTest extends TestCase
 
 		$this->assertGuest();
 		$response->assertRedirect('/');
+	}
+
+	public function test_login_fails_with_empty_fields(): void
+	{
+		$response = $this->post('/login', []);
+
+		$response->assertSessionHasErrors(['email', 'password']);
+		$this->assertGuest();
 	}
 }
