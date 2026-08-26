@@ -95,7 +95,7 @@ export default function RegisterModal({
             <button
                 type="submit"
                 disabled={processing}
-                className="bg-sign-up-btn-bg mt-6 h-9.5 w-full cursor-pointer rounded text-base text-white disabled:opacity-50"
+                className="bg-sign-up-btn-bg hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active mt-6 h-9.5 w-full cursor-pointer rounded text-base text-white disabled:opacity-50"
             >
                 Get started
             </button>

@@ -81,12 +81,24 @@ export default function LoginModal({
                             }
                         }}
                         className={cn(
-                            'h-4 w-4 cursor-pointer rounded border',
+                            'flex h-4 w-4 cursor-pointer items-center justify-center rounded border transition-colors',
                             data.remember
-                                ? 'bg-sign-up-btn-bg border-transparent'
+                                ? 'bg-link-text border-link-text'
                                 : 'border-input-bg bg-white',
                         )}
-                    />
+                    >
+                        {data.remember && (
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                <path
+                                    d="M1 4L3.5 6.5L9 1"
+                                    stroke="white"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        )}
+                    </div>
                     <p className="text-base leading-normal font-normal tracking-normal text-white">
                         Remember me
                     </p>
@@ -96,7 +108,7 @@ export default function LoginModal({
             <button
                 type="submit"
                 disabled={processing}
-                className="bg-sign-up-btn-bg mt-4 h-9.5 w-full cursor-pointer rounded text-base text-white disabled:opacity-50"
+                className="bg-sign-up-btn-bg hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active mt-4 h-9.5 w-full cursor-pointer rounded text-base text-white disabled:opacity-50"
             >
                 Log in
             </button>
