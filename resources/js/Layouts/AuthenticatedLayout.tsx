@@ -1,7 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Shared/Dropdown';
 import NavLink from '@/Components/Shared/NavLink';
-import ResponsiveNavLink from '@/Components/Shared/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
@@ -117,12 +116,13 @@ export default function Authenticated({
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="space-y-1 pt-2 pb-3">
-                        <ResponsiveNavLink
+                        <NavLink
+                            variant="responsive"
                             href={route('dashboard')}
                             active={route().current('dashboard')}
                         >
                             Dashboard
-                        </ResponsiveNavLink>
+                        </NavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pt-4 pb-1">
@@ -134,12 +134,17 @@ export default function Authenticated({
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <NavLink variant="responsive" href={route('profile.edit')}>
                                 Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            </NavLink>
+                            <NavLink
+                                variant="responsive"
+                                method="post"
+                                href={route('logout')}
+                                as="button"
+                            >
                                 Log Out
-                            </ResponsiveNavLink>
+                            </NavLink>
                         </div>
                     </div>
                 </div>
