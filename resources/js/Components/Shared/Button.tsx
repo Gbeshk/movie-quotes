@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { ButtonHTMLAttributes } from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
@@ -22,11 +23,12 @@ export default function Button({
         <button
             {...props}
             type={type ?? (variant === 'secondary' ? 'button' : undefined)}
-            className={
-                `inline-flex items-center rounded-md border px-4 py-2 text-xs font-semibold tracking-widest uppercase transition duration-150 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-none ${variantClasses[variant]} ${
-                    disabled && 'opacity-25'
-                } ` + className
-            }
+            className={cn(
+                'inline-flex items-center rounded-md border px-4 py-2 text-xs font-semibold tracking-widest uppercase transition duration-150 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-none',
+                variantClasses[variant],
+                disabled && 'opacity-25',
+                className,
+            )}
             disabled={disabled}
         >
             {children}

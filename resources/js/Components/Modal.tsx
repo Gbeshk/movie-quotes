@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { PropsWithChildren } from 'react';
 
@@ -55,7 +56,10 @@ export default function Modal({
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <DialogPanel
-                        className={`mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full ${maxWidthClass}`}
+                        className={cn(
+                            'mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full',
+                            maxWidthClass,
+                        )}
                     >
                         {children}
                     </DialogPanel>
