@@ -1,4 +1,4 @@
-import ArrowDown from '@/Components/ArrowDown';
+import ArrowDown from '@/Components/Shared/Icons/ArrowDown';
 import QuoteSequence from '@/Components/Welcome/QuoteSequence';
 import { WelcomeQuote } from '@/types';
 import { Head } from '@inertiajs/react';
