@@ -31,6 +31,16 @@ export interface Movie {
     user?: User;
 }
 
+export interface WelcomeQuote {
+    id: number | string;
+    text: Translatable;
+    movie: {
+        title: Translatable;
+        release_year: number;
+        poster_url: string;
+    };
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;

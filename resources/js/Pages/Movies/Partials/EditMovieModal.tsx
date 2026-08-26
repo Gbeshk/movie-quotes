@@ -1,8 +1,7 @@
+import Button from '@/Components/Shared/Button';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
-import PrimaryButton from '@/Components/PrimaryButton';
-import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { Movie } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -155,8 +154,10 @@ export default function EditMovieModal({
                 </div>
 
                 <div className="mt-6 flex justify-end gap-3">
-                    <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-                    <PrimaryButton disabled={processing}>Save Changes</PrimaryButton>
+                    <Button variant="secondary" onClick={onClose}>
+                        Cancel
+                    </Button>
+                    <Button disabled={processing}>Save Changes</Button>
                 </div>
             </form>
         </Modal>

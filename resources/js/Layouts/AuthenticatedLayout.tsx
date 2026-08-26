@@ -1,7 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import Dropdown from '@/Components/Shared/Dropdown';
+import NavLink from '@/Components/Shared/NavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
@@ -42,12 +41,12 @@ export default function Authenticated({
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm leading-4 font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
                                                 {user.username}
 
                                                 <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
+                                                    className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
@@ -116,16 +115,17 @@ export default function Authenticated({
                 </div>
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
+                    <div className="space-y-1 pt-2 pb-3">
+                        <NavLink
+                            variant="responsive"
                             href={route('dashboard')}
                             active={route().current('dashboard')}
                         >
                             Dashboard
-                        </ResponsiveNavLink>
+                        </NavLink>
                     </div>
 
-                    <div className="border-t border-gray-200 pb-1 pt-4">
+                    <div className="border-t border-gray-200 pt-4 pb-1">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
                                 {user.username}
@@ -134,12 +134,17 @@ export default function Authenticated({
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <NavLink variant="responsive" href={route('profile.edit')}>
                                 Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            </NavLink>
+                            <NavLink
+                                variant="responsive"
+                                method="post"
+                                href={route('logout')}
+                                as="button"
+                            >
                                 Log Out
-                            </ResponsiveNavLink>
+                            </NavLink>
                         </div>
                     </div>
                 </div>

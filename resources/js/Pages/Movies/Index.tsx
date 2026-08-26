@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Movie } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import PrimaryButton from '@/Components/PrimaryButton';
+import Button from '@/Components/Shared/Button';
 import AddMovieModal from './Partials/AddMovieModal';
 
 export default function Index({ movies }: { movies: Movie[] }) {
@@ -12,8 +12,8 @@ export default function Index({ movies }: { movies: Movie[] }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">My Movies</h2>
-                    <PrimaryButton onClick={() => setShowAddMovie(true)}>Add Movie</PrimaryButton>
+                    <h2 className="text-xl leading-tight font-semibold text-gray-800">My Movies</h2>
+                    <Button onClick={() => setShowAddMovie(true)}>Add Movie</Button>
                 </div>
             }
         >

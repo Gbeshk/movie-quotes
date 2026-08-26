@@ -1,8 +1,7 @@
+import Button from '@/Components/Shared/Button';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
-import PrimaryButton from '@/Components/PrimaryButton';
-import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -147,8 +146,10 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                 </div>
 
                 <div className="mt-6 flex justify-end gap-3">
-                    <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-                    <PrimaryButton disabled={processing}>Add Movie</PrimaryButton>
+                    <Button variant="secondary" onClick={onClose}>
+                        Cancel
+                    </Button>
+                    <Button disabled={processing}>Add Movie</Button>
                 </div>
             </form>
         </Modal>
