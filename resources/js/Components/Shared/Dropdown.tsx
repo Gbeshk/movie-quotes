@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { Transition } from '@headlessui/react';
 import { InertiaLinkProps, Link } from '@inertiajs/react';
 import {
@@ -83,11 +84,18 @@ const Content = ({
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={cn(
+                        'absolute z-50 mt-2 rounded-md shadow-lg',
+                        alignmentClasses,
+                        widthClasses,
+                    )}
                     onClick={() => setOpen(false)}
                 >
                     <div
-                        className={`ring-opacity-5 rounded-md ring-1 ring-black ` + contentClasses}
+                        className={cn(
+                            'ring-opacity-5 rounded-md ring-1 ring-black',
+                            contentClasses,
+                        )}
                     >
                         {children}
                     </div>
@@ -101,10 +109,10 @@ const DropdownLink = ({ className = '', children, ...props }: InertiaLinkProps) 
     return (
         <Link
             {...props}
-            className={
-                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ' +
-                className
-            }
+            className={cn(
+                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none',
+                className,
+            )}
         >
             {children}
         </Link>

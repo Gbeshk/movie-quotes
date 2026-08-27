@@ -1,12 +1,16 @@
 import ArrowDown from '@/Components/Shared/Icons/ArrowDown';
+import LoginModal from '@/Components/Welcome/LoginModal';
 import QuoteSequence from '@/Components/Welcome/QuoteSequence';
+import RegisterModal from '@/Components/Welcome/RegisterModal';
 import { WelcomeQuote } from '@/types';
-import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
+    const [showLogin, setShowLogin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+
     return (
         <>
-            <Head title="Landing" />
             <div>
                 <div className="w-full bg-black px-17.5 py-8">
                     <div className="flex items-center justify-between">
@@ -20,10 +24,16 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
                                 </p>
                                 <ArrowDown />
                             </div>
-                            <button className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-6.5 py-1.75 text-base leading-normal font-normal tracking-normal text-white">
+                            <button
+                                onClick={() => setShowRegister(true)}
+                                className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-6.5 py-1.75 text-base leading-normal font-normal tracking-normal text-white"
+                            >
                                 Sign Up
                             </button>
-                            <button className="flex cursor-pointer items-center justify-center rounded border border-white px-6.5 py-1.75 text-base leading-normal font-normal tracking-normal text-white">
+                            <button
+                                onClick={() => setShowLogin(true)}
+                                className="flex cursor-pointer items-center justify-center rounded border border-white px-6.5 py-1.75 text-base leading-normal font-normal tracking-normal text-white"
+                            >
                                 Log in
                             </button>
                         </div>
@@ -43,6 +53,23 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
                     © 2022 movie quotes. All rights reserved.
                 </div>
             </div>
+
+            <LoginModal
+                show={showLogin}
+                onClose={() => setShowLogin(false)}
+                onSwitchToRegister={() => {
+                    setShowLogin(false);
+                    setShowRegister(true);
+                }}
+            />
+            <RegisterModal
+                show={showRegister}
+                onClose={() => setShowRegister(false)}
+                onSwitchToLogin={() => {
+                    setShowRegister(false);
+                    setShowLogin(true);
+                }}
+            />
         </>
     );
 }

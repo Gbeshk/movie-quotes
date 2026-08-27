@@ -3,6 +3,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
+import { cn } from '@/lib/cn';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
 
@@ -45,7 +46,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
     };
 
     return (
-        <section className={`space-y-6 ${className}`}>
+        <section className={cn('space-y-6', className)}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">Delete Account</h2>
 
