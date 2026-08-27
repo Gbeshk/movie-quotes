@@ -1,6 +1,7 @@
+import Button from '@/Components/Shared/Button';
 import AuthGoogleButton from '@/Components/Welcome/AuthGoogleButton';
-import AuthField from '@/Components/Welcome/AuthField';
-import AuthModal from '@/Components/Welcome/AuthModal';
+import FormField from '@/Components/Shared/FormField';
+import Modal from '@/Components/Shared/Modal';
 import { isValidEmail, isValidPassword, isValidUsername } from '@/lib/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -36,7 +37,7 @@ export default function RegisterModal({
     };
 
     return (
-        <AuthModal
+        <Modal
             show={show}
             onClose={onClose}
             onSubmit={submit}
@@ -44,7 +45,7 @@ export default function RegisterModal({
             subtitle="Start your journey!"
         >
             <div className="mt-6 w-full space-y-4">
-                <AuthField
+                <FormField
                     label="Name"
                     id="register_username"
                     placeholder="At least 3 & max.15 lower case characters"
@@ -55,7 +56,7 @@ export default function RegisterModal({
                     autoComplete="username"
                 />
 
-                <AuthField
+                <FormField
                     label="Email"
                     id="register_email"
                     type="text"
@@ -67,7 +68,7 @@ export default function RegisterModal({
                     autoComplete="email"
                 />
 
-                <AuthField
+                <FormField
                     label="Password"
                     id="register_password"
                     type="password"
@@ -79,7 +80,7 @@ export default function RegisterModal({
                     autoComplete="new-password"
                 />
 
-                <AuthField
+                <FormField
                     label="Confirm password"
                     id="register_password_confirmation"
                     type="password"
@@ -92,13 +93,9 @@ export default function RegisterModal({
                 />
             </div>
 
-            <button
-                type="submit"
-                disabled={processing}
-                className="bg-sign-up-btn-bg hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active mt-6 h-9.5 w-full cursor-pointer rounded text-base text-white disabled:opacity-50"
-            >
+            <Button type="submit" variant="cta" disabled={processing} className="mt-6">
                 Get started
-            </button>
+            </Button>
             <AuthGoogleButton label="Sign up with Google" />
             <p className="text-modal-secondary-text mt-8 text-base">
                 Already have an account?{' '}
@@ -106,6 +103,6 @@ export default function RegisterModal({
                     Log in
                 </span>
             </p>
-        </AuthModal>
+        </Modal>
     );
 }

@@ -3,12 +3,9 @@ import ErrorIcon from '@/Components/Shared/Icons/ErrorIcon';
 import EyeIcon from '@/Components/Shared/Icons/EyeIcon';
 import SuccessIcon from '@/Components/Shared/Icons/SuccessIcon';
 import { cn } from '@/lib/cn';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
-const ICON_POSITIONS = ['right-3', 'right-8', 'right-13'];
-const INPUT_PADDING_BY_ICON_COUNT = ['', 'pr-9', 'pr-14', 'pr-19'];
-
-export default function AuthField({
+export default function FormField({
     label,
     id,
     type = 'text',
@@ -36,45 +33,12 @@ export default function AuthField({
     const isPassword = type === 'password';
     const inputType = isPassword && visible ? 'text' : type;
     const isValid = validate ? validate(value) : value.trim().length > 0;
+    // Once the server has flagged an error, valid input should switch to success
+    // immediately (even while still focused) instead of waiting for a blur/resubmit.
     const showSuccess = isValid && (!focused || Boolean(error));
     const showClear = focused && value.length > 0 && !showSuccess;
     const status = error && !isValid ? 'error' : showSuccess ? 'success' : 'default';
-
-    const icons: ReactNode[] = [];
-
-    if (status === 'error') {
-        icons.push(<ErrorIcon key="status" />);
-    } else if (status === 'success') {
-        icons.push(<SuccessIcon key="status" />);
-    }
-
-    if (isPassword) {
-        icons.push(
-            <button
-                key="eye"
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => setVisible((previous) => !previous)}
-                className="flex items-center justify-center border-0 p-0 leading-none"
-            >
-                <EyeIcon crossed={visible} />
-            </button>,
-        );
-    }
-
-    if (showClear) {
-        icons.push(
-            <button
-                key="clear"
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => onChange('')}
-                className="flex items-center justify-center border-0 p-0 leading-none"
-            >
-                <ClearIcon />
-            </button>,
-        );
-    }
+    const hasIcons = status !== 'default' || isPassword || showClear;
 
     return (
         <div className="w-full">
@@ -104,21 +68,36 @@ export default function AuthField({
                             : status === 'success'
                               ? 'border-success'
                               : 'border-transparent',
-                        INPUT_PADDING_BY_ICON_COUNT[icons.length],
+                        hasIcons && 'pr-16',
                     )}
                 />
 
-                {icons.map((icon, index) => (
-                    <div
-                        key={index}
-                        className={cn(
-                            'absolute top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center',
-                            ICON_POSITIONS[index],
-                        )}
-                    >
-                        {icon}
-                    </div>
-                ))}
+                <div className="absolute inset-y-0 right-3 flex items-center gap-2">
+                    {status === 'error' && <ErrorIcon />}
+                    {status === 'success' && <SuccessIcon />}
+
+                    {showClear && (
+                        <button
+                            type="button"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => onChange('')}
+                            className="flex items-center justify-center border-0 p-0 leading-none"
+                        >
+                            <ClearIcon />
+                        </button>
+                    )}
+
+                    {isPassword && (
+                        <button
+                            type="button"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setVisible((previous) => !previous)}
+                            className="flex items-center justify-center border-0 p-0 leading-none"
+                        >
+                            <EyeIcon crossed={visible} />
+                        </button>
+                    )}
+                </div>
             </div>
 
             {status === 'error' && (

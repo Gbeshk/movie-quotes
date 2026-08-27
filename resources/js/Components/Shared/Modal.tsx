@@ -1,6 +1,6 @@
 import { FormEventHandler, PropsWithChildren } from 'react';
 
-export default function AuthModal({
+export default function Modal({
     show,
     onClose,
     title,
