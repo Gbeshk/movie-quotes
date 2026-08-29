@@ -1,10 +1,16 @@
+import AuthSwitchPrompt from '@/Components/Shared/AuthSwitchPrompt';
 import Button from '@/Components/Shared/Button';
 import AuthGoogleButton from '@/Components/Welcome/AuthGoogleButton';
 import FormField from '@/Components/Shared/FormField';
 import Modal from '@/Components/Shared/Modal';
-import { isValidEmail, isValidPassword, isValidUsername } from '@/lib/validators';
+import {
+    validateEmail,
+    validatePassword,
+    validatePasswordConfirmation,
+    validateUsername,
+} from '@/lib/validators';
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 export default function RegisterModal({
     show,
@@ -21,6 +27,7 @@ export default function RegisterModal({
         password: '',
         password_confirmation: '',
     });
+    const [passwordFieldsKey, setPasswordFieldsKey] = useState(0);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -32,7 +39,13 @@ export default function RegisterModal({
                 reset();
                 onClose();
             },
-            onFinish: () => reset('password', 'password_confirmation'),
+            onError: (formErrors) => {
+                reset('password', 'password_confirmation');
+
+                if (!formErrors.password) {
+                    setPasswordFieldsKey((key) => key + 1);
+                }
+            },
         });
     };
 
@@ -52,7 +65,7 @@ export default function RegisterModal({
                     value={data.username}
                     onChange={(value) => setData('username', value)}
                     error={errors.username}
-                    validate={isValidUsername}
+                    validate={validateUsername}
                     autoComplete="username"
                 />
 
@@ -64,11 +77,12 @@ export default function RegisterModal({
                     value={data.email}
                     onChange={(value) => setData('email', value)}
                     error={errors.email}
-                    validate={isValidEmail}
+                    validate={validateEmail}
                     autoComplete="email"
                 />
 
                 <FormField
+                    key={`password-${passwordFieldsKey}`}
                     label="Password"
                     id="register_password"
                     type="password"
@@ -76,11 +90,12 @@ export default function RegisterModal({
                     value={data.password}
                     onChange={(value) => setData('password', value)}
                     error={errors.password}
-                    validate={isValidPassword}
+                    validate={validatePassword}
                     autoComplete="new-password"
                 />
 
                 <FormField
+                    key={`password-confirmation-${passwordFieldsKey}`}
                     label="Confirm password"
                     id="register_password_confirmation"
                     type="password"
@@ -88,7 +103,7 @@ export default function RegisterModal({
                     value={data.password_confirmation}
                     onChange={(value) => setData('password_confirmation', value)}
                     error={errors.password_confirmation}
-                    validate={(value) => value.length > 0 && value === data.password}
+                    validate={validatePasswordConfirmation(data.password)}
                     autoComplete="new-password"
                 />
             </div>
@@ -97,12 +112,11 @@ export default function RegisterModal({
                 Get started
             </Button>
             <AuthGoogleButton label="Sign up with Google" />
-            <p className="text-modal-secondary-text mt-8 text-base">
-                Already have an account?{' '}
-                <span onClick={onSwitchToLogin} className="text-link-text cursor-pointer underline">
-                    Log in
-                </span>
-            </p>
+            <AuthSwitchPrompt
+                prompt="Already have an account?"
+                actionLabel="Log in"
+                onAction={onSwitchToLogin}
+            />
         </Modal>
     );
 }

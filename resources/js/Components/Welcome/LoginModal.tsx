@@ -1,9 +1,10 @@
+import AuthSwitchPrompt from '@/Components/Shared/AuthSwitchPrompt';
 import Button from '@/Components/Shared/Button';
 import Checkbox from '@/Components/Shared/Checkbox';
 import AuthGoogleButton from '@/Components/Welcome/AuthGoogleButton';
 import FormField from '@/Components/Shared/FormField';
 import Modal from '@/Components/Shared/Modal';
-import { isValidEmail } from '@/lib/validators';
+import { validateEmail } from '@/lib/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
@@ -11,10 +12,12 @@ export default function LoginModal({
     show,
     onClose,
     onSwitchToRegister,
+    onUnverified,
 }: {
     show: boolean;
     onClose: () => void;
     onSwitchToRegister: () => void;
+    onUnverified: (email: string, password: string) => void;
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
@@ -32,7 +35,13 @@ export default function LoginModal({
                 reset();
                 onClose();
             },
-            onFinish: () => reset('password'),
+            onError: (formErrors) => {
+                if ('verification' in formErrors) {
+                    onUnverified(data.email, data.password);
+                } else {
+                    reset('password');
+                }
+            },
         });
     };
 
@@ -53,7 +62,7 @@ export default function LoginModal({
                     value={data.email}
                     onChange={(value) => setData('email', value)}
                     error={errors.email}
-                    validate={isValidEmail}
+                    validate={validateEmail}
                     autoComplete="username"
                 />
 
@@ -68,6 +77,7 @@ export default function LoginModal({
                     autoComplete="current-password"
                 />
             </div>
+
             <div className="mt-4 flex w-full items-center justify-between">
                 <Checkbox
                     checked={data.remember}
@@ -80,15 +90,11 @@ export default function LoginModal({
                 Log in
             </Button>
             <AuthGoogleButton label="Log in with Google" />
-            <p className="text-modal-secondary-text mt-8 text-base">
-                Don&apos;t have an account?{' '}
-                <span
-                    onClick={onSwitchToRegister}
-                    className="text-link-text cursor-pointer underline"
-                >
-                    Sign up
-                </span>
-            </p>
+            <AuthSwitchPrompt
+                prompt="Don't have an account?"
+                actionLabel="Sign up"
+                onAction={onSwitchToRegister}
+            />
         </Modal>
     );
 }

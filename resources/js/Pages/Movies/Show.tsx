@@ -1,13 +1,13 @@
 import Button from '@/Components/Shared/Button';
 import Modal from '@/Components/Modal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Movie, PageProps } from '@/types';
+import { AuthenticatedPageProps, Movie } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import EditMovieModal from './Partials/EditMovieModal';
 
 export default function Show({ movie }: { movie: Movie }) {
-    const { auth } = usePage<PageProps>().props;
+    const { auth } = usePage<AuthenticatedPageProps>().props;
     const isOwner = auth.user.id === movie.user_id;
 
     const [showEdit, setShowEdit] = useState(false);
