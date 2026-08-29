@@ -2,6 +2,7 @@ import ClearIcon from '@/Components/Shared/Icons/ClearIcon';
 import ErrorIcon from '@/Components/Shared/Icons/ErrorIcon';
 import EyeIcon from '@/Components/Shared/Icons/EyeIcon';
 import SuccessIcon from '@/Components/Shared/Icons/SuccessIcon';
+import { useFieldStatus } from '@/hooks/useFieldStatus';
 import { cn } from '@/lib/cn';
 import { useState } from 'react';
 
@@ -24,7 +25,7 @@ export default function FormField({
     value: string;
     onChange: (value: string) => void;
     error?: string;
-    validate?: (value: string) => boolean;
+    validate?: (value: string) => true | string;
     autoComplete?: string;
     required?: boolean;
 }) {
@@ -32,12 +33,8 @@ export default function FormField({
     const [focused, setFocused] = useState(false);
     const isPassword = type === 'password';
     const inputType = isPassword && visible ? 'text' : type;
-    const isValid = validate ? validate(value) : value.trim().length > 0;
-    // Once the server has flagged an error, valid input should switch to success
-    // immediately (even while still focused) instead of waiting for a blur/resubmit.
-    const showSuccess = isValid && (!focused || Boolean(error));
-    const showClear = focused && value.length > 0 && !showSuccess;
-    const status = error && !isValid ? 'error' : showSuccess ? 'success' : 'default';
+    const { status, errorMessage, markTouched } = useFieldStatus(value, error, validate);
+    const showClear = focused && value.length > 0;
     const hasIcons = status !== 'default' || isPassword || showClear;
 
     return (
@@ -47,6 +44,7 @@ export default function FormField({
                 className="text-base leading-normal font-normal tracking-normal text-white"
             >
                 {label}
+                {status === 'error' && <span className="text-error-text"> *</span>}
             </label>
 
             <div className="relative mt-2">
@@ -60,7 +58,10 @@ export default function FormField({
                     required={required}
                     onChange={(e) => onChange(e.target.value)}
                     onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
+                    onBlur={() => {
+                        setFocused(false);
+                        markTouched();
+                    }}
                     className={cn(
                         'bg-input-bg text-input-text h-9.5 w-full rounded border px-3 placeholder:text-base placeholder:leading-normal placeholder:font-normal placeholder:tracking-normal focus:shadow-[0_0_0_4px_#0D6EFD40] focus:ring-0 focus:outline-none',
                         status === 'error'
@@ -68,7 +69,7 @@ export default function FormField({
                             : status === 'success'
                               ? 'border-success'
                               : 'border-transparent',
-                        hasIcons && 'pr-16',
+                        hasIcons && 'pr-20',
                     )}
                 />
 
@@ -102,7 +103,7 @@ export default function FormField({
 
             {status === 'error' && (
                 <p className="text-error-text mt-1 text-sm leading-normal font-normal tracking-normal">
-                    {error}
+                    {errorMessage}
                 </p>
             )}
         </div>
