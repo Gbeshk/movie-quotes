@@ -24,6 +24,13 @@ class RegisteredUserController extends Controller
 			'username' => ['required', 'string', 'min:3', 'max:15', 'regex:/^[a-z0-9]+$/', 'unique:' . User::class],
 			'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
 			'password' => ['required', 'string', 'min:8', 'max:15', 'regex:/^[a-z0-9]+$/', 'confirmed'],
+		], [
+			'username.min'   => 'Must be 3-15 lowercase letters or numbers.',
+			'username.max'   => 'Must be 3-15 lowercase letters or numbers.',
+			'username.regex' => 'Must be 3-15 lowercase letters or numbers.',
+			'password.min'   => 'Must be 8-15 lowercase letters or numbers.',
+			'password.max'   => 'Must be 8-15 lowercase letters or numbers.',
+			'password.regex' => 'Must be 8-15 lowercase letters or numbers.',
 		]);
 
 		$user = User::create([
@@ -36,6 +43,6 @@ class RegisteredUserController extends Controller
 
 		Auth::login($user);
 
-		return redirect(route('dashboard', absolute: false));
+		return redirect(route('welcome', absolute: false));
 	}
 }

@@ -51,6 +51,14 @@ class LoginRequest extends FormRequest
 		}
 
 		RateLimiter::clear($this->throttleKey());
+
+		if (!Auth::user()->hasVerifiedEmail()) {
+			Auth::logout();
+
+			throw ValidationException::withMessages([
+				'verification' => 'Your account is not verified yet. Please check your email or resend the verification link.',
+			]);
+		}
 	}
 
 	/**

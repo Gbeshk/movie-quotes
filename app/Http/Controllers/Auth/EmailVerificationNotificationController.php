@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class EmailVerificationNotificationController extends Controller
 {
@@ -18,6 +20,30 @@ class EmailVerificationNotificationController extends Controller
 		}
 
 		$request->user()->sendEmailVerificationNotification();
+
+		return back()->with('status', 'verification-link-sent');
+	}
+
+	/**
+	 * Re-send the verification notification for a guest who failed login
+	 * because their account is not verified yet.
+	 */
+	public function resend(Request $request): RedirectResponse
+	{
+		$request->validate([
+			'email'    => ['required', 'string', 'email'],
+			'password' => ['required', 'string'],
+		]);
+
+		if (!Auth::once($request->only('email', 'password'))) {
+			throw ValidationException::withMessages([
+				'verification' => trans('auth.failed'),
+			]);
+		}
+
+		if (!Auth::user()->hasVerifiedEmail()) {
+			Auth::user()->sendEmailVerificationNotification();
+		}
 
 		return back()->with('status', 'verification-link-sent');
 	}
