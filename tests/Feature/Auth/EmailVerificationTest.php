@@ -13,15 +13,6 @@ class EmailVerificationTest extends TestCase
 {
 	use RefreshDatabase;
 
-	public function test_email_verification_screen_can_be_rendered(): void
-	{
-		$user = User::factory()->unverified()->create();
-
-		$response = $this->actingAs($user)->get('/verify-email');
-
-		$response->assertStatus(200);
-	}
-
 	public function test_email_can_be_verified(): void
 	{
 		$user = User::factory()->unverified()->create();
@@ -54,5 +45,14 @@ class EmailVerificationTest extends TestCase
 		$this->actingAs($user)->get($verificationUrl);
 
 		$this->assertFalse($user->fresh()->hasVerifiedEmail());
+	}
+
+	public function test_unverified_users_are_redirected_to_the_welcome_page_from_protected_routes(): void
+	{
+		$user = User::factory()->unverified()->create();
+
+		$response = $this->actingAs($user)->get('/dashboard');
+
+		$response->assertRedirect(route('welcome'));
 	}
 }

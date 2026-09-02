@@ -2,12 +2,28 @@ import ArrowDown from '@/Components/Shared/Icons/ArrowDown';
 import LoginModal from '@/Components/Welcome/LoginModal';
 import QuoteSequence from '@/Components/Welcome/QuoteSequence';
 import RegisterModal from '@/Components/Welcome/RegisterModal';
-import { WelcomeQuote } from '@/types';
+import VerifyEmailModal from '@/Components/Welcome/VerifyEmailModal';
+import { PageProps, WelcomeQuote } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
+    const { auth } = usePage<PageProps>().props;
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
+    const [verifyEmailDismissed, setVerifyEmailDismissed] = useState(false);
+    const [blockedVerification, setBlockedVerification] = useState<{
+        email: string;
+        password: string;
+    } | null>(null);
+    const showVerifyEmail =
+        (!verifyEmailDismissed && Boolean(auth.user && !auth.user.email_verified_at)) ||
+        blockedVerification !== null;
+
+    const closeVerifyEmail = () => {
+        setVerifyEmailDismissed(true);
+        setBlockedVerification(null);
+    };
 
     return (
         <>
@@ -61,6 +77,10 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
                     setShowLogin(false);
                     setShowRegister(true);
                 }}
+                onUnverified={(email, password) => {
+                    setShowLogin(false);
+                    setBlockedVerification({ email, password });
+                }}
             />
             <RegisterModal
                 show={showRegister}
@@ -69,6 +89,11 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
                     setShowRegister(false);
                     setShowLogin(true);
                 }}
+            />
+            <VerifyEmailModal
+                show={showVerifyEmail}
+                onClose={closeVerifyEmail}
+                resendCredentials={blockedVerification ?? undefined}
             />
         </>
     );
