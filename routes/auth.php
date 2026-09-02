@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -36,6 +37,12 @@ Route::middleware('guest')->group(function () {
 	Route::post('email/verification-notification/resend', [EmailVerificationNotificationController::class, 'resend'])
 		->middleware('throttle:6,1')
 		->name('verification.resend');
+
+	Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect'])
+		->name('google.redirect');
+
+	Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])
+		->name('google.callback');
 });
 
 Route::middleware('auth')->group(function () {
