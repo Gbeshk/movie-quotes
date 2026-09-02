@@ -42,7 +42,9 @@ class LoginRequest extends FormRequest
 	{
 		$this->ensureIsNotRateLimited();
 
-		if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+		$credentials = $this->only('email', 'password');
+
+		if (!Auth::validate($credentials)) {
 			RateLimiter::hit($this->throttleKey());
 
 			throw ValidationException::withMessages([
@@ -52,13 +54,15 @@ class LoginRequest extends FormRequest
 
 		RateLimiter::clear($this->throttleKey());
 
-		if (!Auth::user()->hasVerifiedEmail()) {
-			Auth::logout();
+		$user = Auth::getProvider()->retrieveByCredentials($credentials);
 
+		if (!$user->hasVerifiedEmail()) {
 			throw ValidationException::withMessages([
 				'verification' => 'Your account is not verified yet. Please check your email or resend the verification link.',
 			]);
 		}
+
+		Auth::login($user, $this->boolean('remember'));
 	}
 
 	/**
