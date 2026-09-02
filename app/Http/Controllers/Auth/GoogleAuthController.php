@@ -25,18 +25,21 @@ class GoogleAuthController extends Controller
 			return redirect()->route('welcome')->with('error', 'Unable to sign in with Google. Please try again.');
 		}
 
-		$user = User::firstWhere('google_id', $googleUser->getId())
-			?? User::firstWhere('email', $googleUser->getEmail());
+		$user = User::firstWhere('google_id', $googleUser->getId());
 
-		if ($user) {
-			$user->fill(['google_id' => $googleUser->getId()])->save();
-		} else {
-			$user = User::create([
-				'username'  => $this->uniqueUsername($googleUser->getName() ?: $googleUser->getEmail()),
-				'email'     => $googleUser->getEmail(),
-				'google_id' => $googleUser->getId(),
-				'password'  => null,
-			]);
+		if (!$user) {
+			$user = User::firstWhere('email', $googleUser->getEmail());
+
+			if ($user) {
+				$user->fill(['google_id' => $googleUser->getId()])->save();
+			} else {
+				$user = User::create([
+					'username'  => $this->uniqueUsername($googleUser->getName() ?: $googleUser->getEmail()),
+					'email'     => $googleUser->getEmail(),
+					'google_id' => $googleUser->getId(),
+					'password'  => null,
+				]);
+			}
 		}
 
 		if (!$user->hasVerifiedEmail()) {
@@ -54,12 +57,10 @@ class GoogleAuthController extends Controller
 		$base = $base !== '' ? $base : 'user';
 
 		$username = $base;
-		$suffix = 1;
 
 		while (User::where('username', $username)->exists()) {
-			$suffixValue = (string) $suffix;
-			$username = Str::substr($base, 0, 15 - strlen($suffixValue)) . $suffixValue;
-			$suffix++;
+			$suffix = Str::lower(Str::random(4));
+			$username = Str::substr($base, 0, 15 - strlen($suffix)) . $suffix;
 		}
 
 		return $username;

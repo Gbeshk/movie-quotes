@@ -69,7 +69,7 @@ class GoogleAuthTest extends TestCase
 		$this->assertTrue($existing->fresh()->hasVerifiedEmail());
 	}
 
-	public function test_username_conflicts_get_a_numeric_suffix(): void
+	public function test_username_conflicts_are_resolved_with_a_unique_suffix(): void
 	{
 		User::factory()->create(['username' => 'testuser']);
 
@@ -79,7 +79,9 @@ class GoogleAuthTest extends TestCase
 
 		$user = User::firstWhere('email', 'googleuser@example.com');
 
-		$this->assertSame('testuser1', $user->username);
+		$this->assertNotSame('testuser', $user->username);
+		$this->assertMatchesRegularExpression('/^[a-z0-9]{3,15}$/', $user->username);
+		$this->assertSame(1, User::where('username', $user->username)->count());
 	}
 
 	public function test_failed_google_authentication_redirects_to_welcome(): void
