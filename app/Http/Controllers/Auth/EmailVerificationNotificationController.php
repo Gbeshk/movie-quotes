@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EmailVerificationNotificationController extends Controller
 {
-	/**
-	 * Send a new email verification notification.
-	 */
 	public function store(Request $request): RedirectResponse
 	{
 		if ($request->user()->hasVerifiedEmail()) {
@@ -24,10 +21,6 @@ class EmailVerificationNotificationController extends Controller
 		return back()->with('status', 'verification-link-sent');
 	}
 
-	/**
-	 * Re-send the verification notification for a guest who failed login
-	 * because their account is not verified yet.
-	 */
 	public function resend(ResendVerificationRequest $request): RedirectResponse
 	{
 		$request->authenticate();
