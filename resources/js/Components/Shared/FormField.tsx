@@ -17,6 +17,8 @@ export default function FormField({
     validate,
     autoComplete,
     required,
+    heightClassName = 'h-9.5',
+    labelGapClassName = 'mt-2',
 }: {
     label: string;
     id: string;
@@ -28,6 +30,8 @@ export default function FormField({
     validate?: (value: string) => true | string;
     autoComplete?: string;
     required?: boolean;
+    heightClassName?: string;
+    labelGapClassName?: string;
 }) {
     const [visible, setVisible] = useState(false);
     const [focused, setFocused] = useState(false);
@@ -47,7 +51,7 @@ export default function FormField({
                 {status === 'error' && <span className="text-error-text"> *</span>}
             </label>
 
-            <div className="relative mt-2">
+            <div className={cn('relative', labelGapClassName)}>
                 <input
                     id={id}
                     name={id}
@@ -63,7 +67,8 @@ export default function FormField({
                         markTouched();
                     }}
                     className={cn(
-                        'bg-input-bg text-input-text h-9.5 w-full rounded border px-3 placeholder:text-base placeholder:leading-normal placeholder:font-normal placeholder:tracking-normal focus:shadow-[0_0_0_4px_#0D6EFD40] focus:ring-0 focus:outline-none',
+                        'bg-input-bg text-input-text w-full rounded border px-3 placeholder:text-base placeholder:leading-normal placeholder:font-normal placeholder:tracking-normal focus:shadow-[0_0_0_4px_#0D6EFD40] focus:ring-0 focus:outline-none',
+                        heightClassName,
                         status === 'error'
                             ? 'border-danger'
                             : status === 'success'
