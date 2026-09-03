@@ -15,6 +15,7 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 	Route::controller(ProfileController::class)->name('profile.')->group(function () {
 		Route::get('/profile', 'edit')->name('edit');
 		Route::patch('/profile', 'update')->name('update');
+		Route::post('/profile/avatar', 'updateAvatar')->name('avatar');
 		Route::delete('/profile', 'destroy')->name('destroy');
 	});
 
