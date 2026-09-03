@@ -1,10 +1,10 @@
-import ArrowDown from '@/Components/Shared/Icons/ArrowDown';
+import Header from '@/Components/Shared/Header';
 import LoginModal from '@/Components/Welcome/LoginModal';
 import QuoteSequence from '@/Components/Welcome/QuoteSequence';
 import RegisterModal from '@/Components/Welcome/RegisterModal';
 import VerifyEmailModal from '@/Components/Welcome/VerifyEmailModal';
 import { PageProps, WelcomeQuote } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
@@ -28,39 +28,22 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
     return (
         <>
             <div>
-                <div className="w-full bg-black px-17.5 py-8">
-                    <div className="flex items-center justify-between">
-                        <p className="text-logo-text cursor-pointer text-base leading-normal font-medium tracking-normal uppercase">
-                            Movie quotes
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <div className="flex cursor-pointer items-center justify-center gap-2 pr-5.5">
-                                <p className="text-base leading-normal font-normal tracking-normal text-white">
-                                    Eng
-                                </p>
-                                <ArrowDown />
-                            </div>
-                            <button
-                                onClick={() => setShowRegister(true)}
-                                className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-6.5 py-1.75 text-base leading-normal font-normal tracking-normal text-white"
-                            >
-                                Sign Up
-                            </button>
-                            <button
-                                onClick={() => setShowLogin(true)}
-                                className="flex cursor-pointer items-center justify-center rounded border border-white px-6.5 py-1.75 text-base leading-normal font-normal tracking-normal text-white"
-                            >
-                                Log in
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <Header
+                    background="bg-black"
+                    onOpenLogin={() => setShowLogin(true)}
+                    onOpenRegister={() => setShowRegister(true)}
+                />
 
                 <div className="flex h-180 w-full flex-col items-center justify-center gap-6 bg-black">
                     <p className="text-logo-text font-montserrat text-center text-6xl leading-normal font-bold tracking-normal">
                         Find any quote in <br /> millions of movie lines
                     </p>
-                    <button className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white">
+                    <button
+                        onClick={() =>
+                            auth.user ? router.visit(route('feed')) : setShowLogin(true)
+                        }
+                        className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white"
+                    >
                         Get started
                     </button>
                 </div>
