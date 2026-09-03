@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'username' => ['required', 'string', 'min:3', 'max:15', 'regex:/^[a-z0-9]+$/', Rule::unique(User::class)->ignore($this->user()->id)],
+			'username' => [...User::usernameFormatRules(), Rule::unique(User::class)->ignore($this->user()->id)],
 			'email'    => [
 				'required',
 				'string',
@@ -27,5 +27,10 @@ class ProfileUpdateRequest extends FormRequest
 				Rule::unique(User::class)->ignore($this->user()->id),
 			],
 		];
+	}
+
+	public function messages(): array
+	{
+		return User::usernameFormatMessages();
 	}
 }
