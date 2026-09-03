@@ -26,6 +26,10 @@ export function validatePassword(value: string): true | string {
     return isValidPassword(value) || 'Must be 8-15 lowercase letters or numbers.';
 }
 
+export function validateNewPassword(value: string): true | string {
+    return value.length >= 8 || 'Must be at least 8 characters.';
+}
+
 export function validatePasswordConfirmation(password: string) {
     return (value: string): true | string =>
         (value.length > 0 && value === password) || 'Passwords do not match.';
