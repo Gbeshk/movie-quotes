@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\Username;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,8 +18,13 @@ class ProfileUpdateRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'username' => [...User::usernameFormatRules(), Rule::unique(User::class)->ignore($this->user()->id)],
-			'email'    => [
+			'username' => [
+				'required',
+				'string',
+				new Username(),
+				Rule::unique(User::class)->ignore($this->user()->id),
+			],
+			'email' => [
 				'required',
 				'string',
 				'lowercase',
@@ -27,10 +33,5 @@ class ProfileUpdateRequest extends FormRequest
 				Rule::unique(User::class)->ignore($this->user()->id),
 			],
 		];
-	}
-
-	public function messages(): array
-	{
-		return User::usernameFormatMessages();
 	}
 }

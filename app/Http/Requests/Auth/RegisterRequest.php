@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
+use App\Rules\Username;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +25,7 @@ class RegisterRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'username' => [...User::usernameFormatRules(), 'unique:' . User::class],
+			'username' => ['required', 'string', new Username(), 'unique:' . User::class],
 			'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
 			'password' => ['required', 'string', 'min:8', 'max:15', 'regex:/^[a-z0-9]+$/', 'confirmed'],
 		];
@@ -38,7 +39,6 @@ class RegisterRequest extends FormRequest
 	public function messages(): array
 	{
 		return [
-			...User::usernameFormatMessages(),
 			'password.min'   => 'Must be 8-15 lowercase letters or numbers.',
 			'password.max'   => 'Must be 8-15 lowercase letters or numbers.',
 			'password.regex' => 'Must be 8-15 lowercase letters or numbers.',

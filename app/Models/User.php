@@ -46,18 +46,4 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 	{
 		$this->addMediaCollection('avatar')->singleFile();
 	}
-
-	public static function usernameFormatRules(): array
-	{
-		return ['required', 'string', 'min:3', 'max:15', 'regex:/^[a-z0-9]+$/'];
-	}
-
-	public static function usernameFormatMessages(): array
-	{
-		return [
-			'username.min'   => 'Must be 3-15 lowercase letters or numbers.',
-			'username.max'   => 'Must be 3-15 lowercase letters or numbers.',
-			'username.regex' => 'Must be 3-15 lowercase letters or numbers.',
-		];
-	}
 }
