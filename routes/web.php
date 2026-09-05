@@ -12,10 +12,11 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group(function () {
 	Route::get('/feed', [FeedController::class, 'index'])->name('feed');
 
-	Route::controller(ProfileController::class)->name('profile.')->group(function () {
-		Route::get('/profile', 'edit')->name('edit');
-		Route::patch('/profile', 'update')->name('update');
-		Route::delete('/profile', 'destroy')->name('destroy');
+	Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+		Route::get('/', 'edit')->name('edit');
+		Route::patch('/', 'update')->name('update');
+		Route::post('/avatar', 'updateAvatar')->name('avatar');
+		Route::delete('/', 'destroy')->name('destroy');
 	});
 
 	Route::resource('movies', MovieController::class)->except(['create', 'edit']);

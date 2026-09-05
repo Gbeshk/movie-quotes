@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -43,6 +45,23 @@ class ProfileTest extends TestCase
 		$this->assertNull($user->email_verified_at);
 	}
 
+	public function test_profile_update_fails_with_a_descriptive_message_for_an_invalid_username(): void
+	{
+		$user = User::factory()->create();
+
+		$response = $this
+			->actingAs($user)
+			->from('/profile')
+			->patch('/profile', [
+				'username' => 'Invalid Name!',
+				'email'    => $user->email,
+			]);
+
+		$response->assertSessionHasErrors([
+			'username' => 'Must be 3-15 lowercase letters or numbers.',
+		]);
+	}
+
 	public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
 	{
 		$user = User::factory()->create();
@@ -59,6 +78,45 @@ class ProfileTest extends TestCase
 			->assertRedirect('/profile');
 
 		$this->assertNotNull($user->refresh()->email_verified_at);
+	}
+
+	public function test_avatar_can_be_uploaded(): void
+	{
+		Storage::fake('public');
+
+		$user = User::factory()->create();
+
+		$this->assertNull($user->avatar_url);
+
+		$response = $this
+			->actingAs($user)
+			->post('/profile/avatar', [
+				'avatar' => UploadedFile::fake()->create('avatar.jpg', 100, 'image/jpeg'),
+			]);
+
+		$response
+			->assertSessionHasNoErrors()
+			->assertRedirect('/profile');
+
+		$this->assertNotNull($user->fresh()->avatar_url);
+	}
+
+	public function test_avatar_upload_requires_an_image(): void
+	{
+		$user = User::factory()->create();
+
+		$response = $this
+			->actingAs($user)
+			->from('/profile')
+			->post('/profile/avatar', [
+				'avatar' => UploadedFile::fake()->create('document.pdf', 100, 'application/pdf'),
+			]);
+
+		$response
+			->assertSessionHasErrors('avatar')
+			->assertRedirect('/profile');
+
+		$this->assertNull($user->fresh()->avatar_url);
 	}
 
 	public function test_user_can_delete_their_account(): void

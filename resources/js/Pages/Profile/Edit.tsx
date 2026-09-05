@@ -1,39 +1,83 @@
+import SaveCancelActions from '@/Components/Shared/SaveCancelActions';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
-import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import AccountDetailsForm from '@/Pages/Profile/Partials/AccountDetailsForm';
+import AvatarUploadForm from '@/Pages/Profile/Partials/AvatarUploadForm';
+import PasswordForm from '@/Pages/Profile/Partials/PasswordForm';
+import { useAccountDetailsForm } from '@/Pages/Profile/hooks/useAccountDetailsForm';
+import { useAvatarForm } from '@/Pages/Profile/hooks/useAvatarForm';
+import { usePasswordForm } from '@/Pages/Profile/hooks/usePasswordForm';
+import { AuthenticatedPageProps } from '@/types';
+import { usePage } from '@inertiajs/react';
 
-export default function Edit({
-    mustVerifyEmail,
-    status,
-}: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+export default function Edit() {
+    const user = usePage<AuthenticatedPageProps>().props.auth.user;
+    const isGoogleUser = Boolean(user.google_id);
+
+    const avatar = useAvatarForm();
+    const account = useAccountDetailsForm(user);
+    const password = usePasswordForm();
+
     return (
         <AuthenticatedLayout
-            header={<h2 className="text-xl leading-tight font-semibold text-gray-800">Profile</h2>}
+            header={
+                <h2 className="ml-15 text-2xl leading-normal font-medium tracking-normal text-white">
+                    My profile
+                </h2>
+            }
         >
-            <Head title="Profile" />
+            <div className="bg-profile-modal-bg relative mt-31.25 flex min-h-175.75 w-250 flex-col items-center rounded-xl pb-16 backdrop-blur-2xl">
+                <AvatarUploadForm
+                    user={user}
+                    avatarPreview={avatar.avatarPreview}
+                    avatarInputRef={avatar.avatarInputRef}
+                    onFileChange={avatar.handleAvatarChange}
+                    onSubmit={avatar.submitAvatar}
+                />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
+                <AccountDetailsForm
+                    user={user}
+                    isGoogleUser={isGoogleUser}
+                    profileForm={account.profileForm}
+                    editingUsername={account.editingUsername}
+                    editingEmail={account.editingEmail}
+                    onToggleUsername={account.toggleUsername}
+                    onToggleEmail={account.toggleEmail}
+                    onSubmit={account.submitProfile}
+                />
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
-
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
-                </div>
+                {!isGoogleUser && (
+                    <PasswordForm
+                        passwordForm={password.passwordForm}
+                        editingPassword={password.editingPassword}
+                        onTogglePassword={password.togglePassword}
+                        onSubmit={password.submitPassword}
+                    />
+                )}
             </div>
+
+            {avatar.avatarForm.data.avatar && (
+                <SaveCancelActions
+                    formId="avatar-form"
+                    onCancel={avatar.cancelAvatarEdit}
+                    processing={avatar.avatarForm.processing}
+                />
+            )}
+
+            {(account.usernameChanged || account.emailChanged) && (
+                <SaveCancelActions
+                    formId="profile-form"
+                    onCancel={account.cancelProfileEdit}
+                    processing={account.profileForm.processing}
+                />
+            )}
+
+            {password.passwordChanged && (
+                <SaveCancelActions
+                    formId="password-form"
+                    onCancel={password.cancelPasswordEdit}
+                    processing={password.passwordForm.processing}
+                />
+            )}
         </AuthenticatedLayout>
     );
 }

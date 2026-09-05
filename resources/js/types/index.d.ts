@@ -3,6 +3,8 @@ export interface User {
     username: string;
     email: string;
     email_verified_at?: string;
+    avatar_url: string | null;
+    google_id: string | null;
 }
 
 export interface Translatable {
