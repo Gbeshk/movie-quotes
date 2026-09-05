@@ -14,7 +14,7 @@ export default function Authenticated({
     const user = usePage<AuthenticatedPageProps>().props.auth.user;
 
     return (
-        <div className="bg-gradient-dark min-h-screen pb-20">
+        <div className="bg-gradient-dark min-h-screen bg-black pb-20">
             <Header background="bg-header-bg border-t border-modal-bg/20 backdrop-blur-[50px]" />
             <div className="mt-8 flex w-full gap-46.75 px-17.5">
                 <div className="flex w-70 flex-col gap-10">
