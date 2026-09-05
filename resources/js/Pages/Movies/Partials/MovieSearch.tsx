@@ -1,0 +1,65 @@
+import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
+import { router } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
+
+export default function MovieSearch({ initialSearch }: { initialSearch: string }) {
+    const [search, setSearch] = useState(initialSearch);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const isFirstRender = useRef(true);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isSearchOpen) {
+            searchInputRef.current?.focus();
+        }
+    }, [isSearchOpen]);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            router.get(route('movies.index'), search ? { search } : {}, {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [search]);
+
+    if (isSearchOpen) {
+        return (
+            <div className="relative flex flex-col">
+                <div className="flex items-center gap-4">
+                    <SearchIcon />
+                    <input
+                        ref={searchInputRef}
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onBlur={() => setIsSearchOpen(false)}
+                        placeholder="Search"
+                        className="text-input-bg placeholder:text-input-bg w-48 border-none bg-transparent text-xl leading-normal font-normal tracking-normal outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    />
+                </div>
+                <div className="bg-line absolute top-10 mt-2 h-px w-full" />
+            </div>
+        );
+    }
+
+    return (
+        <div
+            onClick={() => setIsSearchOpen(true)}
+            className="flex cursor-pointer items-center gap-4"
+        >
+            <SearchIcon />
+            <p className="text-input-bg text-xl leading-normal font-normal tracking-normal">
+                Search
+            </p>
+        </div>
+    );
+}

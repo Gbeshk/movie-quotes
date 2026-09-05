@@ -1,9 +1,9 @@
 import Button from '@/Components/Shared/Button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
 import AddMovieBtn from '@/Components/Shared/Icons/AddMovieBtn';
 import AddMovieModal from '@/Pages/Movies/Partials/AddMovieModal';
 import MovieCard from '@/Pages/Movies/Partials/MovieCard';
+import MovieSearch from '@/Pages/Movies/Partials/MovieSearch';
 import { Movie, Paginated } from '@/types';
 import { InfiniteScroll } from '@inertiajs/react';
 import { useState } from 'react';
@@ -11,9 +11,11 @@ import { useState } from 'react';
 export default function Index({
     movies,
     moviesCount,
+    search,
 }: {
     movies: Paginated<Movie>;
     moviesCount: number;
+    search: string;
 }) {
     const [showAddMovieModal, setShowAddMovieModal] = useState(false);
 
@@ -26,12 +28,7 @@ export default function Index({
                     </p>
                     <div>
                         <div className="flex items-center gap-8">
-                            <div className="flex cursor-pointer items-center gap-4">
-                                <SearchIcon />
-                                <p className="text-input-bg text-xl leading-normal font-normal tracking-normal">
-                                    Search
-                                </p>
-                            </div>
+                            <MovieSearch initialSearch={search} />
                             <Button
                                 variant="danger-cta"
                                 onClick={() => setShowAddMovieModal(true)}
