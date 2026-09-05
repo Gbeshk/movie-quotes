@@ -28,9 +28,14 @@ export interface Movie {
     genre: string;
     release_year: number;
     description: Translatable;
+    poster_url: string | null;
     quotes_count?: number;
     quotes?: Quote[];
     user?: User;
+}
+
+export interface Paginated<T> {
+    data: T[];
 }
 
 export interface WelcomeQuote {
