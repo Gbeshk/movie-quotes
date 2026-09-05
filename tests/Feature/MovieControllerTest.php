@@ -24,8 +24,9 @@ test('the movies index only lists the authenticated user\'s own movies', functio
 	$response->assertInertia(
 		fn ($page) => $page
 		->component('Movies/Index')
-		->has('movies', 1)
-		->where('movies.0.id', $ownMovie->id)
+		->has('movies.data', 1)
+		->where('movies.data.0.id', $ownMovie->id)
+		->where('moviesCount', 1)
 	);
 });
 

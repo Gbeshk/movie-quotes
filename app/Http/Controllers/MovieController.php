@@ -17,14 +17,16 @@ class MovieController extends Controller
 
 	public function index(): Response
 	{
-		$movies = Movie::query()
-			->where('user_id', auth()->id())
-			->withCount('quotes')
-			->latest()
-			->get();
-
 		return Inertia::render('Movies/Index', [
-			'movies' => $movies,
+			'movies' => Inertia::scroll(
+				fn () => Movie::query()
+					->where('user_id', auth()->id())
+					->withCount('quotes')
+					->latest()
+					->latest('id')
+					->paginate(9),
+			),
+			'moviesCount' => Movie::where('user_id', auth()->id())->count(),
 		]);
 	}
 
