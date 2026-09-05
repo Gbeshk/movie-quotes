@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -15,18 +16,27 @@ class MovieController extends Controller
 {
 	use AuthorizesRequests;
 
-	public function index(): Response
+	public function index(Request $request): Response
 	{
+		$search = trim((string) $request->query('search', ''));
+
+		$query = fn () => Movie::query()
+			->where('user_id', auth()->id())
+			->when(
+				$search !== '',
+				fn ($query) => $query->where(
+					fn ($query) => $query
+						->where('title->en', 'like', "%{$search}%")
+						->orWhere('title->ka', 'like', "%{$search}%"),
+				),
+			);
+
 		return Inertia::render('Movies/Index', [
 			'movies' => Inertia::scroll(
-				fn () => Movie::query()
-					->where('user_id', auth()->id())
-					->withCount('quotes')
-					->latest()
-					->latest('id')
-					->paginate(9),
+				fn () => $query()->withCount('quotes')->latest()->latest('id')->paginate(9),
 			),
-			'moviesCount' => Movie::where('user_id', auth()->id())->count(),
+			'moviesCount' => $query()->count(),
+			'search'      => $search,
 		]);
 	}
 
