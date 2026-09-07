@@ -1,34 +1,53 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Movie } from '@/types';
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 import Button from '@/Components/Shared/Button';
-import MovieGrid from '@/Components/Shared/MovieGrid';
-import AddMovieModal from './Partials/AddMovieModal';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AddMovieBtn from '@/Components/Shared/Icons/AddMovieBtn';
+import AddMovieModal from '@/Pages/Movies/Partials/AddMovieModal';
+import MovieCard from '@/Pages/Movies/Partials/MovieCard';
+import MovieSearch from '@/Pages/Movies/Partials/MovieSearch';
+import { Movie, Paginated } from '@/types';
+import { InfiniteScroll } from '@inertiajs/react';
+import { useState } from 'react';
 
-export default function Index({ movies }: { movies: Movie[] }) {
-    const [showAddMovie, setShowAddMovie] = useState(false);
+export default function Index({
+    movies,
+    moviesCount,
+    search,
+}: {
+    movies: Paginated<Movie>;
+    moviesCount: number;
+    search: string;
+}) {
+    const [showAddMovieModal, setShowAddMovieModal] = useState(false);
 
     return (
-        <AuthenticatedLayout
-            header={
+        <AuthenticatedLayout>
+            <div className="w-full">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl leading-tight font-semibold text-gray-800">
-                        Your Movies
-                    </h2>
-                    <Button onClick={() => setShowAddMovie(true)}>Add Movie</Button>
+                    <p className="text-2xl leading-normal font-medium tracking-normal text-white">
+                        My list of movies (Total {moviesCount})
+                    </p>
+                    <div>
+                        <div className="flex items-center gap-8">
+                            <MovieSearch initialSearch={search} />
+                            <Button
+                                variant="danger-cta"
+                                onClick={() => setShowAddMovieModal(true)}
+                                className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
+                            >
+                                <AddMovieBtn />
+                                Add movie
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-            }
-        >
-            <Head title="Your Movies" />
-
-            <AddMovieModal show={showAddMovie} onClose={() => setShowAddMovie(false)} />
-
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <MovieGrid movies={movies} emptyMessage="You haven't added any movies yet." />
-                </div>
+                <InfiniteScroll data="movies" className="mt-16 grid grid-cols-3 gap-15">
+                    {movies.data.map((movie) => (
+                        <MovieCard key={movie.id} movie={movie} />
+                    ))}
+                </InfiniteScroll>
             </div>
+
+            <AddMovieModal show={showAddMovieModal} onClose={() => setShowAddMovieModal(false)} />
         </AuthenticatedLayout>
     );
 }

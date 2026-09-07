@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 import { ButtonHTMLAttributes } from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'cta';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'cta' | 'danger-cta';
 
 const baseClasses =
     'inline-flex items-center rounded-md border px-4 py-2 text-xs font-semibold tracking-widest uppercase transition duration-150 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-25';
@@ -20,6 +20,8 @@ const variantClasses: Record<ButtonVariant, string> = {
         'border-transparent bg-red-600 text-white hover:bg-red-500 focus:ring-red-500 active:bg-red-700',
     ),
     cta: 'bg-sign-up-btn-bg hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active flex h-9.5 w-full cursor-pointer items-center justify-center rounded text-base text-white disabled:opacity-50',
+    'danger-cta':
+        'bg-danger hover:bg-danger/90 active:bg-danger/80 flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded text-base text-white disabled:opacity-50',
 };
 
 export default function Button({

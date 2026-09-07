@@ -2,6 +2,7 @@ import Header from '@/Components/Shared/Header';
 import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import FeedIcon from '@/Components/Shared/Icons/FeedIcon';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
+import { cn } from '@/lib/cn';
 import { AuthenticatedPageProps } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode } from 'react';
@@ -13,12 +14,17 @@ export default function Authenticated({
     const user = usePage<AuthenticatedPageProps>().props.auth.user;
 
     return (
-        <div className="bg-gradient-dark min-h-screen pb-20">
+        <div className="bg-gradient-dark min-h-screen bg-black pb-20">
             <Header background="bg-header-bg border-t border-modal-bg/20 backdrop-blur-[50px]" />
             <div className="mt-8 flex w-full gap-46.75 px-17.5">
                 <div className="flex w-70 flex-col gap-10">
                     <Link href={route('profile.edit')} className="flex cursor-pointer gap-6">
-                        <div className="border-danger h-15 w-15 shrink-0 overflow-hidden rounded-full border-2">
+                        <div
+                            className={cn(
+                                'h-15 w-15 shrink-0 overflow-hidden rounded-full',
+                                route().current('profile.edit') && 'border-danger border-2',
+                            )}
+                        >
                             {user.avatar_url ? (
                                 <img
                                     src={user.avatar_url}
@@ -43,7 +49,7 @@ export default function Authenticated({
                         href={route('feed')}
                         className="ml-2 flex cursor-pointer items-center gap-10"
                     >
-                        <FeedIcon />
+                        <FeedIcon active={route().current('feed')} />
                         <p className="text-2xl leading-9 font-normal tracking-normal text-white">
                             News feed
                         </p>
@@ -53,7 +59,7 @@ export default function Authenticated({
                         href={route('movies.index')}
                         className="ml-2.5 flex cursor-pointer items-center gap-10"
                     >
-                        <MoviesIcon />
+                        <MoviesIcon active={route().current('movies.*')} />
                         <p className="text-2xl leading-9 font-normal tracking-normal text-white">
                             List of movies
                         </p>

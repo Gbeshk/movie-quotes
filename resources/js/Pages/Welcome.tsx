@@ -28,24 +28,26 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
     return (
         <>
             <div>
-                <Header
-                    background="bg-black"
-                    onOpenLogin={() => setShowLogin(true)}
-                    onOpenRegister={() => setShowRegister(true)}
-                />
+                <div className="bg-black bg-[linear-gradient(180deg,#11101A_0%,#08080D_50.52%,rgba(0,0,0,0)_100%)]">
+                    <Header
+                        background="bg-transparent"
+                        onOpenLogin={() => setShowLogin(true)}
+                        onOpenRegister={() => setShowRegister(true)}
+                    />
 
-                <div className="flex h-180 w-full flex-col items-center justify-center gap-6 bg-black">
-                    <p className="text-logo-text font-montserrat text-center text-6xl leading-normal font-bold tracking-normal">
-                        Find any quote in <br /> millions of movie lines
-                    </p>
-                    <button
-                        onClick={() =>
-                            auth.user ? router.visit(route('feed')) : setShowLogin(true)
-                        }
-                        className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white"
-                    >
-                        Get started
-                    </button>
+                    <div className="flex h-180 w-full flex-col items-center justify-center gap-6">
+                        <p className="text-logo-text font-montserrat text-center text-6xl leading-normal font-bold tracking-normal">
+                            Find any quote in <br /> millions of movie lines
+                        </p>
+                        <button
+                            onClick={() =>
+                                auth.user ? router.visit(route('feed')) : setShowLogin(true)
+                            }
+                            className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white"
+                        >
+                            Get started
+                        </button>
+                    </div>
                 </div>
                 <QuoteSequence quotes={quotes} />
                 <div className="bg-gradient-dark text-logo-text flex h-12 items-center px-17.5 text-xs leading-normal font-medium tracking-normal uppercase">

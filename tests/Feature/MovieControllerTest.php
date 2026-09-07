@@ -24,8 +24,26 @@ test('the movies index only lists the authenticated user\'s own movies', functio
 	$response->assertInertia(
 		fn ($page) => $page
 		->component('Movies/Index')
-		->has('movies', 1)
-		->where('movies.0.id', $ownMovie->id)
+		->has('movies.data', 1)
+		->where('movies.data.0.id', $ownMovie->id)
+		->where('moviesCount', 1)
+	);
+});
+
+test('the movies index can be filtered by search', function () {
+	$user = User::factory()->create();
+
+	$matching = Movie::factory()->for($user)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	Movie::factory()->for($user)->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
+
+	$response = $this->actingAs($user)->get(route('movies.index', ['search' => 'matrix']));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Movies/Index')
+		->has('movies.data', 1)
+		->where('movies.data.0.id', $matching->id)
+		->where('moviesCount', 1)
 	);
 });
 

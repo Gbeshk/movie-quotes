@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Database\Factories\MovieFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +20,8 @@ class Movie extends Model implements HasMedia
 {
 	/** @use HasFactory<MovieFactory> */
 	use HasFactory, HasTranslations, InteractsWithMedia;
+
+	protected $appends = ['poster_url'];
 
 	/**
 	 * @var array<int, string>
@@ -54,5 +59,26 @@ class Movie extends Model implements HasMedia
 	public function registerMediaCollections(): void
 	{
 		$this->addMediaCollection('poster')->singleFile();
+	}
+
+	#[Scope]
+	protected function search(Builder $query, ?string $search): void
+	{
+		if (blank($search)) {
+			return;
+		}
+
+		$query->where(
+			fn (Builder $query) => $query
+				->where('title->en', 'like', "%{$search}%")
+				->orWhere('title->ka', 'like', "%{$search}%"),
+		);
+	}
+
+	protected function posterUrl(): Attribute
+	{
+		return Attribute::make(
+			get: fn () => $this->getFirstMediaUrl('poster') ?: null,
+		);
 	}
 }
