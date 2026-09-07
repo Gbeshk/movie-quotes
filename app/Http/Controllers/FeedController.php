@@ -11,7 +11,7 @@ class FeedController extends Controller
 	public function index(): Response
 	{
 		$movies = Movie::query()
-			->with('user')
+			->with(['user', 'media'])
 			->withCount('quotes')
 			->latest()
 			->get();

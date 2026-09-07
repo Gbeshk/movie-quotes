@@ -22,18 +22,11 @@ class MovieController extends Controller
 
 		$query = fn () => Movie::query()
 			->where('user_id', auth()->id())
-			->when(
-				$search !== '',
-				fn ($query) => $query->where(
-					fn ($query) => $query
-						->where('title->en', 'like', "%{$search}%")
-						->orWhere('title->ka', 'like', "%{$search}%"),
-				),
-			);
+			->search($search);
 
 		return Inertia::render('Movies/Index', [
 			'movies' => Inertia::scroll(
-				fn () => $query()->withCount('quotes')->latest()->latest('id')->paginate(9),
+				fn () => $query()->with('media')->withCount('quotes')->latest()->latest('id')->paginate(9),
 			),
 			'moviesCount' => $query()->count(),
 			'search'      => $search,
@@ -42,7 +35,7 @@ class MovieController extends Controller
 
 	public function show(Movie $movie): Response
 	{
-		$movie->load(['quotes.user', 'user']);
+		$movie->load(['quotes.user', 'user', 'media']);
 
 		return Inertia::render('Movies/Show', [
 			'movie' => $movie,
