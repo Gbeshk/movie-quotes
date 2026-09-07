@@ -25,13 +25,22 @@ export interface Movie {
     user_id: number;
     title: Translatable;
     director: Translatable;
-    genre: string;
+    genre: string[];
     release_year: number;
     description: Translatable;
     poster_url: string | null;
     quotes_count?: number;
     quotes?: Quote[];
     user?: User;
+}
+
+export interface MovieFormData {
+    title: Translatable;
+    director: Translatable;
+    genre: string[];
+    release_year: string;
+    description: Translatable;
+    poster: File | null;
 }
 
 export interface Paginated<T> {

@@ -74,7 +74,7 @@ export default function Show({ movie }: { movie: Movie }) {
                             </div>
                             <div>
                                 <dt className="text-sm text-gray-500">Genre</dt>
-                                <dd className="text-gray-900">{movie.genre}</dd>
+                                <dd className="text-gray-900">{movie.genre.join(', ')}</dd>
                             </div>
                             <div>
                                 <dt className="text-sm text-gray-500">Release year</dt>
