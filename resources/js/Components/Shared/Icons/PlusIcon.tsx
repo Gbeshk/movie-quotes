@@ -1,4 +1,4 @@
-export default function AddMovieBtn() {
+export default function PlusIcon() {
     return (
         <svg
             width="16"
