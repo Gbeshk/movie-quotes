@@ -1,8 +1,6 @@
 import DefaultField from '@/Components/Shared/DefaultField';
-import ImageUpload from '@/Components/Shared/ImageUpload';
 import InlineLabelField from '@/Components/Shared/InlineLabelField';
 import PlaceholderStyleField from '@/Components/Shared/PlaceholderStyleField';
-import TagInput from '@/Components/Shared/TagInput';
 
 type DefaultFieldProps = {
     variant?: 'default';
@@ -50,30 +48,7 @@ type InlineLabelFieldProps = {
     className?: string;
 };
 
-type TagsFieldProps = {
-    variant: 'tags';
-    tags: string[];
-    onChange: (tags: string[]) => void;
-    error?: string;
-    validate?: (value: string) => true | string;
-    placeholder?: string;
-};
-
-type ImageFieldProps = {
-    variant: 'image';
-    file: File | null;
-    onChange: (file: File | null) => void;
-    error?: string;
-    existingImageUrl?: string | null;
-    heading?: string;
-};
-
-type FormFieldProps =
-    | DefaultFieldProps
-    | PlaceholderFieldProps
-    | InlineLabelFieldProps
-    | TagsFieldProps
-    | ImageFieldProps;
+type FormFieldProps = DefaultFieldProps | PlaceholderFieldProps | InlineLabelFieldProps;
 
 export default function FormField(props: FormFieldProps) {
     if (props.variant === 'placeholder') {
@@ -82,14 +57,6 @@ export default function FormField(props: FormFieldProps) {
 
     if (props.variant === 'inline-label') {
         return <InlineLabelField {...props} />;
-    }
-
-    if (props.variant === 'tags') {
-        return <TagInput {...props} />;
-    }
-
-    if (props.variant === 'image') {
-        return <ImageUpload {...props} />;
     }
 
     return <DefaultField {...props} />;

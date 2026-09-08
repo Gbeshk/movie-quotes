@@ -1,5 +1,5 @@
 import Button from '@/Components/Shared/Button';
-import FormField from '@/Components/Shared/FormField';
+import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
 import AddMovieFormFields from '@/Pages/Movies/Partials/AddMovieFormFields';
 import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
@@ -48,8 +48,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                 errors={errors}
                 clearErrors={clearErrors}
             />
-            <FormField
-                variant="image"
+            <ImageUpload
                 file={data.poster}
                 onChange={(file) => {
                     setData('poster', file);

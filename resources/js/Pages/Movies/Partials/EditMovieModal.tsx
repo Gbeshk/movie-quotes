@@ -1,5 +1,5 @@
 import Button from '@/Components/Shared/Button';
-import FormField from '@/Components/Shared/FormField';
+import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
 import EditMovieFormFields from '@/Pages/Movies/Partials/EditMovieFormFields';
 import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
@@ -56,8 +56,7 @@ export default function EditMovieModal({
                 errors={errors}
                 clearErrors={clearErrors}
             />
-            <FormField
-                variant="image"
+            <ImageUpload
                 file={data.poster}
                 existingImageUrl={movie.poster_url}
                 heading="Replace photo"

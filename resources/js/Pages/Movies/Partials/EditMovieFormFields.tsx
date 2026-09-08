@@ -1,4 +1,5 @@
 import FormField from '@/Components/Shared/FormField';
+import TagInput from '@/Components/Shared/TagInput';
 import {
     isEnglishText,
     validateEnglishText,
@@ -40,8 +41,7 @@ export default function EditMovieFormFields({
                 validate={validateGeorgianText}
                 badge="ქარ"
             />
-            <FormField
-                variant="tags"
+            <TagInput
                 tags={data.genre}
                 placeholder="Genre/ჟანრი"
                 validate={(value) =>
