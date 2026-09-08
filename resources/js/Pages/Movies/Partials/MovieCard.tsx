@@ -8,7 +8,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
             href={route('movies.show', movie.id)}
             className="flex h-117.75 w-full flex-col overflow-hidden rounded-xl"
         >
-            <div className="bg-input-bg h-110 w-full overflow-hidden rounded-b-xl">
+            <div className="bg-input-bg h-92 w-full overflow-hidden rounded-b-xl">
                 {movie.poster_url && (
                     <img
                         src={movie.poster_url}
