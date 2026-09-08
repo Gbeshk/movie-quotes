@@ -37,6 +37,7 @@ class Movie extends Model implements HasMedia
 	{
 		return [
 			'release_year' => 'integer',
+			'genre'        => 'array',
 		];
 	}
 

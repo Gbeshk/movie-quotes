@@ -1,19 +1,18 @@
+import Button from '@/Components/Shared/Button';
+import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
+import AddMovieFormFields from '@/Pages/Movies/Partials/AddMovieFormFields';
+import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
+import MovieModalUserRow from '@/Pages/Movies/Partials/MovieModalUserRow';
+import { MovieFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 export default function AddMovieModal({ show, onClose }: { show: boolean; onClose: () => void }) {
-    const { post, reset } = useForm<{
-        title: { ka: string; en: string };
-        director: { ka: string; en: string };
-        genre: string;
-        release_year: string;
-        description: { ka: string; en: string };
-        poster: File | null;
-    }>({
+    const { data, setData, post, processing, errors, clearErrors, reset } = useForm<MovieFormData>({
         title: { ka: '', en: '' },
         director: { ka: '', en: '' },
-        genre: '',
+        genre: [],
         release_year: '',
         description: { ka: '', en: '' },
         poster: null,
@@ -36,9 +35,38 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
             show={show}
             onClose={onClose}
             onSubmit={submit}
-            cardClassName="w-225 h-250 max-sm:w-full overflow-y-auto px-8 py-10"
+            cardClassName="w-225 max-h-[90vh] max-sm:w-full overflow-y-auto py-10"
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
-        ></Modal>
+        >
+            <MovieModalHeader title="add movie" onClose={onClose} />
+            <MovieModalUserRow />
+
+            <AddMovieFormFields
+                data={data}
+                setData={setData}
+                errors={errors}
+                clearErrors={clearErrors}
+            />
+            <ImageUpload
+                file={data.poster}
+                onChange={(file) => {
+                    setData('poster', file);
+                    clearErrors('poster');
+                }}
+                error={errors.poster}
+            />
+
+            <div className="mt-10 flex w-full items-center justify-center px-8">
+                <Button
+                    type="submit"
+                    variant="danger-cta"
+                    disabled={processing}
+                    className="h-12 text-xl leading-6 font-normal tracking-normal"
+                >
+                    Add movie
+                </Button>
+            </div>
+        </Modal>
     );
 }

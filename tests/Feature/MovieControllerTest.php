@@ -75,7 +75,7 @@ test('a signed-in user can add a movie with a poster', function () {
 	$response = $this->actingAs($user)->post(route('movies.store'), [
 		'title'        => ['ka' => 'ტესტი', 'en' => 'Test Movie'],
 		'director'     => ['ka' => 'ტესტი რეჟისორი', 'en' => 'Test Director'],
-		'genre'        => 'Drama',
+		'genre'        => ['Drama'],
 		'release_year' => 2020,
 		'description'  => ['ka' => 'აღწერა', 'en' => 'Description'],
 		'poster'       => UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'),
@@ -100,6 +100,21 @@ test('creating a movie without required fields fails validation', function () {
 	]);
 });
 
+test('creating a movie with mismatched language text fails validation', function () {
+	$user = User::factory()->create();
+
+	$response = $this->actingAs($user)->post(route('movies.store'), [
+		'title'        => ['ka' => 'Test Movie', 'en' => 'ტესტი'],
+		'director'     => ['ka' => 'ტესტი რეჟისორი', 'en' => 'Test Director'],
+		'genre'        => ['Drama'],
+		'release_year' => 2020,
+		'description'  => ['ka' => 'აღწერა', 'en' => 'Description'],
+		'poster'       => UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'),
+	]);
+
+	$response->assertSessionHasErrors(['title.ka', 'title.en']);
+});
+
 test('guests cannot add a movie', function () {
 	$this->post(route('movies.store'), [])->assertRedirect(route('login'));
 });
@@ -118,6 +133,22 @@ test('the owner can update their movie', function () {
 
 	$response->assertRedirect(route('movies.show', $movie));
 	expect($movie->fresh()->getTranslation('title', 'en'))->toBe('Updated Title');
+});
+
+test('updating a movie with mismatched language text fails validation', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
+
+	$response = $this->actingAs($user)->patch(route('movies.update', $movie), [
+		'title'        => ['ka' => 'Updated Title', 'en' => 'ახალი'],
+		'director'     => $movie->getTranslations('director'),
+		'genre'        => $movie->genre,
+		'release_year' => $movie->release_year,
+		'description'  => $movie->getTranslations('description'),
+	]);
+
+	$response->assertSessionHasErrors(['title.ka', 'title.en']);
+	expect($movie->fresh()->getTranslation('title', 'en'))->not->toBe('ახალი');
 });
 
 test('a user cannot update a movie they do not own', function () {

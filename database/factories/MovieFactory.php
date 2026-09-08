@@ -32,11 +32,11 @@ class MovieFactory extends Factory
 				]),
 				'en' => fake()->name(),
 			],
-			'genre' => fake()->randomElement([
-				'Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi',
-				'Thriller', 'Romance', 'Crime', 'Fantasy', 'Documentary',
-			]),
-			'release_year' => fake()->numberBetween(1970, (int) date('Y')),
+			'genre' => fake()->randomElements(
+				['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Thriller', 'Romance', 'Crime', 'Fantasy', 'Documentary'],
+				fake()->numberBetween(1, 3),
+			),
+			'release_year' => fake()->numberBetween(1970, now()->year),
 			'description'  => [
 				'ka' => 'ეს ფილმი მოგვითხრობს ერთ განსაკუთრებულ ისტორიას.',
 				'en' => fake()->paragraph(),
