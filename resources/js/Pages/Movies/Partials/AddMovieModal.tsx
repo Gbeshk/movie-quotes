@@ -1,9 +1,9 @@
 import Button from '@/Components/Shared/Button';
+import FormField from '@/Components/Shared/FormField';
 import Modal from '@/Components/Shared/Modal';
 import AddMovieFormFields from '@/Pages/Movies/Partials/AddMovieFormFields';
 import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
 import MovieModalUserRow from '@/Pages/Movies/Partials/MovieModalUserRow';
-import PosterUpload from '@/Pages/Movies/Partials/PosterUpload';
 import { MovieFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -48,7 +48,8 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                 errors={errors}
                 clearErrors={clearErrors}
             />
-            <PosterUpload
+            <FormField
+                variant="image"
                 file={data.poster}
                 onChange={(file) => {
                     setData('poster', file);

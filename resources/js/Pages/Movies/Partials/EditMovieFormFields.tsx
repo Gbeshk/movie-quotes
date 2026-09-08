@@ -1,7 +1,10 @@
-import GenreInput from '@/Pages/Movies/Partials/GenreInput';
-import LabeledMovieField from '@/Pages/Movies/Partials/LabeledMovieField';
-import LabeledMovieTextarea from '@/Pages/Movies/Partials/LabeledMovieTextarea';
-import { validateEnglishText, validateGeorgianText, validateReleaseYear } from '@/lib/validators';
+import FormField from '@/Components/Shared/FormField';
+import {
+    isEnglishText,
+    validateEnglishText,
+    validateGeorgianText,
+    validateReleaseYear,
+} from '@/lib/validators';
 import { InertiaFormProps } from '@inertiajs/react';
 import { MovieFormData } from '@/types';
 
@@ -13,7 +16,8 @@ export default function EditMovieFormFields({
 }: Pick<InertiaFormProps<MovieFormData>, 'data' | 'setData' | 'errors' | 'clearErrors'>) {
     return (
         <>
-            <LabeledMovieField
+            <FormField
+                variant="inline-label"
                 className="mt-7"
                 id="edit_title_en"
                 name="title_en"
@@ -24,7 +28,8 @@ export default function EditMovieFormFields({
                 validate={validateEnglishText}
                 badge="Eng"
             />
-            <LabeledMovieField
+            <FormField
+                variant="inline-label"
                 className="mt-6"
                 id="edit_title_ka"
                 name="title_ka"
@@ -35,15 +40,21 @@ export default function EditMovieFormFields({
                 validate={validateGeorgianText}
                 badge="ქარ"
             />
-            <GenreInput
-                genres={data.genre}
+            <FormField
+                variant="tags"
+                tags={data.genre}
+                placeholder="Genre/ჟანრი"
+                validate={(value) =>
+                    isEnglishText(value) || 'Genre must contain only English characters.'
+                }
                 onChange={(genres) => {
                     setData('genre', genres);
                     clearErrors('genre');
                 }}
                 error={errors.genre}
             />
-            <LabeledMovieField
+            <FormField
+                variant="inline-label"
                 className="mt-6"
                 id="edit_release_year"
                 name="release_year"
@@ -54,7 +65,8 @@ export default function EditMovieFormFields({
                 error={errors.release_year}
                 validate={validateReleaseYear}
             />
-            <LabeledMovieField
+            <FormField
+                variant="inline-label"
                 className="mt-6"
                 id="edit_director_en"
                 name="director_en"
@@ -65,7 +77,8 @@ export default function EditMovieFormFields({
                 validate={validateEnglishText}
                 badge="Eng"
             />
-            <LabeledMovieField
+            <FormField
+                variant="inline-label"
                 className="mt-6"
                 id="edit_director_ka"
                 name="director_ka"
@@ -76,7 +89,9 @@ export default function EditMovieFormFields({
                 validate={validateGeorgianText}
                 badge="ქარ"
             />
-            <LabeledMovieTextarea
+            <FormField
+                variant="inline-label"
+                as="textarea"
                 id="edit_description_en"
                 name="description_en"
                 label="Movie description:"
@@ -86,7 +101,9 @@ export default function EditMovieFormFields({
                 validate={validateEnglishText}
                 badge="Eng"
             />
-            <LabeledMovieTextarea
+            <FormField
+                variant="inline-label"
+                as="textarea"
                 id="edit_description_ka"
                 name="description_ka"
                 label="ფილმის აღწერა:"

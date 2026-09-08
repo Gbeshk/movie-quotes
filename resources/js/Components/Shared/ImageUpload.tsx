@@ -2,7 +2,7 @@ import PhotoIcon from '@/Components/Shared/Icons/PhotoIcon';
 import { cn } from '@/lib/cn';
 import { DragEvent, useEffect, useMemo, useRef, useState } from 'react';
 
-export default function PosterUpload({
+export default function ImageUpload({
     file,
     onChange,
     error,
