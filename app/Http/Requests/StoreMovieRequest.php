@@ -31,7 +31,7 @@ class StoreMovieRequest extends FormRequest
 			'director.en'    => ['required', 'string', 'max:255', new EnglishText()],
 			'genre'          => ['required', 'array', 'min:1'],
 			'genre.*'        => ['string', 'max:255', new EnglishText()],
-			'release_year'   => ['required', 'integer', 'min:1888', 'max:' . (int) date('Y')],
+			'release_year'   => ['required', 'integer', 'min:1888', 'max:' . now()->year],
 			'description.ka' => ['required', 'string', new GeorgianText()],
 			'description.en' => ['required', 'string', new EnglishText()],
 			'poster'         => ['required', 'image', 'max:4096'],
