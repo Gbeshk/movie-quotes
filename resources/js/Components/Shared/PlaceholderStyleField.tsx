@@ -1,3 +1,4 @@
+import Textarea from '@/Components/Shared/TextArea';
 import { useFieldStatus } from '@/hooks/useFieldStatus';
 import { cn } from '@/lib/cn';
 
@@ -37,18 +38,14 @@ export default function PlaceholderStyleField({
                         status === 'error' && 'border-danger focus-within:border-danger',
                     )}
                 >
-                    <textarea
+                    <Textarea
                         id={id}
                         name={name}
                         placeholder={placeholder}
                         value={value}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={onChange}
                         onBlur={markTouched}
-                        className={cn(
-                            'm-0 h-21 w-full resize-y appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none placeholder:text-white',
-                            badge && 'pr-12',
-                            'focus:border-0 focus:shadow-none focus:ring-0',
-                        )}
+                        className={cn('w-full placeholder:text-white', badge && 'pr-12')}
                     />
                 </div>
                 {badge && (
