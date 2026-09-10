@@ -35,10 +35,16 @@ class MovieController extends Controller
 
 	public function show(Movie $movie): Response
 	{
-		$movie->load(['quotes.user', 'user', 'media']);
+		$movie->load(['user', 'media']);
+
+		$quotesQuery = fn () => $movie->quotes()->with(['user', 'media'])->withCount(['likes', 'comments']);
 
 		return Inertia::render('Movies/Show', [
-			'movie' => $movie,
+			'movie'  => $movie,
+			'quotes' => Inertia::scroll(
+				fn () => $quotesQuery()->latest()->latest('id')->paginate(9),
+			),
+			'quotesCount' => $quotesQuery()->count(),
 		]);
 	}
 

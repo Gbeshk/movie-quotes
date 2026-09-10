@@ -39,3 +39,24 @@ test('the welcome page shows 3 random quotes from movies that have a poster', fu
 		->where('quotes.0.movie.poster_url', fn ($url) => $url !== '')
 	);
 });
+
+test('the welcome page never shows two quotes from the same movie', function () {
+	Storage::fake('public');
+
+	Movie::factory()
+		->count(4)
+		->has(Quote::factory()->count(3))
+		->create()
+		->each(fn (Movie $movie) => $movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster'));
+
+	$response = $this->get(route('welcome'));
+
+	$response->assertInertia(function ($page) {
+		$page->component('Welcome')->has('quotes', 3);
+
+		$posterUrls = collect($page->toArray()['props']['quotes'])
+			->pluck('movie.poster_url');
+
+		expect($posterUrls->unique())->toHaveCount(3);
+	});
+});

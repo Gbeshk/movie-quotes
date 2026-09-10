@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Movie;
+use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -58,6 +61,26 @@ test('any signed-in user can view a movie they do not own', function () {
 		fn ($page) => $page
 		->component('Movies/Show')
 		->where('movie.id', $movie->id)
+	);
+});
+
+test('the movie page lists its quotes with like and comment counts', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
+	$quote = Quote::factory()->for($movie)->create();
+	Like::factory()->for($quote)->create();
+	Comment::factory()->count(2)->for($quote)->create();
+
+	$response = $this->actingAs($user)->get(route('movies.show', $movie));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Movies/Show')
+		->has('quotes.data', 1)
+		->where('quotes.data.0.id', $quote->id)
+		->where('quotes.data.0.likes_count', 1)
+		->where('quotes.data.0.comments_count', 2)
+		->where('quotesCount', 1)
 	);
 });
 
