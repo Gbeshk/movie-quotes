@@ -1,7 +1,13 @@
 import Button from '@/Components/Shared/Button';
 import PlusIcon from '@/Components/Shared/Icons/PlusIcon';
 
-export default function MovieQuotesHeader({ quotesCount }: { quotesCount: number }) {
+export default function MovieQuotesHeader({
+    quotesCount,
+    onAddQuote,
+}: {
+    quotesCount: number;
+    onAddQuote: () => void;
+}) {
     return (
         <div className="mt-8 flex items-center gap-4">
             <p className="text-2xl font-normal text-white uppercase">
@@ -11,6 +17,7 @@ export default function MovieQuotesHeader({ quotesCount }: { quotesCount: number
             <Button
                 type="button"
                 variant="danger-cta"
+                onClick={onAddQuote}
                 className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
             >
                 <PlusIcon />
