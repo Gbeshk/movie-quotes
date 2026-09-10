@@ -57,6 +57,7 @@ export interface Paginated<T> {
 export interface WelcomeQuote {
     id: number | string;
     text: Translatable;
+    image_url: string;
     movie: {
         title: Translatable;
         release_year: number;
