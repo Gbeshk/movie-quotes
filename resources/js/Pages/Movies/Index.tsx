@@ -1,6 +1,6 @@
 import Button from '@/Components/Shared/Button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AddMovieBtn from '@/Components/Shared/Icons/AddMovieBtn';
+import PlusIcon from '@/Components/Shared/Icons/PlusIcon';
 import AddMovieModal from '@/Pages/Movies/Partials/AddMovieModal';
 import MovieCard from '@/Pages/Movies/Partials/MovieCard';
 import MovieSearch from '@/Pages/Movies/Partials/MovieSearch';
@@ -34,7 +34,7 @@ export default function Index({
                                 onClick={() => setShowAddMovieModal(true)}
                                 className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
                             >
-                                <AddMovieBtn />
+                                <PlusIcon />
                                 Add movie
                             </Button>
                         </div>
