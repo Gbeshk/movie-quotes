@@ -19,15 +19,12 @@ class WelcomeController extends Controller
 			->limit(3)
 			->pluck('id');
 
-		$quotes = $movieIds
-			->map(
-				fn ($movieId) => Quote::query()
-					->where('movie_id', $movieId)
-					->with('movie.media')
-					->inRandomOrder()
-					->first(),
-			)
-			->filter();
+		$quotes = Quote::query()
+			->whereIn('movie_id', $movieIds)
+			->with(['media', 'movie.media'])
+			->inRandomOrder()
+			->get()
+			->unique('movie_id');
 
 		if ($quotes->count() < 3) {
 			$quotes = config('welcome.fallback_quotes');
