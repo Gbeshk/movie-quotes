@@ -54,4 +54,11 @@
         #191725 51.65%,
         #0d0b14 98.75%
     );
+    --background-image-gradient-dark-80: linear-gradient(
+        187.16deg,
+        #181623cc 0.07%,
+        #191725cc 51.65%,
+        #0d0b14cc 98.75%
+    );
+    --blur-50: 50px;
 }
