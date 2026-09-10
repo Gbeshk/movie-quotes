@@ -1,5 +1,7 @@
 import EditIcon from '@/Components/Shared/Icons/EditIcon';
 import TrashIcon from '@/Components/Shared/Icons/TrashIcon';
+import GenreTags from '@/Pages/Movies/Partials/GenreTags';
+import MovieDirector from '@/Pages/Movies/Partials/MovieDirector';
 import { Movie } from '@/types';
 
 export default function MovieDetails({
@@ -15,7 +17,7 @@ export default function MovieDetails({
 }) {
     return (
         <div className="mt-8 flex w-full gap-3">
-            <div className="bg-input-bg h-110 w-full overflow-hidden rounded-xl">
+            <div className="bg-input-bg h-110 w-3/5 overflow-hidden rounded-xl">
                 {movie.poster_url && (
                     <img
                         src={movie.poster_url}
@@ -24,7 +26,7 @@ export default function MovieDetails({
                     />
                 )}
             </div>
-            <div className="w-2/3">
+            <div className="w-2/5">
                 <div className="flex items-center justify-between">
                     <p className="text-logo-text text-2xl font-medium">
                         {movie.title.en} ({movie.release_year})
@@ -49,20 +51,11 @@ export default function MovieDetails({
                         </div>
                     )}
                 </div>
-                <div className="mt-6 flex items-center gap-2">
-                    {movie.genre.map((genre) => (
-                        <div
-                            key={genre}
-                            className="bg-modal-secondary-text rounded px-3 py-1.5 text-center align-middle text-lg leading-none font-bold text-white"
-                        >
-                            {genre}
-                        </div>
-                    ))}
+                <div className="mt-6">
+                    <GenreTags genres={movie.genre} />
                 </div>
                 <div className="mt-2.5">
-                    <p className="text-input-bg text-lg font-bold">
-                        Director: <span className="text-white">{movie.director.en}</span>
-                    </p>
+                    <MovieDirector director={movie.director.en} />
                 </div>
                 <div className="text-input-bg mt-5 text-lg font-normal">{movie.description.en}</div>
             </div>
