@@ -1,11 +1,11 @@
 import Button from '@/Components/Shared/Button';
 import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
-import GenreTags from '@/Pages/Movies/Partials/GenreTags';
-import MovieDirector from '@/Pages/Movies/Partials/MovieDirector';
-import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
-import MovieModalUserRow from '@/Pages/Movies/Partials/MovieModalUserRow';
-import QuoteFormFields from '@/Pages/Movies/Partials/QuoteFormFields';
+import ModalHeader from '@/Pages/Movies/Partials/ModalHeader';
+import ModalUserRow from '@/Pages/Movies/Partials/ModalUserRow';
+import GenreTags from '@/Pages/Movies/Partials/Movie/GenreTags';
+import MovieDirector from '@/Pages/Movies/Partials/Movie/MovieDirector';
+import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Movie, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -19,15 +19,18 @@ export default function AddQuoteModal({
     onClose: () => void;
     movie: Movie;
 }) {
-    const { data, setData, post, processing, errors, clearErrors, reset } = useForm<QuoteFormData>({
+    const { data, setData, post, processing, errors, clearErrors, reset } = useForm<
+        QuoteFormData & { movie_id: number }
+    >({
         text: { ka: '', en: '' },
         image: null,
+        movie_id: movie.id,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('quotes.store', movie.id), {
+        post(route('quotes.store'), {
             forceFormData: true,
             onSuccess: () => {
                 reset();
@@ -45,8 +48,8 @@ export default function AddQuoteModal({
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <MovieModalHeader title="add quote" onClose={onClose} />
-            <MovieModalUserRow />
+            <ModalHeader title="add quote" onClose={onClose} />
+            <ModalUserRow />
             <div className="mt-7.5 flex h-40 w-full items-center gap-6 px-8">
                 <div className="bg-input-bg h-full w-72.5 shrink-0 overflow-hidden rounded-xl">
                     {movie.poster_url && (

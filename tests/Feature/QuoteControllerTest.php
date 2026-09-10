@@ -12,7 +12,7 @@ uses(RefreshDatabase::class);
 test('guests cannot add a quote', function () {
 	$movie = Movie::factory()->create();
 
-	$this->post(route('quotes.store', $movie), [])->assertRedirect(route('login'));
+	$this->post(route('quotes.store'), ['movie_id' => $movie->id])->assertRedirect(route('login'));
 });
 
 test('a signed-in user can add a quote with an image to any movie', function () {
@@ -21,9 +21,10 @@ test('a signed-in user can add a quote with an image to any movie', function () 
 	$user = User::factory()->create();
 	$movie = Movie::factory()->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.store', $movie), [
-		'text'  => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
-		'image' => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id' => $movie->id,
+		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+		'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
 	]);
 
 	$response->assertRedirect(route('movies.show', $movie));
@@ -36,11 +37,10 @@ test('a signed-in user can add a quote with an image to any movie', function () 
 
 test('creating a quote without required fields fails validation', function () {
 	$user = User::factory()->create();
-	$movie = Movie::factory()->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.store', $movie), []);
+	$response = $this->actingAs($user)->post(route('quotes.store'), []);
 
-	$response->assertSessionHasErrors(['text.ka', 'text.en', 'image']);
+	$response->assertSessionHasErrors(['movie_id', 'text.ka', 'text.en', 'image']);
 });
 
 test('creating a quote with mismatched language text fails validation', function () {
@@ -49,9 +49,10 @@ test('creating a quote with mismatched language text fails validation', function
 	$user = User::factory()->create();
 	$movie = Movie::factory()->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.store', $movie), [
-		'text'  => ['ka' => 'A memorable line', 'en' => 'ციტატა'],
-		'image' => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id' => $movie->id,
+		'text'     => ['ka' => 'A memorable line', 'en' => 'ციტატა'],
+		'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
 	]);
 
 	$response->assertSessionHasErrors(['text.ka', 'text.en']);

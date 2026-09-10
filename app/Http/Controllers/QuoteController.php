@@ -14,10 +14,12 @@ class QuoteController extends Controller
 {
 	use AuthorizesRequests;
 
-	public function store(StoreQuoteRequest $request, Movie $movie): RedirectResponse
+	public function store(StoreQuoteRequest $request): RedirectResponse
 	{
+		$movie = Movie::findOrFail($request->validated('movie_id'));
+
 		$quote = $movie->quotes()->create([
-			...$request->safe()->except('image'),
+			...$request->safe()->except(['image', 'movie_id']),
 			'user_id' => $request->user()->id,
 		]);
 

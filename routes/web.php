@@ -21,9 +21,12 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 	});
 
 	Route::resource('movies', MovieController::class)->except(['create', 'edit']);
-	Route::post('/movies/{movie}/quotes', [QuoteController::class, 'store'])->name('quotes.store');
-	Route::patch('/quotes/{quote}', [QuoteController::class, 'update'])->name('quotes.update');
-	Route::delete('/quotes/{quote}', [QuoteController::class, 'destroy'])->name('quotes.destroy');
+
+	Route::controller(QuoteController::class)->prefix('quotes')->name('quotes.')->group(function () {
+		Route::post('/', 'store')->name('store');
+		Route::patch('/{quote}', 'update')->name('update');
+		Route::delete('/{quote}', 'destroy')->name('destroy');
+	});
 });
 
 require __DIR__ . '/auth.php';
