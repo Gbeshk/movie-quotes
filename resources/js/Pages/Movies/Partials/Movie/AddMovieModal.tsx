@@ -1,9 +1,9 @@
 import Button from '@/Components/Shared/Button';
 import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
-import AddMovieFormFields from '@/Pages/Movies/Partials/AddMovieFormFields';
-import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
-import MovieModalUserRow from '@/Pages/Movies/Partials/MovieModalUserRow';
+import ModalHeader from '@/Pages/Movies/Partials/ModalHeader';
+import ModalUserRow from '@/Pages/Movies/Partials/ModalUserRow';
+import AddMovieFormFields from '@/Pages/Movies/Partials/Movie/AddMovieFormFields';
 import { MovieFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -39,8 +39,8 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <MovieModalHeader title="add movie" onClose={onClose} />
-            <MovieModalUserRow />
+            <ModalHeader title="add movie" onClose={onClose} />
+            <ModalUserRow />
 
             <AddMovieFormFields
                 data={data}

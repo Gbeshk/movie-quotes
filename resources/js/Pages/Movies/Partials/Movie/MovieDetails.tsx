@@ -1,7 +1,7 @@
 import EditIcon from '@/Components/Shared/Icons/EditIcon';
 import TrashIcon from '@/Components/Shared/Icons/TrashIcon';
-import GenreTags from '@/Pages/Movies/Partials/GenreTags';
-import MovieDirector from '@/Pages/Movies/Partials/MovieDirector';
+import GenreTags from '@/Pages/Movies/Partials/Movie/GenreTags';
+import MovieDirector from '@/Pages/Movies/Partials/Movie/MovieDirector';
 import { Movie } from '@/types';
 
 export default function MovieDetails({

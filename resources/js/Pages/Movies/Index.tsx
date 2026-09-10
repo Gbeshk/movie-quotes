@@ -1,9 +1,9 @@
 import Button from '@/Components/Shared/Button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PlusIcon from '@/Components/Shared/Icons/PlusIcon';
-import AddMovieModal from '@/Pages/Movies/Partials/AddMovieModal';
-import MovieCard from '@/Pages/Movies/Partials/MovieCard';
-import MovieSearch from '@/Pages/Movies/Partials/MovieSearch';
+import AddMovieModal from '@/Pages/Movies/Partials/Movie/AddMovieModal';
+import MovieCard from '@/Pages/Movies/Partials/Movie/MovieCard';
+import MovieSearch from '@/Pages/Movies/Partials/Movie/MovieSearch';
 import { Movie, Paginated } from '@/types';
 import { InfiniteScroll } from '@inertiajs/react';
 import { useState } from 'react';

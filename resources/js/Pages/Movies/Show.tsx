@@ -3,12 +3,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { AuthenticatedPageProps, Movie, Paginated, Quote } from '@/types';
 import { Head, InfiniteScroll, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import AddQuoteModal from './Partials/AddQuoteModal';
-import EditMovieModal from './Partials/EditMovieModal';
-import EditQuoteModal from './Partials/EditQuoteModal';
-import MovieDetails from './Partials/MovieDetails';
-import MovieQuotesHeader from './Partials/MovieQuotesHeader';
-import QuoteCard from './Partials/QuoteCard';
+import EditMovieModal from './Partials/Movie/EditMovieModal';
+import MovieDetails from './Partials/Movie/MovieDetails';
+import AddQuoteModal from './Partials/Quote/AddQuoteModal';
+import EditQuoteModal from './Partials/Quote/EditQuoteModal';
+import MovieQuotesHeader from './Partials/Quote/MovieQuotesHeader';
+import QuoteCard from './Partials/Quote/QuoteCard';
 
 export default function Show({
     movie,

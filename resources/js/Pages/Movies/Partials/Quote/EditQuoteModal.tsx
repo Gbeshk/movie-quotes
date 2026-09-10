@@ -2,9 +2,9 @@ import Button from '@/Components/Shared/Button';
 import EditImagePreview from '@/Components/Shared/EditImagePreview';
 import TrashIcon from '@/Components/Shared/Icons/TrashIcon';
 import Modal from '@/Components/Shared/Modal';
-import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
-import MovieModalUserRow from '@/Pages/Movies/Partials/MovieModalUserRow';
-import QuoteFormFields from '@/Pages/Movies/Partials/QuoteFormFields';
+import ModalHeader from '@/Pages/Movies/Partials/ModalHeader';
+import ModalUserRow from '@/Pages/Movies/Partials/ModalUserRow';
+import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Quote, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -56,8 +56,8 @@ export default function EditQuoteModal({
                     Delete
                 </p>
             </button>
-            <MovieModalHeader title="edit quote" onClose={onClose} />
-            <MovieModalUserRow />
+            <ModalHeader title="edit quote" onClose={onClose} />
+            <ModalUserRow />
             <QuoteFormFields data={data} setData={setData} errors={errors} />
             <EditImagePreview
                 file={data.image}

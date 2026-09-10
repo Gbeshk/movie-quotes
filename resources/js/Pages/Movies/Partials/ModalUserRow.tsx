@@ -2,7 +2,7 @@ import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import { AuthenticatedPageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 
-export default function MovieModalUserRow() {
+export default function ModalUserRow() {
     const user = usePage<AuthenticatedPageProps>().props.auth.user;
 
     return (
