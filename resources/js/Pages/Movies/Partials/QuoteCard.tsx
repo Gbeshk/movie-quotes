@@ -20,7 +20,7 @@ export default function QuoteCard({
     onView?: () => void;
 }) {
     return (
-        <div className="border-modal-secondary-text bg-profile-modal-bg relative h-67 w-full rounded-xl px-8 py-6 backdrop-blur-[50px]">
+        <div className="border-modal-secondary-text bg-profile-modal-bg backdrop-blur-50 relative h-67 w-full rounded-xl px-8 py-6">
             <div className="absolute top-6 right-8">
                 <OptionsMenu
                     actions={[
