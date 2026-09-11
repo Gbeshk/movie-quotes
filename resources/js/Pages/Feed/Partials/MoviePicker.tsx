@@ -46,7 +46,7 @@ export default function MoviePicker({
                 <ArrowDown size={24} />
             </button>
             {isOpen && (
-                <div className="bg-profile-modal-bg border-modal-secondary-text absolute top-24 left-8 z-10 max-h-72 w-100 overflow-y-auto rounded-xl border">
+                <div className="bg-profile-modal-bg border-modal-secondary-text absolute bottom-full left-8 z-10 mb-2.5 max-h-72 w-100 overflow-y-auto rounded-xl border">
                     <div className="border-modal-secondary-text flex items-center gap-4 border-b px-4 py-3">
                         <SearchIcon />
                         <input
