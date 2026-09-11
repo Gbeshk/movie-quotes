@@ -39,35 +39,32 @@ export default function Modal({
     }
 
     return (
-        <div
-            className={cn(
-                'fixed inset-0 z-50 flex w-full items-center justify-center',
-                backdropClassName,
-            )}
-        >
+        <div className={cn('fixed inset-0 z-50 w-full overflow-y-auto', backdropClassName)}>
             <div className="fixed inset-0 w-full" onClick={onClose} />
 
-            <form
-                onSubmit={onSubmit ?? ((e) => e.preventDefault())}
-                className={cn(
-                    'relative z-10 flex flex-col items-center rounded-lg',
-                    cardBgClassName,
-                    cardClassName,
-                )}
-            >
-                {title && (
-                    <h2 className="text-3xl leading-snug font-medium tracking-normal text-white">
-                        {title}
-                    </h2>
-                )}
-                {subtitle && (
-                    <h3 className="text-modal-secondary-text mt-3 align-middle text-base leading-normal font-normal tracking-normal">
-                        {subtitle}
-                    </h3>
-                )}
+            <div className="flex min-h-full w-full items-center justify-center">
+                <form
+                    onSubmit={onSubmit ?? ((e) => e.preventDefault())}
+                    className={cn(
+                        'relative z-10 flex flex-col items-center rounded-lg',
+                        cardBgClassName,
+                        cardClassName,
+                    )}
+                >
+                    {title && (
+                        <h2 className="text-3xl leading-snug font-medium tracking-normal text-white">
+                            {title}
+                        </h2>
+                    )}
+                    {subtitle && (
+                        <h3 className="text-modal-secondary-text mt-3 align-middle text-base leading-normal font-normal tracking-normal">
+                            {subtitle}
+                        </h3>
+                    )}
 
-                {children}
-            </form>
+                    {children}
+                </form>
+            </div>
         </div>
     );
 }
