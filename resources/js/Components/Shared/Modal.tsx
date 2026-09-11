@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { FormEventHandler, PropsWithChildren } from 'react';
+import { FormEventHandler, PropsWithChildren, useEffect } from 'react';
 
 export default function Modal({
     show,
@@ -21,6 +21,19 @@ export default function Modal({
     cardBgClassName?: string;
     backdropClassName?: string;
 }>) {
+    useEffect(() => {
+        if (!show) {
+            return;
+        }
+
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = originalOverflow;
+        };
+    }, [show]);
+
     if (!show) {
         return null;
     }

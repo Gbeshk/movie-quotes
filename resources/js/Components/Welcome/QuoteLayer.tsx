@@ -16,7 +16,7 @@ export default function QuoteLayer({
     return (
         <>
             <img
-                src={quote.movie.poster_url}
+                src={quote.image_url}
                 alt={quote.movie.title.en}
                 className="absolute inset-0 h-full w-full object-cover"
             />

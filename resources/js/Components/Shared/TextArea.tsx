@@ -8,6 +8,7 @@ export default function Textarea({
     onChange,
     onBlur,
     className,
+    heightClassName = 'h-21',
 }: {
     id: string;
     name: string;
@@ -16,6 +17,7 @@ export default function Textarea({
     onChange: (value: string) => void;
     onBlur?: () => void;
     className?: string;
+    heightClassName?: string;
 }) {
     return (
         <textarea
@@ -26,7 +28,8 @@ export default function Textarea({
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             className={cn(
-                'm-0 h-21 resize-y appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none focus:border-0 focus:shadow-none focus:ring-0',
+                'm-0 resize-y appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none focus:border-0 focus:shadow-none focus:ring-0',
+                heightClassName,
                 className,
             )}
         />

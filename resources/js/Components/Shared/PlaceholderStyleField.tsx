@@ -14,6 +14,7 @@ export default function PlaceholderStyleField({
     validate,
     badge,
     className,
+    textareaHeightClassName,
 }: {
     as?: 'input' | 'textarea';
     id: string;
@@ -26,6 +27,7 @@ export default function PlaceholderStyleField({
     validate?: (value: string) => true | string;
     badge?: string;
     className?: string;
+    textareaHeightClassName?: string;
 }) {
     const { status, errorMessage, markTouched } = useFieldStatus(value, error, validate);
 
@@ -46,6 +48,7 @@ export default function PlaceholderStyleField({
                         onChange={onChange}
                         onBlur={markTouched}
                         className={cn('w-full placeholder:text-white', badge && 'pr-12')}
+                        heightClassName={textareaHeightClassName}
                     />
                 </div>
                 {badge && (

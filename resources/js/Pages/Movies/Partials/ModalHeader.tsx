@@ -1,12 +1,6 @@
 import CloseIcon from '@/Components/Shared/Icons/CloseIcon';
 
-export default function MovieModalHeader({
-    title,
-    onClose,
-}: {
-    title: string;
-    onClose: () => void;
-}) {
+export default function ModalHeader({ title, onClose }: { title: string; onClose: () => void }) {
     return (
         <>
             <button

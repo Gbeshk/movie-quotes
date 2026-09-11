@@ -31,6 +31,7 @@ type PlaceholderFieldProps = {
     validate?: (value: string) => true | string;
     badge?: string;
     className?: string;
+    textareaHeightClassName?: string;
 };
 
 type InlineLabelFieldProps = {

@@ -1,9 +1,9 @@
 import Button from '@/Components/Shared/Button';
 import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
-import EditMovieFormFields from '@/Pages/Movies/Partials/EditMovieFormFields';
-import MovieModalHeader from '@/Pages/Movies/Partials/MovieModalHeader';
-import MovieModalUserRow from '@/Pages/Movies/Partials/MovieModalUserRow';
+import ModalHeader from '@/Pages/Movies/Partials/ModalHeader';
+import ModalUserRow from '@/Pages/Movies/Partials/ModalUserRow';
+import EditMovieFormFields from '@/Pages/Movies/Partials/Movie/EditMovieFormFields';
 import { Movie, MovieFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -47,8 +47,8 @@ export default function EditMovieModal({
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <MovieModalHeader title="edit movie" onClose={onClose} />
-            <MovieModalUserRow />
+            <ModalHeader title="edit movie" onClose={onClose} />
+            <ModalUserRow />
 
             <EditMovieFormFields
                 data={data}

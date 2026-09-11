@@ -3,6 +3,7 @@
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,12 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 	});
 
 	Route::resource('movies', MovieController::class)->except(['create', 'edit']);
+
+	Route::controller(QuoteController::class)->prefix('quotes')->name('quotes.')->group(function () {
+		Route::post('/', 'store')->name('store');
+		Route::patch('/{quote}', 'update')->name('update');
+		Route::delete('/{quote}', 'destroy')->name('destroy');
+	});
 });
 
 require __DIR__ . '/auth.php';

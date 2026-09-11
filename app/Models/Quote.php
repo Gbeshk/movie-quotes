@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Database\Factories\QuoteFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,8 @@ class Quote extends Model implements HasMedia
 {
 	/** @use HasFactory<QuoteFactory> */
 	use HasFactory, HasTranslations, InteractsWithMedia;
+
+	protected $appends = ['image_url'];
 
 	/**
 	 * @var array<int, string>
@@ -58,5 +61,12 @@ class Quote extends Model implements HasMedia
 	public function registerMediaCollections(): void
 	{
 		$this->addMediaCollection('image')->singleFile();
+	}
+
+	protected function imageUrl(): Attribute
+	{
+		return Attribute::make(
+			get: fn () => $this->getFirstMediaUrl('image') ?: null,
+		);
 	}
 }

@@ -8,12 +8,14 @@ export default function ImageUpload({
     error,
     existingImageUrl,
     heading = 'Add photo',
+    className = 'mt-6',
 }: {
     file: File | null;
     onChange: (file: File | null) => void;
     error?: string;
     existingImageUrl?: string | null;
     heading?: string;
+    className?: string;
 }) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -52,7 +54,7 @@ export default function ImageUpload({
     };
 
     return (
-        <div className="mt-6 w-full self-start px-8">
+        <div className={cn('w-full self-start px-8', className)}>
             {imageUrl ? (
                 <div
                     onDragOver={handleDragOver}

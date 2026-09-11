@@ -17,6 +17,9 @@ export interface Quote {
     movie_id: number;
     user_id: number;
     text: Translatable;
+    image_url: string | null;
+    likes_count?: number;
+    comments_count?: number;
     user?: User;
 }
 
@@ -30,7 +33,6 @@ export interface Movie {
     description: Translatable;
     poster_url: string | null;
     quotes_count?: number;
-    quotes?: Quote[];
     user?: User;
 }
 
@@ -43,6 +45,11 @@ export interface MovieFormData {
     poster: File | null;
 }
 
+export interface QuoteFormData {
+    text: Translatable;
+    image: File | null;
+}
+
 export interface Paginated<T> {
     data: T[];
 }
@@ -50,6 +57,7 @@ export interface Paginated<T> {
 export interface WelcomeQuote {
     id: number | string;
     text: Translatable;
+    image_url: string;
     movie: {
         title: Translatable;
         release_year: number;

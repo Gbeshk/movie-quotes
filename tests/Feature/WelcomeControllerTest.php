@@ -28,7 +28,12 @@ test('the welcome page shows 3 random quotes from movies that have a poster', fu
 		->count(5)
 		->has(Quote::factory())
 		->create()
-		->each(fn (Movie $movie) => $movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster'));
+		->each(function (Movie $movie) {
+			$movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster');
+			$movie->quotes->each(
+				fn (Quote $quote) => $quote->addMedia(UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'))->toMediaCollection('image')
+			);
+		});
 
 	$response = $this->get(route('welcome'));
 
@@ -36,6 +41,33 @@ test('the welcome page shows 3 random quotes from movies that have a poster', fu
 		fn ($page) => $page
 		->component('Welcome')
 		->has('quotes', 3)
+		->where('quotes.0.image_url', fn ($url) => $url !== '')
 		->where('quotes.0.movie.poster_url', fn ($url) => $url !== '')
 	);
+});
+
+test('the welcome page never shows two quotes from the same movie', function () {
+	Storage::fake('public');
+
+	Movie::factory()
+		->count(4)
+		->has(Quote::factory()->count(3))
+		->create()
+		->each(function (Movie $movie) {
+			$movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster');
+			$movie->quotes->each(
+				fn (Quote $quote) => $quote->addMedia(UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'))->toMediaCollection('image')
+			);
+		});
+
+	$response = $this->get(route('welcome'));
+
+	$response->assertInertia(function ($page) {
+		$page->component('Welcome')->has('quotes', 3);
+
+		$posterUrls = collect($page->toArray()['props']['quotes'])
+			->pluck('movie.poster_url');
+
+		expect($posterUrls->unique())->toHaveCount(3);
+	});
 });
