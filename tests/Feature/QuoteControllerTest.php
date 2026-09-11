@@ -21,7 +21,7 @@ test('a signed-in user can add a quote with an image to any movie', function () 
 	$user = User::factory()->create();
 	$movie = Movie::factory()->create();
 
-	$response = $this->actingAs($user)->from(route('movies.show', $movie))->post(route('quotes.store'), [
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
 		'movie_id' => $movie->id,
 		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
 		'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
@@ -35,16 +35,17 @@ test('a signed-in user can add a quote with an image to any movie', function () 
 	expect($quote->getFirstMediaUrl('image'))->not->toBe('');
 });
 
-test('adding a quote from the feed returns to the feed', function () {
+test('adding a quote with redirect_to feed returns to the feed', function () {
 	Storage::fake('public');
 
 	$user = User::factory()->create();
 	$movie = Movie::factory()->create();
 
-	$response = $this->actingAs($user)->from(route('feed'))->post(route('quotes.store'), [
-		'movie_id' => $movie->id,
-		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
-		'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id'    => $movie->id,
+		'text'        => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+		'image'       => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+		'redirect_to' => 'feed',
 	]);
 
 	$response->assertRedirect(route('feed'));
@@ -65,7 +66,7 @@ test('a quote without its own image falls back to the movie poster', function ()
 	$movie = Movie::factory()->create();
 	$movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster');
 
-	$response = $this->actingAs($user)->from(route('movies.show', $movie))->post(route('quotes.store'), [
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
 		'movie_id' => $movie->id,
 		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
 	]);

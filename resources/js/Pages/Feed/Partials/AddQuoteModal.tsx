@@ -14,11 +14,12 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
     const [movie, setMovie] = useState<Movie | null>(null);
     const [isChangingMovie, setIsChangingMovie] = useState(false);
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm<
-        QuoteFormData & { movie_id: number | null }
+        QuoteFormData & { movie_id: number | null; redirect_to: 'feed' }
     >({
         text: { ka: '', en: '' },
         image: null,
         movie_id: null,
+        redirect_to: 'feed',
     });
 
     const selectMovie = (selected: Movie) => {

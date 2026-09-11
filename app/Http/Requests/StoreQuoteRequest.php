@@ -17,10 +17,11 @@ class StoreQuoteRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'movie_id' => ['required', 'integer', 'exists:movies,id'],
-			'text.ka'  => ['required', 'string', new GeorgianText()],
-			'text.en'  => ['required', 'string', new EnglishText()],
-			'image'    => ['nullable', 'image', 'max:4096'],
+			'movie_id'    => ['required', 'integer', 'exists:movies,id'],
+			'text.ka'     => ['required', 'string', new GeorgianText()],
+			'text.en'     => ['required', 'string', new EnglishText()],
+			'image'       => ['nullable', 'image', 'max:4096'],
+			'redirect_to' => ['nullable', 'in:feed'],
 		];
 	}
 }
