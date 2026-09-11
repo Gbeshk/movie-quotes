@@ -50,6 +50,22 @@ test('the movies index can be filtered by search', function () {
 	);
 });
 
+test('guests cannot search movies', function () {
+	$this->getJson(route('movies.search'))->assertUnauthorized();
+});
+
+test('movie search matches movies from every user', function () {
+	$user = User::factory()->create();
+	$otherUser = User::factory()->create();
+
+	$matching = Movie::factory()->for($otherUser)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	Movie::factory()->for($user)->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
+
+	$response = $this->actingAs($user)->getJson(route('movies.search', ['q' => 'matrix']));
+
+	$response->assertOk()->assertJsonCount(1)->assertJsonPath('0.id', $matching->id);
+});
+
 test('any signed-in user can view a movie they do not own', function () {
 	$owner = User::factory()->create();
 	$viewer = User::factory()->create();

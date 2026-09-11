@@ -20,6 +20,7 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 		Route::delete('/', 'destroy')->name('destroy');
 	});
 
+	Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search');
 	Route::resource('movies', MovieController::class)->except(['create', 'edit']);
 
 	Route::controller(QuoteController::class)->prefix('quotes')->name('quotes.')->group(function () {
