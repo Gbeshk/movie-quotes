@@ -23,7 +23,6 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 	Route::controller(MovieController::class)->prefix('movies')->name('movies.')->group(function () {
 		Route::get('/', 'index')->name('index');
 		Route::post('/', 'store')->name('store');
-		Route::get('/search', 'search')->name('search');
 		Route::get('/{movie}', 'show')->name('show');
 		Route::match(['put', 'patch'], '/{movie}', 'update')->name('update');
 		Route::delete('/{movie}', 'destroy')->name('destroy');

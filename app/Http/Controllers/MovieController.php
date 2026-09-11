@@ -6,7 +6,6 @@ use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -32,20 +31,6 @@ class MovieController extends Controller
 			'moviesCount' => $query()->count(),
 			'search'      => $search,
 		]);
-	}
-
-	public function search(Request $request): JsonResponse
-	{
-		$search = trim((string) $request->query('q', ''));
-
-		$movies = Movie::query()
-			->search($search)
-			->with('media')
-			->latest()
-			->limit(10)
-			->get(['id', 'title', 'director', 'genre', 'release_year']);
-
-		return response()->json($movies);
 	}
 
 	public function show(Movie $movie): Response
