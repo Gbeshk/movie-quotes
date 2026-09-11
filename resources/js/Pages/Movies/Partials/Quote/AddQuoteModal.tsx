@@ -3,8 +3,7 @@ import ImageUpload from '@/Components/Shared/ImageUpload';
 import Modal from '@/Components/Shared/Modal';
 import ModalHeader from '@/Pages/Movies/Partials/ModalHeader';
 import ModalUserRow from '@/Pages/Movies/Partials/ModalUserRow';
-import GenreTags from '@/Pages/Movies/Partials/Movie/GenreTags';
-import MovieDirector from '@/Pages/Movies/Partials/Movie/MovieDirector';
+import MoviePreview from '@/Pages/Movies/Partials/Movie/MoviePreview';
 import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Movie, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -50,25 +49,7 @@ export default function AddQuoteModal({
         >
             <ModalHeader title="add quote" onClose={onClose} />
             <ModalUserRow />
-            <div className="mt-7.5 flex h-40 w-full items-center gap-6 px-8">
-                <div className="bg-input-bg h-full w-72.5 shrink-0 overflow-hidden rounded-xl">
-                    {movie.poster_url && (
-                        <img
-                            src={movie.poster_url}
-                            alt={movie.title.en}
-                            className="h-full w-full object-cover"
-                        />
-                    )}
-                </div>
-                <div className="flex flex-col justify-between gap-5">
-                    <p className="text-logo-text text-2xl leading-relaxed font-medium tracking-normal">
-                        {movie.title.en} ({movie.release_year})
-                    </p>
-
-                    <GenreTags genres={movie.genre} />
-                    <MovieDirector director={movie.director.en} />
-                </div>
-            </div>
+            <MoviePreview movie={movie} />
             <QuoteFormFields data={data} setData={setData} errors={errors} />
             <ImageUpload
                 file={data.image}
