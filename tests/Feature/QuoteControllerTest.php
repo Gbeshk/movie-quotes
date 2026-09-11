@@ -35,12 +35,47 @@ test('a signed-in user can add a quote with an image to any movie', function () 
 	expect($quote->getFirstMediaUrl('image'))->not->toBe('');
 });
 
+test('adding a quote with redirect_to feed returns to the feed', function () {
+	Storage::fake('public');
+
+	$user = User::factory()->create();
+	$movie = Movie::factory()->create();
+
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id'    => $movie->id,
+		'text'        => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+		'image'       => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+		'redirect_to' => 'feed',
+	]);
+
+	$response->assertRedirect(route('feed'));
+});
+
 test('creating a quote without required fields fails validation', function () {
 	$user = User::factory()->create();
 
 	$response = $this->actingAs($user)->post(route('quotes.store'), []);
 
-	$response->assertSessionHasErrors(['movie_id', 'text.ka', 'text.en', 'image']);
+	$response->assertSessionHasErrors(['movie_id', 'text.ka', 'text.en']);
+});
+
+test('a quote without its own image falls back to the movie poster', function () {
+	Storage::fake('public');
+
+	$user = User::factory()->create();
+	$movie = Movie::factory()->create();
+	$movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster');
+
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id' => $movie->id,
+		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+	]);
+
+	$response->assertRedirect(route('movies.show', $movie));
+
+	$quote = $movie->quotes()->firstOrFail();
+	expect($quote->getFirstMediaUrl('image'))->toBe('');
+	expect($quote->image_url)->toBe($movie->getFirstMediaUrl('poster'));
 });
 
 test('creating a quote with mismatched language text fails validation', function () {

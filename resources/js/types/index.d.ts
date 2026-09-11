@@ -21,6 +21,14 @@ export interface Quote {
     likes_count?: number;
     comments_count?: number;
     user?: User;
+    movie?: Movie;
+    comments?: Comment[];
+}
+
+export interface Comment {
+    id: number;
+    body: string;
+    user: User;
 }
 
 export interface Movie {

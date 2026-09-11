@@ -20,7 +20,13 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 		Route::delete('/', 'destroy')->name('destroy');
 	});
 
-	Route::resource('movies', MovieController::class)->except(['create', 'edit']);
+	Route::controller(MovieController::class)->prefix('movies')->name('movies.')->group(function () {
+		Route::get('/', 'index')->name('index');
+		Route::post('/', 'store')->name('store');
+		Route::get('/{movie}', 'show')->name('show');
+		Route::match(['put', 'patch'], '/{movie}', 'update')->name('update');
+		Route::delete('/{movie}', 'destroy')->name('destroy');
+	});
 
 	Route::controller(QuoteController::class)->prefix('quotes')->name('quotes.')->group(function () {
 		Route::post('/', 'store')->name('store');
