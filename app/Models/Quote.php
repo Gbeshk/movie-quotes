@@ -66,7 +66,7 @@ class Quote extends Model implements HasMedia
 	protected function imageUrl(): Attribute
 	{
 		return Attribute::make(
-			get: fn () => $this->getFirstMediaUrl('image') ?: null,
+			get: fn () => $this->getFirstMediaUrl('image') ?: $this->movie?->getFirstMediaUrl('poster') ?: null,
 		);
 	}
 }

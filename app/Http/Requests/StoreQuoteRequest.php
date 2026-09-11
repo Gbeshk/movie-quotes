@@ -20,7 +20,7 @@ class StoreQuoteRequest extends FormRequest
 			'movie_id' => ['required', 'integer', 'exists:movies,id'],
 			'text.ka'  => ['required', 'string', new GeorgianText()],
 			'text.en'  => ['required', 'string', new EnglishText()],
-			'image'    => ['required', 'image', 'max:4096'],
+			'image'    => ['nullable', 'image', 'max:4096'],
 		];
 	}
 }
