@@ -20,6 +20,7 @@ export interface Quote {
     image_url: string | null;
     likes_count?: number;
     comments_count?: number;
+    is_liked_by_me?: boolean;
     user?: User;
     movie?: Movie;
     comments?: Comment[];
@@ -29,6 +30,24 @@ export interface Comment {
     id: number;
     body: string;
     user: User;
+}
+
+export type LiveNotification =
+    | {
+          kind: 'comment';
+          quote_id: number;
+          comment_id: number;
+          commenter_id: number;
+          commenter: string;
+          body: string;
+      }
+    | { kind: 'like'; quote_id: number; liker_id: number; liker: string };
+
+export interface StoredNotification {
+    id: string;
+    read_at: string | null;
+    created_at: string;
+    data: LiveNotification;
 }
 
 export interface Movie {
@@ -77,6 +96,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: User | null;
     };
+    unreadNotificationsCount: number;
 };
 
 export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<string, unknown>> =
@@ -84,4 +104,5 @@ export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<st
         auth: {
             user: User;
         };
+        unreadNotificationsCount: number;
     };
