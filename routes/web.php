@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\WelcomeController;
@@ -32,6 +35,19 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 		Route::post('/', 'store')->name('store');
 		Route::patch('/{quote}', 'update')->name('update');
 		Route::delete('/{quote}', 'destroy')->name('destroy');
+	});
+
+	Route::controller(CommentController::class)->prefix('comments')->name('comments.')->group(function () {
+		Route::post('/', 'store')->name('store');
+	});
+
+	Route::controller(LikeController::class)->prefix('likes')->name('likes.')->group(function () {
+		Route::post('/toggle', 'toggle')->name('toggle');
+	});
+
+	Route::controller(NotificationController::class)->prefix('notifications')->name('notifications.')->group(function () {
+		Route::get('/', 'index')->name('index');
+		Route::post('/read', 'markAllRead')->name('read');
 	});
 });
 
