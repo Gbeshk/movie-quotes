@@ -3,9 +3,11 @@ import PlusIcon from '@/Components/Shared/Icons/PlusIcon';
 
 export default function MovieQuotesHeader({
     quotesCount,
+    isOwner,
     onAddQuote,
 }: {
     quotesCount: number;
+    isOwner: boolean;
     onAddQuote: () => void;
 }) {
     return (
@@ -13,16 +15,20 @@ export default function MovieQuotesHeader({
             <p className="text-2xl font-normal text-white uppercase">
                 Quotes (total {quotesCount})
             </p>
-            <div className="bg-modal-secondary-text h-6.5 w-px"></div>
-            <Button
-                type="button"
-                variant="danger-cta"
-                onClick={onAddQuote}
-                className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
-            >
-                <PlusIcon />
-                Add quote
-            </Button>
+            {isOwner && (
+                <>
+                    <div className="bg-modal-secondary-text h-6.5 w-px"></div>
+                    <Button
+                        type="button"
+                        variant="danger-cta"
+                        onClick={onAddQuote}
+                        className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
+                    >
+                        <PlusIcon />
+                        Add quote
+                    </Button>
+                </>
+            )}
         </div>
     );
 }

@@ -59,11 +59,13 @@ export default function Show({
                 confirmLabel="Delete"
             />
 
-            <AddQuoteModal
-                show={showAddQuote}
-                onClose={() => setShowAddQuote(false)}
-                movie={movie}
-            />
+            {isOwner && (
+                <AddQuoteModal
+                    show={showAddQuote}
+                    onClose={() => setShowAddQuote(false)}
+                    movie={movie}
+                />
+            )}
 
             {editingQuote && (
                 <EditQuoteModal
@@ -103,6 +105,7 @@ export default function Show({
 
                 <MovieQuotesHeader
                     quotesCount={quotesCount}
+                    isOwner={isOwner}
                     onAddQuote={() => setShowAddQuote(true)}
                 />
 
