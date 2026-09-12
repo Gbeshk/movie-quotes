@@ -22,12 +22,14 @@ class FeedController extends Controller
 						'comments' => fn ($query) => $query->with('user')->oldest(),
 					])
 					->withCount(['likes', 'comments'])
+					->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $request->user()->id)])
 					->latest()
 					->latest('id')
 					->paginate(9),
 			),
 			'movieOptions' => Inertia::optional(
 				fn () => Movie::query()
+					->where('user_id', $request->user()->id)
 					->search($request->query('movie_search'))
 					->with('media')
 					->latest()

@@ -15,11 +15,11 @@ test('guests cannot add a quote', function () {
 	$this->post(route('quotes.store'), ['movie_id' => $movie->id])->assertRedirect(route('login'));
 });
 
-test('a signed-in user can add a quote with an image to any movie', function () {
+test('a signed-in user can add a quote with an image to their own movie', function () {
 	Storage::fake('public');
 
 	$user = User::factory()->create();
-	$movie = Movie::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
 
 	$response = $this->actingAs($user)->post(route('quotes.store'), [
 		'movie_id' => $movie->id,
@@ -35,11 +35,24 @@ test('a signed-in user can add a quote with an image to any movie', function () 
 	expect($quote->getFirstMediaUrl('image'))->not->toBe('');
 });
 
+test('a user cannot add a quote to a movie they do not own', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->create();
+
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id' => $movie->id,
+		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+	]);
+
+	$response->assertForbidden();
+	expect($movie->quotes()->count())->toBe(0);
+});
+
 test('adding a quote with redirect_to feed returns to the feed', function () {
 	Storage::fake('public');
 
 	$user = User::factory()->create();
-	$movie = Movie::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
 
 	$response = $this->actingAs($user)->post(route('quotes.store'), [
 		'movie_id'    => $movie->id,
@@ -63,7 +76,7 @@ test('a quote without its own image falls back to the movie poster', function ()
 	Storage::fake('public');
 
 	$user = User::factory()->create();
-	$movie = Movie::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
 	$movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster');
 
 	$response = $this->actingAs($user)->post(route('quotes.store'), [
@@ -82,7 +95,7 @@ test('creating a quote with mismatched language text fails validation', function
 	Storage::fake('public');
 
 	$user = User::factory()->create();
-	$movie = Movie::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
 
 	$response = $this->actingAs($user)->post(route('quotes.store'), [
 		'movie_id' => $movie->id,

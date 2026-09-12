@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Movie;
 use App\Models\Quote;
 use App\Models\User;
@@ -49,6 +50,27 @@ test('the feed includes each quote\'s movie', function () {
 	);
 });
 
+test('the feed marks whether the current user has liked each quote', function () {
+	$user = User::factory()->create();
+	$otherUser = User::factory()->create();
+
+	$likedQuote = Quote::factory()->for($otherUser)->create();
+	$unlikedQuote = Quote::factory()->for($otherUser)->create();
+	Like::factory()->for($user)->for($likedQuote)->create();
+
+	$response = $this->actingAs($user)->get(route('feed'));
+
+	$response->assertInertia(
+		fn ($page) => $page
+			->component('Feed/Index')
+			->where(
+				'quotes.data',
+				fn ($quotes) => collect($quotes)->firstWhere('id', $likedQuote->id)['is_liked_by_me'] === true
+					&& collect($quotes)->firstWhere('id', $unlikedQuote->id)['is_liked_by_me'] === false
+			)
+	);
+});
+
 test('the feed includes each quote\'s comments with their authors, oldest first', function () {
 	$user = User::factory()->create();
 	$otherUser = User::factory()->create();
@@ -78,11 +100,12 @@ test('the feed does not load movie search results on a full page visit', functio
 	$response->assertInertia(fn ($page) => $page->component('Feed/Index')->missing('movieOptions'));
 });
 
-test('the feed returns matching movie search results on a partial reload', function () {
+test('the feed only returns the current user\'s own matching movies on a partial reload', function () {
 	$user = User::factory()->create();
 	$otherUser = User::factory()->create();
 
-	$matching = Movie::factory()->for($otherUser)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	$ownMatch = Movie::factory()->for($user)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	Movie::factory()->for($otherUser)->create(['title' => ['en' => 'The Matrix Reloaded', 'ka' => 'მატრიცა 2']]);
 	Movie::factory()->for($user)->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
 
 	$response = $this->actingAs($user)->get(route('feed', ['movie_search' => 'matrix']), [
@@ -94,5 +117,5 @@ test('the feed returns matching movie search results on a partial reload', funct
 
 	$response->assertOk();
 	$response->assertJsonCount(1, 'props.movieOptions');
-	$response->assertJsonPath('props.movieOptions.0.id', $matching->id);
+	$response->assertJsonPath('props.movieOptions.0.id', $ownMatch->id);
 });
