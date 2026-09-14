@@ -5,25 +5,27 @@ import AuthGoogleButton from '@/Components/Welcome/AuthGoogleButton';
 import FormField from '@/Components/Shared/FormField';
 import Modal from '@/Components/Shared/Modal';
 import { validateEmail } from '@/lib/validators';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { router, useForm } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 
 export default function LoginModal({
     show,
     onClose,
     onSwitchToRegister,
-    onUnverified,
+    onForgotPassword,
 }: {
     show: boolean;
     onClose: () => void;
     onSwitchToRegister: () => void;
-    onUnverified: (email: string, password: string) => void;
+    onForgotPassword: () => void;
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
     });
+    const [unverified, setUnverified] = useState(false);
+    const [resendSent, setResendSent] = useState(false);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -37,12 +39,26 @@ export default function LoginModal({
             },
             onError: (formErrors) => {
                 if ('verification' in formErrors) {
-                    onUnverified(data.email, data.password);
+                    setUnverified(true);
+                    setResendSent(false);
                 } else {
+                    setUnverified(false);
                     reset('password');
                 }
             },
         });
+    };
+
+    const resend = () => {
+        router.post(
+            route('verification.resend'),
+            { email: data.email, password: data.password },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => setResendSent(true),
+            },
+        );
     };
 
     return (
@@ -78,13 +94,42 @@ export default function LoginModal({
                 />
             </div>
 
+            {unverified && (
+                <div className="mt-4 w-full">
+                    <p className="text-error-text text-sm leading-normal font-normal tracking-normal">
+                        Your account is not verified yet. Please check your email or resend the
+                        verification link.
+                    </p>
+
+                    {resendSent ? (
+                        <p className="text-success mt-2 text-sm leading-normal font-normal tracking-normal">
+                            Verification link sent, check your email.
+                        </p>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={resend}
+                            className="text-link-text mt-2 cursor-pointer text-sm underline"
+                        >
+                            Resend verification email
+                        </button>
+                    )}
+                </div>
+            )}
+
             <div className="mt-4 flex w-full items-center justify-between">
                 <Checkbox
                     checked={data.remember}
                     onChange={(checked) => setData('remember', checked)}
                     label="Remember me"
                 />
-                <p className="text-link-text cursor-pointer text-base underline">Forgot password</p>
+                <button
+                    type="button"
+                    onClick={onForgotPassword}
+                    className="text-link-text cursor-pointer text-base underline"
+                >
+                    Forgot password
+                </button>
             </div>
             <Button type="submit" variant="cta" disabled={processing} className="mt-4">
                 Log in

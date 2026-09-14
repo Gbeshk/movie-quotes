@@ -13,7 +13,7 @@ class EmailVerificationTest extends TestCase
 {
 	use RefreshDatabase;
 
-	public function test_email_can_be_verified(): void
+	public function test_a_guest_can_verify_their_email_from_the_link_and_is_logged_in(): void
 	{
 		$user = User::factory()->unverified()->create();
 
@@ -25,11 +25,12 @@ class EmailVerificationTest extends TestCase
 			['id' => $user->id, 'hash' => sha1($user->email)]
 		);
 
-		$response = $this->actingAs($user)->get($verificationUrl);
+		$response = $this->get($verificationUrl);
 
 		Event::assertDispatched(Verified::class);
 		$this->assertTrue($user->fresh()->hasVerifiedEmail());
-		$response->assertRedirect(route('feed', absolute: false) . '?verified=1');
+		$this->assertAuthenticatedAs($user);
+		$response->assertRedirect(route('welcome', ['verified' => 1]));
 	}
 
 	public function test_email_is_not_verified_with_invalid_hash(): void
@@ -42,9 +43,11 @@ class EmailVerificationTest extends TestCase
 			['id' => $user->id, 'hash' => sha1('wrong-email')]
 		);
 
-		$this->actingAs($user)->get($verificationUrl);
+		$response = $this->get($verificationUrl);
 
+		$response->assertForbidden();
 		$this->assertFalse($user->fresh()->hasVerifiedEmail());
+		$this->assertGuest();
 	}
 
 	public function test_unverified_users_are_redirected_to_the_welcome_page_from_protected_routes(): void

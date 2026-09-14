@@ -7,13 +7,15 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
 	/**
 	 * Handle an incoming registration request.
+	 *
+	 * @throws ValidationException
 	 */
 	public function store(RegisterRequest $request): RedirectResponse
 	{
@@ -25,8 +27,8 @@ class RegisteredUserController extends Controller
 
 		event(new Registered($user));
 
-		Auth::login($user);
-
-		return redirect(route('welcome', absolute: false));
+		throw ValidationException::withMessages([
+			'verification' => 'Your account is not verified yet. Please check your email or resend the verification link.',
+		]);
 	}
 }
