@@ -13,8 +13,8 @@ export function useQuoteLike(quote: Quote) {
         setLikesCount((count) => count + (wasLiked ? -1 : 1));
 
         router.post(
-            route('likes.toggle'),
-            { quote_id: quote.id, redirect_to: 'feed' },
+            route('quotes.likes.toggle', quote.id),
+            { redirect_to: 'feed' },
             {
                 preserveScroll: true,
                 preserveState: true,

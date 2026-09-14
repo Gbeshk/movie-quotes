@@ -12,7 +12,6 @@ export default function PostCommentForm({
 }) {
     const { auth } = usePage<AuthenticatedPageProps>().props;
     const { data, setData, post, processing, reset } = useForm({
-        quote_id: quoteId,
         body: '',
         redirect_to: 'feed' as const,
     });
@@ -24,7 +23,7 @@ export default function PostCommentForm({
             return;
         }
 
-        post(route('comments.store'), {
+        post(route('quotes.comments.store', quoteId), {
             preserveScroll: true,
             preserveState: true,
             except: ['quotes', 'movieOptions'],

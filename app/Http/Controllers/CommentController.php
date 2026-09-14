@@ -6,13 +6,12 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Models\Quote;
 use App\Notifications\QuoteCommented;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class CommentController extends Controller
 {
-	public function store(StoreCommentRequest $request): RedirectResponse
+	public function store(StoreCommentRequest $request, Quote $quote): RedirectResponse
 	{
-		$quote = Quote::findOrFail($request->validated('quote_id'));
-
 		$comment = $quote->comments()->create([
 			'user_id' => $request->user()->id,
 			'body'    => $request->validated('body'),
@@ -22,6 +21,8 @@ class CommentController extends Controller
 			$quote->user->notify(new QuoteCommented($comment));
 		}
 
-		return $this->redirectToFeedOr($request->validated('redirect_to'), 'movies.show', $quote->movie_id);
+		return $quote->shouldRedirectToFeed($request->validated('redirect_to'))
+			? Redirect::route('feed')
+			: Redirect::route('movies.show', $quote->movie_id);
 	}
 }

@@ -14,7 +14,6 @@ class ToggleLikeRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'quote_id'    => ['required', 'integer', 'exists:quotes,id'],
 			'redirect_to' => ['nullable', 'in:feed'],
 		];
 	}

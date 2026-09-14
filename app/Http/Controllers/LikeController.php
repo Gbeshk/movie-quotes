@@ -6,13 +6,12 @@ use App\Http\Requests\ToggleLikeRequest;
 use App\Models\Quote;
 use App\Notifications\QuoteLiked;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class LikeController extends Controller
 {
-	public function toggle(ToggleLikeRequest $request): RedirectResponse
+	public function toggle(ToggleLikeRequest $request, Quote $quote): RedirectResponse
 	{
-		$quote = Quote::findOrFail($request->validated('quote_id'));
-
 		$like = $quote->likes()->where('user_id', $request->user()->id)->first();
 
 		if ($like) {
@@ -25,6 +24,8 @@ class LikeController extends Controller
 			}
 		}
 
-		return $this->redirectToFeedOr($request->validated('redirect_to'), 'movies.show', $quote->movie_id);
+		return $quote->shouldRedirectToFeed($request->validated('redirect_to'))
+			? Redirect::route('feed')
+			: Redirect::route('movies.show', $quote->movie_id);
 	}
 }

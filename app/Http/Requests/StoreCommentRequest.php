@@ -15,7 +15,6 @@ class StoreCommentRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'quote_id'    => ['required', 'integer', 'exists:quotes,id'],
 			'body'        => ['required', 'string', 'max:2000'],
 			'redirect_to' => ['nullable', 'in:feed'],
 		];
