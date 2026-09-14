@@ -12,11 +12,40 @@ class PasswordResetTest extends TestCase
 {
 	use RefreshDatabase;
 
-	public function test_reset_password_link_screen_can_be_rendered(): void
+	public function test_the_forgot_password_route_redirects_to_the_welcome_page(): void
 	{
 		$response = $this->get('/forgot-password');
 
-		$response->assertStatus(200);
+		$response->assertRedirect(route('welcome'));
+	}
+
+	public function test_requesting_a_reset_link_for_an_unregistered_email_fails_validation(): void
+	{
+		$response = $this->post('/forgot-password', ['email' => 'nobody@example.com']);
+
+		$response->assertSessionHasErrors('email');
+	}
+
+	public function test_requesting_a_reset_link_for_a_registered_email_succeeds(): void
+	{
+		$user = User::factory()->create();
+
+		$response = $this->post('/forgot-password', ['email' => $user->email]);
+
+		$response->assertSessionHasNoErrors();
+		expect(session('status'))->not->toBeEmpty();
+	}
+
+	public function test_a_google_only_account_cannot_request_a_reset_link(): void
+	{
+		Notification::fake();
+
+		$user = User::factory()->create(['google_id' => '123456789', 'password' => null]);
+
+		$response = $this->post('/forgot-password', ['email' => $user->email]);
+
+		$response->assertSessionHasErrors('email');
+		Notification::assertNotSentTo($user, ResetPassword::class);
 	}
 
 	public function test_reset_password_link_can_be_requested(): void
@@ -30,7 +59,7 @@ class PasswordResetTest extends TestCase
 		Notification::assertSentTo($user, ResetPassword::class);
 	}
 
-	public function test_reset_password_screen_can_be_rendered(): void
+	public function test_the_reset_password_link_redirects_to_the_welcome_page(): void
 	{
 		Notification::fake();
 
@@ -38,13 +67,29 @@ class PasswordResetTest extends TestCase
 
 		$this->post('/forgot-password', ['email' => $user->email]);
 
-		Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-			$response = $this->get('/reset-password/' . $notification->token);
+		Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+			$response = $this->get('/reset-password/' . $notification->token . '?email=' . urlencode($user->email));
 
-			$response->assertStatus(200);
+			$response->assertRedirect(route('welcome', [
+				'reset_token' => $notification->token,
+				'reset_email' => $user->email,
+			]));
 
 			return true;
 		});
+	}
+
+	public function test_an_invalid_reset_token_redirects_to_the_welcome_page_flagged_as_expired(): void
+	{
+		$user = User::factory()->create();
+
+		$response = $this->get('/reset-password/not-a-real-token?email=' . urlencode($user->email));
+
+		$response->assertRedirect(route('welcome', [
+			'reset_token'   => 'not-a-real-token',
+			'reset_email'   => $user->email,
+			'reset_expired' => 1,
+		]));
 	}
 
 	public function test_password_can_be_reset_with_valid_token(): void
@@ -65,7 +110,7 @@ class PasswordResetTest extends TestCase
 
 			$response
 				->assertSessionHasNoErrors()
-				->assertRedirect(route('login'));
+				->assertRedirect(route('welcome'));
 
 			return true;
 		});
