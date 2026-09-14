@@ -2,6 +2,8 @@ import Header from '@/Components/Shared/Header';
 import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import FeedIcon from '@/Components/Shared/Icons/FeedIcon';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
+import NotificationToasts from '@/Components/Shared/NotificationToasts';
+import { useLiveNotifications } from '@/hooks/useLiveNotifications';
 import { cn } from '@/lib/cn';
 import { AuthenticatedPageProps } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -11,11 +13,21 @@ export default function Authenticated({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const user = usePage<AuthenticatedPageProps>().props.auth.user;
+    const { auth, unreadNotificationsCount } = usePage<AuthenticatedPageProps>().props;
+    const user = auth.user;
+    const { unreadCount, setUnreadCount, toasts } = useLiveNotifications(
+        user.id,
+        unreadNotificationsCount,
+    );
 
     return (
         <div className="bg-gradient-dark min-h-screen bg-black pb-20">
-            <Header background="bg-header-bg border-t border-modal-bg/20 backdrop-blur-[50px]" />
+            <NotificationToasts toasts={toasts} />
+            <Header
+                background="bg-header-bg border-t border-modal-bg/20 backdrop-blur-[50px]"
+                unreadNotificationsCount={unreadCount}
+                onNotificationsRead={() => setUnreadCount(0)}
+            />
             <div className="mt-8 flex w-full gap-46.75 px-17.5">
                 <div className="flex w-70 flex-col gap-10">
                     <Link href={route('profile.edit')} className="flex cursor-pointer gap-6">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Movie;
 use App\Models\Quote;
 use App\Rules\EnglishText;
 use App\Rules\GeorgianText;
@@ -11,7 +12,9 @@ class StoreQuoteRequest extends FormRequest
 {
 	public function authorize(): bool
 	{
-		return $this->user()->can('create', Quote::class);
+		$movie = Movie::find($this->input('movie_id'));
+
+		return $movie === null || $this->user()->can('create', [Quote::class, $movie]);
 	}
 
 	public function rules(): array
