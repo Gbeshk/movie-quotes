@@ -8,11 +8,11 @@ export function useAccountDetailsForm(user: User) {
 
     const profileForm = useForm({
         username: user.username,
-        email: user.email,
+        email: user.pending_email ?? user.email,
     });
 
     const usernameChanged = profileForm.data.username !== user.username;
-    const emailChanged = profileForm.data.email !== user.email;
+    const emailChanged = profileForm.data.email !== (user.pending_email ?? user.email);
 
     const submitProfile: FormEventHandler = (e) => {
         e.preventDefault();
@@ -34,7 +34,7 @@ export function useAccountDetailsForm(user: User) {
 
     const cancelEmailEdit = () => {
         setEditingEmail(false);
-        profileForm.setData('email', user.email);
+        profileForm.setData('email', user.pending_email ?? user.email);
         profileForm.clearErrors('email');
     };
 

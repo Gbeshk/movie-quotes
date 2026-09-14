@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ConfirmPendingEmailController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\LikeController;
@@ -22,6 +23,10 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 		Route::post('/avatar', 'updateAvatar')->name('avatar');
 		Route::delete('/', 'destroy')->name('destroy');
 	});
+
+	Route::get('profile/confirm-email/{user}', ConfirmPendingEmailController::class)
+		->middleware('signed')
+		->name('email.pending.confirm');
 
 	Route::controller(MovieController::class)->prefix('movies')->name('movies.')->group(function () {
 		Route::get('/', 'index')->name('index');
