@@ -1,20 +1,9 @@
 import { notificationMessage } from '@/lib/notificationMessage';
-import { StoredNotification } from '@/types';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { AuthenticatedPageProps } from '@/types';
+import { usePage } from '@inertiajs/react';
 
 export default function NotificationsPanel({ open }: { open: boolean }) {
-    const [notifications, setNotifications] = useState<StoredNotification[] | null>(null);
-
-    useEffect(() => {
-        if (!open) {
-            return;
-        }
-
-        axios.get<StoredNotification[]>(route('notifications.index')).then((response) => {
-            setNotifications(response.data);
-        });
-    }, [open]);
+    const { notifications } = usePage<AuthenticatedPageProps>().props;
 
     if (!open) {
         return null;
@@ -25,17 +14,12 @@ export default function NotificationsPanel({ open }: { open: boolean }) {
             <p className="border-modal-secondary-text border-b px-6 py-4 text-xl leading-normal font-medium tracking-normal text-white">
                 Notifications
             </p>
-            {notifications === null && (
-                <p className="text-modal-secondary-text px-6 py-4 text-base leading-normal font-normal tracking-normal">
-                    Loading…
-                </p>
-            )}
-            {notifications !== null && notifications.length === 0 && (
+            {notifications.length === 0 && (
                 <p className="text-modal-secondary-text px-6 py-4 text-base leading-normal font-normal tracking-normal">
                     No notifications yet
                 </p>
             )}
-            {notifications?.map((notification) => (
+            {notifications.map((notification) => (
                 <div
                     key={notification.id}
                     className="border-modal-secondary-text flex flex-col gap-1 border-b px-6 py-4 last:border-b-0"

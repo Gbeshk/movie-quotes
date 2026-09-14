@@ -97,6 +97,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         user: User | null;
     };
     unreadNotificationsCount: number;
+    notifications: StoredNotification[];
 };
 
 export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<string, unknown>> =
@@ -105,4 +106,5 @@ export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<st
             user: User;
         };
         unreadNotificationsCount: number;
+        notifications: StoredNotification[];
     };
