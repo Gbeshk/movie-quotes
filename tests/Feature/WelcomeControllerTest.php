@@ -8,6 +8,53 @@ use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
+test('the welcome page reports whether an email was just verified', function () {
+	$response = $this->get(route('welcome', ['verified' => 1]));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Welcome')
+		->where('emailJustVerified', true)
+	);
+
+	$response = $this->get(route('welcome'));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Welcome')
+		->where('emailJustVerified', false)
+	);
+});
+
+test('the welcome page passes the reset password token and email from the query string', function () {
+	$response = $this->get(route('welcome', ['reset_token' => 'abc123', 'reset_email' => 'user@example.com']));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Welcome')
+		->where('resetPasswordToken', 'abc123')
+		->where('resetPasswordEmail', 'user@example.com')
+	);
+});
+
+test('the welcome page reports whether the reset password token is expired', function () {
+	$response = $this->get(route('welcome', ['reset_expired' => 1]));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Welcome')
+		->where('resetTokenExpired', true)
+	);
+
+	$response = $this->get(route('welcome'));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Welcome')
+		->where('resetTokenExpired', false)
+	);
+});
+
 test('the welcome page falls back to hardcoded quotes when fewer than 3 movies have a poster', function () {
 	$response = $this->get(route('welcome'));
 
