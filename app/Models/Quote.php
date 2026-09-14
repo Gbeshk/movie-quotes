@@ -63,6 +63,11 @@ class Quote extends Model implements HasMedia
 		$this->addMediaCollection('image')->singleFile();
 	}
 
+	public function shouldRedirectToFeed(?string $redirectTo): bool
+	{
+		return $redirectTo === 'feed';
+	}
+
 	protected function imageUrl(): Attribute
 	{
 		return Attribute::make(
