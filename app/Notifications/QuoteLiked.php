@@ -3,11 +3,15 @@
 namespace App\Notifications;
 
 use App\Models\Like;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class QuoteLiked extends Notification
+class QuoteLiked extends Notification implements ShouldQueue
 {
+	use Queueable;
+
 	public function __construct(private readonly Like $like)
 	{
 	}

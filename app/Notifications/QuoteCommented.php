@@ -3,11 +3,15 @@
 namespace App\Notifications;
 
 use App\Models\Comment;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class QuoteCommented extends Notification
+class QuoteCommented extends Notification implements ShouldQueue
 {
+	use Queueable;
+
 	public function __construct(private readonly Comment $comment)
 	{
 	}
