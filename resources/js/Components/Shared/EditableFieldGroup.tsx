@@ -7,6 +7,7 @@ export default function EditableFieldGroup({
     editing,
     onToggle,
     hideToggle = false,
+    note,
     newFieldLabel,
     id,
     type = 'text',
@@ -21,6 +22,7 @@ export default function EditableFieldGroup({
     editing: boolean;
     onToggle: () => void;
     hideToggle?: boolean;
+    note?: string;
     newFieldLabel: string;
     id: string;
     type?: 'text' | 'email' | 'password';
@@ -39,6 +41,12 @@ export default function EditableFieldGroup({
                 onToggle={onToggle}
                 hideToggle={hideToggle}
             />
+
+            {note && (
+                <p className="text-modal-secondary-text mt-2 text-sm leading-normal font-normal tracking-normal">
+                    {note}
+                </p>
+            )}
 
             {editing && (
                 <div className="mt-14">

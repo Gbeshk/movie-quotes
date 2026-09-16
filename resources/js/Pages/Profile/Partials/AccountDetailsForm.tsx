@@ -45,6 +45,11 @@ export default function AccountDetailsForm({
                 editing={editingEmail}
                 onToggle={onToggleEmail}
                 hideToggle={isGoogleUser}
+                note={
+                    user.pending_email
+                        ? `Confirmation link sent to ${user.pending_email}. Check your inbox to confirm the change.`
+                        : undefined
+                }
                 newFieldLabel="New email"
                 id="email"
                 type="email"

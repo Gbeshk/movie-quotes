@@ -3,9 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Notifications\ConfirmPendingEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -23,7 +26,7 @@ class ProfileTest extends TestCase
 		$response->assertOk();
 	}
 
-	public function test_profile_information_can_be_updated(): void
+	public function test_the_username_can_be_updated_immediately(): void
 	{
 		$user = User::factory()->create();
 
@@ -31,7 +34,27 @@ class ProfileTest extends TestCase
 			->actingAs($user)
 			->patch('/profile', [
 				'username' => 'testuser',
-				'email'    => 'test@example.com',
+				'email'    => $user->email,
+			]);
+
+		$response
+			->assertSessionHasNoErrors()
+			->assertRedirect('/profile');
+
+		$this->assertSame('testuser', $user->refresh()->username);
+	}
+
+	public function test_changing_the_email_stages_it_as_pending_instead_of_changing_it_immediately(): void
+	{
+		Notification::fake();
+
+		$user = User::factory()->create(['email' => 'old@example.com']);
+
+		$response = $this
+			->actingAs($user)
+			->patch('/profile', [
+				'username' => $user->username,
+				'email'    => 'new@example.com',
 			]);
 
 		$response
@@ -40,9 +63,59 @@ class ProfileTest extends TestCase
 
 		$user->refresh();
 
-		$this->assertSame('testuser', $user->username);
-		$this->assertSame('test@example.com', $user->email);
-		$this->assertNull($user->email_verified_at);
+		$this->assertSame('old@example.com', $user->email);
+		$this->assertSame('new@example.com', $user->pending_email);
+		$this->assertNotNull($user->email_verified_at);
+
+		Notification::assertSentOnDemand(
+			ConfirmPendingEmail::class,
+			fn ($notification, $channels, $notifiable) => $notifiable->routes['mail'] === 'new@example.com'
+		);
+	}
+
+	public function test_profile_routes_stay_accessible_while_an_email_change_is_pending(): void
+	{
+		$user = User::factory()->create();
+
+		$this
+			->actingAs($user)
+			->patch('/profile', [
+				'username' => $user->username,
+				'email'    => 'new@example.com',
+			]);
+
+		$response = $this->actingAs($user)->get('/profile');
+
+		$response->assertOk();
+	}
+
+	public function test_confirming_the_pending_email_link_applies_the_new_email(): void
+	{
+		$user = User::factory()->create(['email' => 'old@example.com', 'pending_email' => 'new@example.com']);
+
+		$url = URL::temporarySignedRoute('email.pending.confirm', now()->addMinutes(60), ['user' => $user->id]);
+
+		$response = $this->actingAs($user)->get($url);
+
+		$response->assertRedirect(route('profile.edit'));
+
+		$user->refresh();
+
+		$this->assertSame('new@example.com', $user->email);
+		$this->assertNull($user->pending_email);
+		$this->assertNotNull($user->email_verified_at);
+	}
+
+	public function test_a_user_cannot_confirm_another_users_pending_email(): void
+	{
+		$owner = User::factory()->create(['pending_email' => 'new@example.com']);
+		$otherUser = User::factory()->create();
+
+		$url = URL::temporarySignedRoute('email.pending.confirm', now()->addMinutes(60), ['user' => $owner->id]);
+
+		$response = $this->actingAs($otherUser)->get($url);
+
+		$response->assertForbidden();
 	}
 
 	public function test_profile_update_fails_with_a_descriptive_message_for_an_invalid_username(): void

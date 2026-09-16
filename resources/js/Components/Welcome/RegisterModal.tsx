@@ -16,10 +16,12 @@ export default function RegisterModal({
     show,
     onClose,
     onSwitchToLogin,
+    onUnverified,
 }: {
     show: boolean;
     onClose: () => void;
     onSwitchToLogin: () => void;
+    onUnverified: (email: string, password: string) => void;
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         username: '',
@@ -35,11 +37,12 @@ export default function RegisterModal({
         post(route('register'), {
             preserveState: true,
             preserveScroll: true,
-            onSuccess: () => {
-                reset();
-                onClose();
-            },
             onError: (formErrors) => {
+                if ('verification' in formErrors) {
+                    onUnverified(data.email, data.password);
+                    return;
+                }
+
                 reset('password', 'password_confirmation');
 
                 if (!formErrors.password) {

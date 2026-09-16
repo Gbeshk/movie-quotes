@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -33,13 +33,15 @@ class RegistrationTest extends TestCase
 		$response->assertRedirect(route('welcome'));
 	}
 
-	public function test_new_users_can_register(): void
+	public function test_new_users_can_register_but_are_not_logged_in_until_verified(): void
 	{
 		$response = $this->post('/register', $this->validRegistrationData());
 
-		$this->assertAuthenticated();
-		$this->assertFalse(Auth::user()->hasVerifiedEmail());
-		$response->assertRedirect(route('welcome', absolute: false));
+		$this->assertGuest();
+		$response->assertSessionHasErrors('verification');
+
+		$user = User::where('email', 'test@example.com')->firstOrFail();
+		$this->assertFalse($user->hasVerifiedEmail());
 	}
 
 	public function test_registering_sends_an_email_verification_notification(): void
@@ -48,7 +50,8 @@ class RegistrationTest extends TestCase
 
 		$this->post('/register', $this->validRegistrationData());
 
-		Notification::assertSentTo(Auth::user(), VerifyEmail::class);
+		$user = User::where('email', 'test@example.com')->firstOrFail();
+		Notification::assertSentTo($user, VerifyEmail::class);
 	}
 
 	public function test_registration_fails_with_empty_fields(): void

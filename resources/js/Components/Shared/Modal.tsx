@@ -57,7 +57,7 @@ export default function Modal({
                         </h2>
                     )}
                     {subtitle && (
-                        <h3 className="text-modal-secondary-text mt-3 align-middle text-base leading-normal font-normal tracking-normal">
+                        <h3 className="text-modal-secondary-text mt-3 text-center text-base leading-normal font-normal tracking-normal">
                             {subtitle}
                         </h3>
                     )}

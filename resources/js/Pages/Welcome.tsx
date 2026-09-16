@@ -1,16 +1,40 @@
 import Header from '@/Components/Shared/Header';
+import EmailVerifiedModal from '@/Components/Welcome/EmailVerifiedModal';
+import ForgotPasswordModal from '@/Components/Welcome/ForgotPasswordModal';
 import LoginModal from '@/Components/Welcome/LoginModal';
 import QuoteSequence from '@/Components/Welcome/QuoteSequence';
 import RegisterModal from '@/Components/Welcome/RegisterModal';
+import ResetPasswordModal from '@/Components/Welcome/ResetPasswordModal';
 import VerifyEmailModal from '@/Components/Welcome/VerifyEmailModal';
 import { PageProps, WelcomeQuote } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
+export default function Welcome({
+    quotes,
+    resetPasswordToken,
+    resetPasswordEmail,
+    resetTokenExpired,
+    emailJustVerified,
+}: {
+    quotes: WelcomeQuote[];
+    resetPasswordToken: string | null;
+    resetPasswordEmail: string | null;
+    resetTokenExpired: boolean;
+    emailJustVerified: boolean;
+}) {
     const { auth } = usePage<PageProps>().props;
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [showResetPassword, setShowResetPassword] = useState(Boolean(resetPasswordToken));
+    const [showEmailVerified, setShowEmailVerified] = useState(emailJustVerified);
+
+    useEffect(() => {
+        if (resetPasswordToken || emailJustVerified) {
+            window.history.replaceState({}, '', route('welcome'));
+        }
+    }, [resetPasswordToken, emailJustVerified]);
     const [verifyEmailDismissed, setVerifyEmailDismissed] = useState(false);
     const [blockedVerification, setBlockedVerification] = useState<{
         email: string;
@@ -62,10 +86,37 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
                     setShowLogin(false);
                     setShowRegister(true);
                 }}
-                onUnverified={(email, password) => {
+                onForgotPassword={() => {
                     setShowLogin(false);
-                    setBlockedVerification({ email, password });
+                    setShowForgotPassword(true);
                 }}
+            />
+            <ForgotPasswordModal
+                show={showForgotPassword}
+                onClose={() => setShowForgotPassword(false)}
+                onBackToLogin={() => {
+                    setShowForgotPassword(false);
+                    setShowLogin(true);
+                }}
+            />
+            <ResetPasswordModal
+                show={showResetPassword}
+                onClose={() => setShowResetPassword(false)}
+                onBackToLogin={() => {
+                    setShowResetPassword(false);
+                    setShowLogin(true);
+                }}
+                onSuccess={() => {
+                    setShowResetPassword(false);
+                    setShowLogin(true);
+                }}
+                onRequestNewLink={() => {
+                    setShowResetPassword(false);
+                    setShowForgotPassword(true);
+                }}
+                token={resetPasswordToken ?? ''}
+                email={resetPasswordEmail ?? ''}
+                initiallyExpired={resetTokenExpired}
             />
             <RegisterModal
                 show={showRegister}
@@ -74,11 +125,19 @@ export default function Welcome({ quotes }: { quotes: WelcomeQuote[] }) {
                     setShowRegister(false);
                     setShowLogin(true);
                 }}
+                onUnverified={(email, password) => {
+                    setShowRegister(false);
+                    setBlockedVerification({ email, password });
+                }}
             />
             <VerifyEmailModal
                 show={showVerifyEmail}
                 onClose={closeVerifyEmail}
                 resendCredentials={blockedVerification ?? undefined}
+            />
+            <EmailVerifiedModal
+                show={showEmailVerified}
+                onClose={() => setShowEmailVerified(false)}
             />
         </>
     );
