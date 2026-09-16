@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import PhotoIcon from './Icons/PhotoIcon';
 
 export default function EditImagePreview({
@@ -12,6 +13,7 @@ export default function EditImagePreview({
     onChange: (file: File | null) => void;
     error?: string;
 }) {
+    const { t } = useTranslation();
     const inputRef = useRef<HTMLInputElement>(null);
     const previewUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
 
@@ -36,7 +38,7 @@ export default function EditImagePreview({
                         className="backdrop-blur-50 bg-gradient-dark flex h-21 w-33.75 cursor-pointer flex-col items-center justify-between rounded-xl py-4.5 text-base font-normal text-white opacity-80"
                     >
                         <PhotoIcon />
-                        Change image
+                        {t('imageUpload.changeImage')}
                     </button>
                 </div>
                 <input

@@ -1,5 +1,6 @@
 import Button from '@/Components/Shared/Button';
 import Modal from '@/Components/Shared/Modal';
+import { useTranslation } from 'react-i18next';
 
 export default function ConfirmModal({
     show,
@@ -7,8 +8,8 @@ export default function ConfirmModal({
     onConfirm,
     title,
     subtitle,
-    confirmLabel = 'Confirm',
-    cancelLabel = 'Cancel',
+    confirmLabel,
+    cancelLabel,
     confirmDisabled,
 }: {
     show: boolean;
@@ -20,6 +21,8 @@ export default function ConfirmModal({
     cancelLabel?: string;
     confirmDisabled?: boolean;
 }) {
+    const { t } = useTranslation();
+
     return (
         <Modal show={show} onClose={onClose} title={title} subtitle={subtitle}>
             <div className="mt-8 flex w-full items-center justify-center gap-4 px-8">
@@ -28,7 +31,7 @@ export default function ConfirmModal({
                     onClick={onClose}
                     className="border-modal-secondary-text text-modal-secondary-text h-9.5 flex-1 cursor-pointer rounded border text-base"
                 >
-                    {cancelLabel}
+                    {cancelLabel ?? t('common.cancel')}
                 </button>
                 <div className="flex-1">
                     <Button
@@ -37,7 +40,7 @@ export default function ConfirmModal({
                         onClick={onConfirm}
                         disabled={confirmDisabled}
                     >
-                        {confirmLabel}
+                        {confirmLabel ?? t('common.confirm')}
                     </Button>
                 </div>
             </div>
