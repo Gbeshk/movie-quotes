@@ -3,6 +3,7 @@ import ReadOnlyFieldRow from '@/Components/Shared/ReadOnlyFieldRow';
 import { validateNewPassword, validatePasswordConfirmation } from '@/lib/validators';
 import { InertiaFormProps } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function PasswordForm({
     passwordForm,
@@ -19,10 +20,12 @@ export default function PasswordForm({
     onTogglePassword: () => void;
     onSubmit: FormEventHandler;
 }) {
+    const { t } = useTranslation();
+
     return (
         <form id="password-form" onSubmit={onSubmit} className="mt-14 flex w-132 flex-col">
             <ReadOnlyFieldRow
-                label="Password"
+                label={t('profile.password')}
                 value="••••••••••••"
                 editing={editingPassword}
                 onToggle={onTogglePassword}
@@ -31,7 +34,7 @@ export default function PasswordForm({
             {editingPassword && (
                 <div className="mt-14 flex flex-col gap-14">
                     <FormFieldRow
-                        label="Current password"
+                        label={t('profile.currentPassword')}
                         id="current_password"
                         type="password"
                         value={passwordForm.data.current_password}
@@ -41,7 +44,7 @@ export default function PasswordForm({
                     />
 
                     <FormFieldRow
-                        label="New password"
+                        label={t('profile.newPassword')}
                         id="password"
                         type="password"
                         value={passwordForm.data.password}
@@ -52,7 +55,7 @@ export default function PasswordForm({
                     />
 
                     <FormFieldRow
-                        label="Confirm password"
+                        label={t('profile.confirmPassword')}
                         id="password_confirmation"
                         type="password"
                         value={passwordForm.data.password_confirmation}

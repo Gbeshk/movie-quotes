@@ -11,6 +11,7 @@ import {
 } from '@/lib/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function RegisterModal({
     show,
@@ -23,6 +24,7 @@ export default function RegisterModal({
     onSwitchToLogin: () => void;
     onUnverified: (email: string, password: string) => void;
 }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         username: '',
         email: '',
@@ -57,14 +59,14 @@ export default function RegisterModal({
             show={show}
             onClose={onClose}
             onSubmit={submit}
-            title="Create an account"
-            subtitle="Start your journey!"
+            title={t('register.title')}
+            subtitle={t('register.subtitle')}
         >
             <div className="mt-6 w-full space-y-4">
                 <FormField
-                    label="Name"
+                    label={t('register.name')}
                     id="register_username"
-                    placeholder="At least 3 & max.15 lower case characters"
+                    placeholder={t('register.namePlaceholder')}
                     value={data.username}
                     onChange={(value) => setData('username', value)}
                     error={errors.username}
@@ -73,10 +75,10 @@ export default function RegisterModal({
                 />
 
                 <FormField
-                    label="Email"
+                    label={t('register.email')}
                     id="register_email"
                     type="text"
-                    placeholder="Enter your email"
+                    placeholder={t('register.emailPlaceholder')}
                     value={data.email}
                     onChange={(value) => setData('email', value)}
                     error={errors.email}
@@ -86,10 +88,10 @@ export default function RegisterModal({
 
                 <FormField
                     key={`password-${passwordFieldsKey}`}
-                    label="Password"
+                    label={t('register.password')}
                     id="register_password"
                     type="password"
-                    placeholder="At least 8 & max.15 lower case characters"
+                    placeholder={t('register.passwordPlaceholder')}
                     value={data.password}
                     onChange={(value) => setData('password', value)}
                     error={errors.password}
@@ -99,10 +101,10 @@ export default function RegisterModal({
 
                 <FormField
                     key={`password-confirmation-${passwordFieldsKey}`}
-                    label="Confirm password"
+                    label={t('register.confirmPassword')}
                     id="register_password_confirmation"
                     type="password"
-                    placeholder="Confirm password"
+                    placeholder={t('register.confirmPasswordPlaceholder')}
                     value={data.password_confirmation}
                     onChange={(value) => setData('password_confirmation', value)}
                     error={errors.password_confirmation}
@@ -112,12 +114,12 @@ export default function RegisterModal({
             </div>
 
             <Button type="submit" variant="cta" disabled={processing} className="mt-6">
-                Get started
+                {t('register.submit')}
             </Button>
-            <AuthGoogleButton label="Sign up with Google" />
+            <AuthGoogleButton label={t('register.googleCta')} />
             <AuthSwitchPrompt
-                prompt="Already have an account?"
-                actionLabel="Log in"
+                prompt={t('register.switchPrompt')}
+                actionLabel={t('register.switchAction')}
                 onAction={onSwitchToLogin}
             />
         </Modal>

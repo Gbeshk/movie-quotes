@@ -1,5 +1,7 @@
 import Button from '@/Components/Shared/Button';
 import PlusIcon from '@/Components/Shared/Icons/PlusIcon';
+import { cn } from '@/lib/cn';
+import { useTranslation } from 'react-i18next';
 
 export default function MovieQuotesHeader({
     quotesCount,
@@ -10,10 +12,12 @@ export default function MovieQuotesHeader({
     isOwner: boolean;
     onAddQuote: () => void;
 }) {
+    const { t, i18n } = useTranslation();
+
     return (
         <div className="mt-8 flex items-center gap-4">
             <p className="text-2xl font-normal text-white uppercase">
-                Quotes (total {quotesCount})
+                {t('movies.quotesTotal', { count: quotesCount })}
             </p>
             {isOwner && (
                 <>
@@ -22,10 +26,13 @@ export default function MovieQuotesHeader({
                         type="button"
                         variant="danger-cta"
                         onClick={onAddQuote}
-                        className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
+                        className={cn(
+                            'h-12 w-38.5! leading-normal font-normal tracking-normal',
+                            i18n.language === 'ka' ? 'text-base' : 'text-xl',
+                        )}
                     >
                         <PlusIcon />
-                        Add quote
+                        {t('movies.addQuote')}
                     </Button>
                 </>
             )}

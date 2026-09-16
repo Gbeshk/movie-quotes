@@ -8,7 +8,8 @@ import ResetPasswordModal from '@/Components/Welcome/ResetPasswordModal';
 import VerifyEmailModal from '@/Components/Welcome/VerifyEmailModal';
 import { PageProps, WelcomeQuote } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Welcome({
     quotes,
@@ -23,7 +24,8 @@ export default function Welcome({
     resetTokenExpired: boolean;
     emailJustVerified: boolean;
 }) {
-    const { auth } = usePage<PageProps>().props;
+    const { auth, unreadNotificationsCount } = usePage<PageProps>().props;
+    const { t } = useTranslation();
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -57,11 +59,19 @@ export default function Welcome({
                         background="bg-transparent"
                         onOpenLogin={() => setShowLogin(true)}
                         onOpenRegister={() => setShowRegister(true)}
+                        unreadNotificationsCount={unreadNotificationsCount}
                     />
 
                     <div className="flex h-180 w-full flex-col items-center justify-center gap-6">
                         <p className="text-logo-text font-montserrat text-center text-6xl leading-normal font-bold tracking-normal">
-                            Find any quote in <br /> millions of movie lines
+                            {t('welcome.heading')
+                                .split('\n')
+                                .map((line, index, lines) => (
+                                    <Fragment key={line}>
+                                        {line}
+                                        {index < lines.length - 1 && <br />}
+                                    </Fragment>
+                                ))}
                         </p>
                         <button
                             onClick={() =>
@@ -69,13 +79,13 @@ export default function Welcome({
                             }
                             className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white"
                         >
-                            Get started
+                            {t('welcome.getStarted')}
                         </button>
                     </div>
                 </div>
                 <QuoteSequence quotes={quotes} />
                 <div className="bg-gradient-dark text-logo-text flex h-12 items-center px-17.5 text-xs leading-normal font-medium tracking-normal uppercase">
-                    © 2022 movie quotes. All rights reserved.
+                    {t('welcome.copyright')}
                 </div>
             </div>
 

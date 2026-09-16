@@ -7,8 +7,10 @@ import AddMovieFormFields from '@/Pages/Movies/Partials/Movie/AddMovieFormFields
 import { MovieFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function AddMovieModal({ show, onClose }: { show: boolean; onClose: () => void }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm<MovieFormData>({
         title: { ka: '', en: '' },
         director: { ka: '', en: '' },
@@ -39,7 +41,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <ModalHeader title="add movie" onClose={onClose} />
+            <ModalHeader title={t('movies.addMovieTitle')} onClose={onClose} />
             <ModalUserRow />
 
             <AddMovieFormFields
@@ -64,7 +66,7 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
                     disabled={processing}
                     className="h-12 text-xl leading-6 font-normal tracking-normal"
                 >
-                    Add movie
+                    {t('movies.addMovie')}
                 </Button>
             </div>
         </Modal>

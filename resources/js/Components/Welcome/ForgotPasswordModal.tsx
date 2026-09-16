@@ -6,6 +6,7 @@ import Modal from '@/Components/Shared/Modal';
 import { validateEmail } from '@/lib/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPasswordModal({
     show,
@@ -16,6 +17,7 @@ export default function ForgotPasswordModal({
     onClose: () => void;
     onBackToLogin: () => void;
 }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({ email: '' });
     const [sent, setSent] = useState(false);
     const [previousShow, setPreviousShow] = useState(show);
@@ -44,13 +46,21 @@ export default function ForgotPasswordModal({
             <Modal show={show} onClose={onClose} cardClassName="w-full max-w-134.5 px-22 py-12">
                 <EmailSentIcon />
                 <h2 className="mt-5 text-3xl leading-normal font-medium tracking-normal text-white">
-                    Check your email
+                    {t('forgotPassword.checkEmailTitle')}
                 </h2>
                 <h3 className="mt-8 w-full text-center text-base leading-normal font-normal text-white">
-                    We have sent a password recover instructions to your email
+                    {t('forgotPassword.checkEmailSubtitle')}
                 </h3>
-                <Button type="button" variant="cta" onClick={onClose} className="mt-6">
-                    Go to my email
+                <Button
+                    type="button"
+                    variant="cta"
+                    onClick={() => {
+                        window.open('https://mail.google.com', '_blank', 'noopener,noreferrer');
+                        onClose();
+                    }}
+                    className="mt-6"
+                >
+                    {t('common.goToEmail')}
                 </Button>
 
                 <button
@@ -58,7 +68,7 @@ export default function ForgotPasswordModal({
                     onClick={onClose}
                     className="text-modal-secondary-text mt-8 cursor-pointer text-base"
                 >
-                    Skip, I’ll confirm later
+                    {t('forgotPassword.skipConfirmLater')}
                 </button>
             </Modal>
         );
@@ -69,16 +79,15 @@ export default function ForgotPasswordModal({
             show={show}
             onClose={onClose}
             onSubmit={submit}
-            title="Forgot password?"
-            subtitle="Enter the email and we’ll send an email with
-instructions to reset your password"
+            title={t('forgotPassword.title')}
+            subtitle={t('forgotPassword.subtitle')}
         >
             <div className="mt-6 w-full space-y-4">
                 <FormField
-                    label="Email"
+                    label={t('forgotPassword.email')}
                     id="forgot_password_email"
                     type="text"
-                    placeholder="Enter your email"
+                    placeholder={t('forgotPassword.emailPlaceholder')}
                     value={data.email}
                     onChange={(value) => setData('email', value)}
                     error={errors.email}
@@ -87,7 +96,7 @@ instructions to reset your password"
                 />
             </div>
             <Button type="submit" variant="cta" disabled={processing} className="mt-4">
-                Send instructions
+                {t('forgotPassword.submit')}
             </Button>
             <button
                 type="button"
@@ -95,7 +104,7 @@ instructions to reset your password"
                 className="text-modal-secondary-text mt-8 flex cursor-pointer items-center gap-2 text-base"
             >
                 <ArrowLeftIcon />
-                Back to log in
+                {t('forgotPassword.backToLogin')}
             </button>
         </Modal>
     );

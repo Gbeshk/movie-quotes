@@ -1,8 +1,11 @@
 import QuotesIcon from '@/Components/Shared/Icons/QuotesIcon';
+import { useTranslatable } from '@/lib/translatable';
 import { Movie } from '@/types';
 import { Link } from '@inertiajs/react';
 
 export default function MovieCard({ movie }: { movie: Movie }) {
+    const translate = useTranslatable();
+
     return (
         <Link
             href={route('movies.show', movie.id)}
@@ -12,15 +15,16 @@ export default function MovieCard({ movie }: { movie: Movie }) {
                 {movie.poster_url && (
                     <img
                         src={movie.poster_url}
-                        alt={movie.title.en}
+                        alt={translate(movie.title)}
                         className="h-full w-full object-cover"
                     />
                 )}
             </div>
 
             <div className="mt-4 flex flex-1 flex-col justify-center gap-2">
-                <p className="text-2xl leading-normal font-medium tracking-normal text-white uppercase">
-                    {movie.title.en} ({movie.release_year})
+                <p className="flex min-w-0 items-baseline gap-1 text-2xl leading-normal font-medium tracking-normal text-white uppercase">
+                    <span className="truncate">{translate(movie.title)}</span>
+                    <span className="shrink-0">({movie.release_year})</span>
                 </p>
                 <p className="flex items-center gap-3 text-xl leading-normal font-medium tracking-normal text-white">
                     {movie.quotes_count ?? 0} <QuotesIcon />

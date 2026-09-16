@@ -1,0 +1,181 @@
+{
+    "header": {
+        "logoText": "Movie quotes",
+        "logOut": "Log out",
+        "signUp": "Sign Up",
+        "logIn": "Log in"
+    },
+    "welcome": {
+        "heading": "Find any quote in\nmillions of movie lines",
+        "getStarted": "Get started",
+        "copyright": "© 2022 movie quotes. All rights reserved."
+    },
+    "login": {
+        "title": "Log in to your account",
+        "subtitle": "Welcome back! Please enter your details.",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Password",
+        "rememberMe": "Remember me",
+        "forgotPassword": "Forgot password",
+        "submit": "Log in",
+        "googleCta": "Log in with Google",
+        "switchPrompt": "Don't have an account?",
+        "switchAction": "Sign up",
+        "unverified": "Your account is not verified yet. Please check your email or resend the verification link.",
+        "resend": "Resend verification email",
+        "resendSent": "Verification link sent, check your email."
+    },
+    "register": {
+        "title": "Create an account",
+        "subtitle": "Start your journey!",
+        "name": "Name",
+        "namePlaceholder": "At least 3 & max.15 lower case characters",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "At least 8 & max.15 lower case characters",
+        "confirmPassword": "Confirm password",
+        "confirmPasswordPlaceholder": "Confirm password",
+        "submit": "Get started",
+        "googleCta": "Sign up with Google",
+        "switchPrompt": "Already have an account?",
+        "switchAction": "Log in"
+    },
+    "nav": {
+        "editProfile": "Edit your profile",
+        "newsFeed": "News feed",
+        "movies": "List of movies"
+    },
+    "feed": {
+        "title": "News Feed",
+        "writeNewQuote": "Write new quote",
+        "noMorePosts": "No more posts",
+        "noResults": "No results found",
+        "chooseMovie": "Choose movie",
+        "changeMovie": "Change movie",
+        "searchForMovie": "Search for a movie",
+        "searching": "Searching…",
+        "noMoviesFound": "No movies found"
+    },
+    "post": {
+        "showMoreComments": "Show more comments",
+        "showLessComments": "Show less comments",
+        "writeComment": "Write a comment",
+        "post": "Post"
+    },
+    "common": {
+        "cancel": "Cancel",
+        "saveChanges": "Save changes",
+        "search": "Search",
+        "searchExpanded": "Enter @ to search movies, Enter # to search quotes",
+        "edit": "Edit",
+        "delete": "Delete",
+        "confirm": "Confirm",
+        "goToEmail": "Go to my email"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "markAllRead": "Mark as all read",
+        "empty": "No notifications yet",
+        "new": "new",
+        "likeAction": "Reacted to your quote",
+        "commentAction": "Commented to your movie quote"
+    },
+    "time": {
+        "justNow": "just now",
+        "minutesAgo": "{{count}} min ago",
+        "hoursAgo": "{{count}}h ago",
+        "daysAgo": "{{count}}d ago",
+        "weeksAgo": "{{count}}w ago",
+        "monthsAgo": "{{count}}mo ago",
+        "yearsAgo": "{{count}}y ago"
+    },
+    "errors": {
+        "notFoundTitle": "Whoops!",
+        "notFoundDescription": "We can't see the page you are looking for",
+        "forbiddenTitle": "You shall not pass!",
+        "forbiddenDescription": "Sorry, but you don't have permission to access this page",
+        "returnHome": "Return home"
+    },
+    "forgotPassword": {
+        "title": "Forgot password?",
+        "subtitle": "Enter the email and we’ll send an email with instructions to reset your password",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "submit": "Send instructions",
+        "backToLogin": "Back to log in",
+        "checkEmailTitle": "Check your email",
+        "checkEmailSubtitle": "We have sent a password recover instructions to your email",
+        "skipConfirmLater": "Skip, I’ll confirm later"
+    },
+    "verifyEmail": {
+        "thankYou": "Thank you!",
+        "subtitle": "Please check your email and follow the instructions to activate your account."
+    },
+    "emailVerified": {
+        "thankYou": "Thank you!",
+        "subtitle": "Your account has been activated.",
+        "goToFeed": "Go to my news feed"
+    },
+    "resetPassword": {
+        "title": "Create new password",
+        "subtitle": "Your new password must be different from previously used passwords",
+        "newPassword": "New password",
+        "newPasswordPlaceholder": "Enter new password",
+        "confirmNewPassword": "Confirm new password",
+        "confirmNewPasswordPlaceholder": "Confirm new password",
+        "submit": "Reset password",
+        "backToLogin": "Back to log in",
+        "successTitle": "Success!",
+        "successSubtitle": "Your password changed successfully",
+        "logIn": "Log in",
+        "linkExpiredTitle": "Link expired!",
+        "linkExpiredSubtitle": "Login link has expired, because you haven’t used it",
+        "requestAnotherLink": "Request another link"
+    },
+    "profile": {
+        "heading": "My profile",
+        "username": "Username",
+        "newUsername": "New username",
+        "email": "Email",
+        "newEmail": "New email",
+        "pendingEmailNote": "Confirmation link sent to {{email}}. Check your inbox to confirm the change.",
+        "password": "Password",
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "uploadNewPhoto": "Upload new photo"
+    },
+    "movies": {
+        "myList": "My list of movies (Total {{count}})",
+        "addMovie": "Add movie",
+        "addMovieTitle": "add movie",
+        "editMovieTitle": "edit movie",
+        "movieDescription": "Movie description",
+        "director": "Director:",
+        "quotesTotal": "Quotes (total {{count}})",
+        "addQuote": "Add quote",
+        "addQuoteTitle": "add quote",
+        "editQuoteTitle": "edit quote",
+        "viewQuoteTitle": "view quote",
+        "replacePhoto": "Replace photo",
+        "viewQuote": "View Quote",
+        "deleteMovieConfirmTitle": "Delete this movie?",
+        "deleteMovieConfirmSubtitle": "This will also delete all of its quotes. This cannot be undone.",
+        "deleteQuoteConfirmTitle": "Delete this quote?",
+        "deleteQuoteConfirmSubtitle": "This action cannot be undone.",
+        "genrePlaceholder": "Genre",
+        "yearPlaceholder": "Year",
+        "yearLabel": "Year:",
+        "genreEnglishOnlyError": "Genre must contain only English characters."
+    },
+    "imageUpload": {
+        "dragDrop": "Drag & drop your image here",
+        "chooseFile": "Choose file",
+        "addPhoto": "Add photo",
+        "changeImage": "Change image",
+        "posterPreview": "Poster preview"
+    }
+}
