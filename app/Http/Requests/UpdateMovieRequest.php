@@ -25,8 +25,8 @@ class UpdateMovieRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'title.ka'       => ['required', 'string', 'max:255', new GeorgianText()],
-			'title.en'       => ['required', 'string', 'max:255', new EnglishText()],
+			'title.ka'       => ['required', 'string', 'max:100', new GeorgianText()],
+			'title.en'       => ['required', 'string', 'max:100', new EnglishText()],
 			'director.ka'    => ['required', 'string', 'max:255', new GeorgianText()],
 			'director.en'    => ['required', 'string', 'max:255', new EnglishText()],
 			'genre'          => ['required', 'array', 'min:1'],
