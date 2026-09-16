@@ -7,6 +7,7 @@ import Modal from '@/Components/Shared/Modal';
 import { validateEmail } from '@/lib/validators';
 import { router, useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginModal({
     show,
@@ -19,6 +20,7 @@ export default function LoginModal({
     onSwitchToRegister: () => void;
     onForgotPassword: () => void;
 }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -66,15 +68,15 @@ export default function LoginModal({
             show={show}
             onClose={onClose}
             onSubmit={submit}
-            title="Log in to your account"
-            subtitle="Welcome back! Please enter your details."
+            title={t('login.title')}
+            subtitle={t('login.subtitle')}
         >
             <div className="mt-6 w-full space-y-4">
                 <FormField
-                    label="Email"
+                    label={t('login.email')}
                     id="login_email"
                     type="text"
-                    placeholder="Enter your email"
+                    placeholder={t('login.emailPlaceholder')}
                     value={data.email}
                     onChange={(value) => setData('email', value)}
                     error={errors.email}
@@ -83,10 +85,10 @@ export default function LoginModal({
                 />
 
                 <FormField
-                    label="Password"
+                    label={t('login.password')}
                     id="login_password"
                     type="password"
-                    placeholder="Password"
+                    placeholder={t('login.passwordPlaceholder')}
                     value={data.password}
                     onChange={(value) => setData('password', value)}
                     error={errors.password}
@@ -97,13 +99,12 @@ export default function LoginModal({
             {unverified && (
                 <div className="mt-4 w-full">
                     <p className="text-error-text text-sm leading-normal font-normal tracking-normal">
-                        Your account is not verified yet. Please check your email or resend the
-                        verification link.
+                        {t('login.unverified')}
                     </p>
 
                     {resendSent ? (
                         <p className="text-success mt-2 text-sm leading-normal font-normal tracking-normal">
-                            Verification link sent, check your email.
+                            {t('login.resendSent')}
                         </p>
                     ) : (
                         <button
@@ -111,7 +112,7 @@ export default function LoginModal({
                             onClick={resend}
                             className="text-link-text mt-2 cursor-pointer text-sm underline"
                         >
-                            Resend verification email
+                            {t('login.resend')}
                         </button>
                     )}
                 </div>
@@ -121,23 +122,23 @@ export default function LoginModal({
                 <Checkbox
                     checked={data.remember}
                     onChange={(checked) => setData('remember', checked)}
-                    label="Remember me"
+                    label={t('login.rememberMe')}
                 />
                 <button
                     type="button"
                     onClick={onForgotPassword}
                     className="text-link-text cursor-pointer text-base underline"
                 >
-                    Forgot password
+                    {t('login.forgotPassword')}
                 </button>
             </div>
             <Button type="submit" variant="cta" disabled={processing} className="mt-4">
-                Log in
+                {t('login.submit')}
             </Button>
-            <AuthGoogleButton label="Log in with Google" />
+            <AuthGoogleButton label={t('login.googleCta')} />
             <AuthSwitchPrompt
-                prompt="Don't have an account?"
-                actionLabel="Sign up"
+                prompt={t('login.switchPrompt')}
+                actionLabel={t('login.switchAction')}
                 onAction={onSwitchToRegister}
             />
         </Modal>

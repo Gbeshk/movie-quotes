@@ -1,3 +1,4 @@
+import { useTranslatable } from '@/lib/translatable';
 import { WelcomeQuote } from '@/types';
 
 export default function QuoteLayer({
@@ -9,6 +10,7 @@ export default function QuoteLayer({
     progress?: number;
     direction?: 'exit' | 'enter';
 }) {
+    const translate = useTranslatable();
     const exitProgress = Math.min(progress * 2, 1);
     const enterProgress = Math.max((progress - 0.4) / 0.6, 0);
     const translateY = direction === 'exit' ? -exitProgress * 100 : (1 - enterProgress) * 60;
@@ -17,7 +19,7 @@ export default function QuoteLayer({
         <>
             <img
                 src={quote.image_url}
-                alt={quote.movie.title.en}
+                alt={translate(quote.movie.title)}
                 className="absolute inset-0 h-full w-full object-cover"
             />
             <div
@@ -27,10 +29,10 @@ export default function QuoteLayer({
                 <div className="mt-9 mr-3 h-0.5 w-13.25 bg-white" />
                 <div className="flex flex-col gap-4">
                     <p className="font-montserrat max-w-200 text-5xl leading-normal font-bold tracking-normal text-white">
-                        “{quote.text.en}”
+                        “{translate(quote.text)}”
                     </p>
                     <p className="font-helvetica text-landing-movie-name text-3xl leading-normal font-bold tracking-normal">
-                        {quote.movie.title.en}, {quote.movie.release_year}
+                        {translate(quote.movie.title)}, {quote.movie.release_year}
                     </p>
                 </div>
             </div>
