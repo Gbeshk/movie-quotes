@@ -2,7 +2,13 @@ import { notificationMessage } from '@/lib/notificationMessage';
 import { AuthenticatedPageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 
-export default function NotificationsPanel({ open }: { open: boolean }) {
+export default function NotificationsPanel({
+    open,
+    onViewQuote,
+}: {
+    open: boolean;
+    onViewQuote: (quoteId: number) => void;
+}) {
     const { notifications } = usePage<AuthenticatedPageProps>().props;
 
     if (!open) {
@@ -22,7 +28,8 @@ export default function NotificationsPanel({ open }: { open: boolean }) {
             {notifications.map((notification) => (
                 <div
                     key={notification.id}
-                    className="border-modal-secondary-text flex flex-col gap-1 border-b px-6 py-4 last:border-b-0"
+                    onClick={() => onViewQuote(notification.data.quote_id)}
+                    className="border-modal-secondary-text flex cursor-pointer flex-col gap-1 border-b px-6 py-4 last:border-b-0"
                 >
                     <p className="text-base leading-normal font-normal tracking-normal text-white">
                         {notificationMessage(notification.data)}
