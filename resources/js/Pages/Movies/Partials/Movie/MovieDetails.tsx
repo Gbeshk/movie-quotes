@@ -1,5 +1,6 @@
 import EditIcon from '@/Components/Shared/Icons/EditIcon';
 import TrashIcon from '@/Components/Shared/Icons/TrashIcon';
+import { useTranslatable } from '@/lib/translatable';
 import GenreTags from '@/Pages/Movies/Partials/Movie/GenreTags';
 import MovieDirector from '@/Pages/Movies/Partials/Movie/MovieDirector';
 import { Movie } from '@/types';
@@ -15,24 +16,27 @@ export default function MovieDetails({
     onEdit: () => void;
     onDelete: () => void;
 }) {
+    const translate = useTranslatable();
+
     return (
         <div className="mt-8 flex w-full gap-3">
             <div className="bg-input-bg h-110 w-3/5 overflow-hidden rounded-xl">
                 {movie.poster_url && (
                     <img
                         src={movie.poster_url}
-                        alt={movie.title.en}
+                        alt={translate(movie.title)}
                         className="h-full w-full object-cover"
                     />
                 )}
             </div>
             <div className="w-2/5">
-                <div className="flex items-center justify-between">
-                    <p className="text-logo-text text-2xl font-medium">
-                        {movie.title.en} ({movie.release_year})
+                <div className="flex items-center justify-between gap-3">
+                    <p className="text-logo-text flex min-w-0 items-baseline gap-1 text-2xl font-medium">
+                        <span className="truncate">{translate(movie.title)}</span>
+                        <span className="shrink-0">({movie.release_year})</span>
                     </p>
                     {isOwner && (
-                        <div className="bg-header-bg flex h-10 w-36 items-center justify-evenly rounded-xl">
+                        <div className="bg-header-bg flex h-10 w-36 shrink-0 items-center justify-evenly rounded-xl">
                             <button
                                 type="button"
                                 onClick={onEdit}
@@ -55,9 +59,11 @@ export default function MovieDetails({
                     <GenreTags genres={movie.genre} />
                 </div>
                 <div className="mt-2.5">
-                    <MovieDirector director={movie.director.en} />
+                    <MovieDirector director={translate(movie.director)} />
                 </div>
-                <div className="text-input-bg mt-5 text-lg font-normal">{movie.description.en}</div>
+                <div className="text-input-bg mt-5 text-lg font-normal">
+                    {translate(movie.description)}
+                </div>
             </div>
         </div>
     );

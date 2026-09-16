@@ -8,6 +8,7 @@ import {
 } from '@/lib/validators';
 import { InertiaFormProps } from '@inertiajs/react';
 import { MovieFormData } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 export default function EditMovieFormFields({
     data,
@@ -15,6 +16,8 @@ export default function EditMovieFormFields({
     errors,
     clearErrors,
 }: Pick<InertiaFormProps<MovieFormData>, 'data' | 'setData' | 'errors' | 'clearErrors'>) {
+    const { t } = useTranslation();
+
     return (
         <>
             <FormField
@@ -43,10 +46,8 @@ export default function EditMovieFormFields({
             />
             <TagInput
                 tags={data.genre}
-                placeholder="Genre/ჟანრი"
-                validate={(value) =>
-                    isEnglishText(value) || 'Genre must contain only English characters.'
-                }
+                placeholder={t('movies.genrePlaceholder')}
+                validate={(value) => isEnglishText(value) || t('movies.genreEnglishOnlyError')}
                 onChange={(genres) => {
                     setData('genre', genres);
                     clearErrors('genre');
@@ -58,7 +59,7 @@ export default function EditMovieFormFields({
                 className="mt-6"
                 id="edit_release_year"
                 name="release_year"
-                label="Year/წელი:"
+                label={t('movies.yearLabel')}
                 inputMode="numeric"
                 value={data.release_year}
                 onChange={(value) => setData('release_year', value)}

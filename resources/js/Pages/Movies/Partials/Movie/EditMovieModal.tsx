@@ -7,6 +7,7 @@ import EditMovieFormFields from '@/Pages/Movies/Partials/Movie/EditMovieFormFiel
 import { Movie, MovieFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function EditMovieModal({
     show,
@@ -17,6 +18,7 @@ export default function EditMovieModal({
     onClose: () => void;
     movie: Movie;
 }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, clearErrors, transform } =
         useForm<MovieFormData>({
             title: { ka: movie.title.ka, en: movie.title.en },
@@ -47,7 +49,7 @@ export default function EditMovieModal({
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <ModalHeader title="edit movie" onClose={onClose} />
+            <ModalHeader title={t('movies.editMovieTitle')} onClose={onClose} />
             <ModalUserRow />
 
             <EditMovieFormFields
@@ -59,7 +61,7 @@ export default function EditMovieModal({
             <ImageUpload
                 file={data.poster}
                 existingImageUrl={movie.poster_url}
-                heading="Replace photo"
+                heading={t('movies.replacePhoto')}
                 onChange={(file) => {
                     setData('poster', file);
                     clearErrors('poster');
@@ -74,7 +76,7 @@ export default function EditMovieModal({
                     disabled={processing}
                     className="h-12 text-xl leading-6 font-normal tracking-normal"
                 >
-                    Save changes
+                    {t('common.saveChanges')}
                 </Button>
             </div>
         </Modal>
