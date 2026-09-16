@@ -1,6 +1,7 @@
 import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import { User } from '@/types';
 import { RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function AvatarUploadForm({
     user,
@@ -15,6 +16,8 @@ export default function AvatarUploadForm({
     onFileChange: (file: File | null) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="absolute top-5.5 left-1/2 h-47 w-47 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-white">
@@ -41,7 +44,7 @@ export default function AvatarUploadForm({
                     onClick={() => avatarInputRef.current?.click()}
                     className="mt-31 cursor-pointer text-center text-xl leading-relaxed font-normal tracking-normal text-white"
                 >
-                    Upload new photo
+                    {t('profile.uploadNewPhoto')}
                 </p>
             </form>
         </>

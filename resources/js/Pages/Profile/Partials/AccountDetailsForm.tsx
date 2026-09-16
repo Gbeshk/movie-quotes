@@ -3,6 +3,7 @@ import { validateEmail, validateUsername } from '@/lib/validators';
 import { User } from '@/types';
 import { InertiaFormProps } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function AccountDetailsForm({
     user,
@@ -23,14 +24,16 @@ export default function AccountDetailsForm({
     onToggleEmail: () => void;
     onSubmit: FormEventHandler;
 }) {
+    const { t } = useTranslation();
+
     return (
         <form id="profile-form" onSubmit={onSubmit} className="mt-10 flex w-132 flex-col gap-14">
             <EditableFieldGroup
-                readOnlyLabel="Username"
+                readOnlyLabel={t('profile.username')}
                 readOnlyValue={user.username}
                 editing={editingUsername}
                 onToggle={onToggleUsername}
-                newFieldLabel="New username"
+                newFieldLabel={t('profile.newUsername')}
                 id="username"
                 value={profileForm.data.username}
                 onChange={(value) => profileForm.setData('username', value)}
@@ -40,17 +43,17 @@ export default function AccountDetailsForm({
             />
 
             <EditableFieldGroup
-                readOnlyLabel="Email"
+                readOnlyLabel={t('profile.email')}
                 readOnlyValue={user.email}
                 editing={editingEmail}
                 onToggle={onToggleEmail}
                 hideToggle={isGoogleUser}
                 note={
                     user.pending_email
-                        ? `Confirmation link sent to ${user.pending_email}. Check your inbox to confirm the change.`
+                        ? t('profile.pendingEmailNote', { email: user.pending_email })
                         : undefined
                 }
-                newFieldLabel="New email"
+                newFieldLabel={t('profile.newEmail')}
                 id="email"
                 type="email"
                 value={profileForm.data.email}

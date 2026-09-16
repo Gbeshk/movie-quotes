@@ -8,8 +8,10 @@ import { useAvatarForm } from '@/Pages/Profile/hooks/useAvatarForm';
 import { usePasswordForm } from '@/Pages/Profile/hooks/usePasswordForm';
 import { AuthenticatedPageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Edit() {
+    const { t } = useTranslation();
     const user = usePage<AuthenticatedPageProps>().props.auth.user;
     const isGoogleUser = Boolean(user.google_id);
 
@@ -21,7 +23,7 @@ export default function Edit() {
         <AuthenticatedLayout
             header={
                 <h2 className="ml-15 text-2xl leading-normal font-medium tracking-normal text-white">
-                    My profile
+                    {t('profile.heading')}
                 </h2>
             }
         >
