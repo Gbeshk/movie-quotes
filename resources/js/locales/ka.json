@@ -1,0 +1,181 @@
+{
+    "header": {
+        "logoText": "ფილმის ციტატები",
+        "logOut": "გასვლა",
+        "signUp": "რეგისტრაცია",
+        "logIn": "შესვლა"
+    },
+    "welcome": {
+        "heading": "იპოვე ნებისმიერი ციტატა\nფილმების მილიონობით სტრიქონში",
+        "getStarted": "დაწყება",
+        "copyright": "© 2022 ფილმის ციტატები. ყველა უფლება დაცულია."
+    },
+    "login": {
+        "title": "შედით თქვენს ანგარიშში",
+        "subtitle": "მოგესალმებით! გთხოვთ შეიყვანოთ თქვენი მონაცემები.",
+        "email": "ელფოსტა",
+        "emailPlaceholder": "შეიყვანეთ თქვენი ელფოსტა",
+        "password": "პაროლი",
+        "passwordPlaceholder": "პაროლი",
+        "rememberMe": "დამახსოვრება",
+        "forgotPassword": "დაგავიწყდათ პაროლი?",
+        "submit": "შესვლა",
+        "googleCta": "შესვლა Google-ით",
+        "switchPrompt": "არ გაქვთ ანგარიში?",
+        "switchAction": "დარეგისტრირდით",
+        "unverified": "თქვენი ანგარიში ჯერ არ არის დადასტურებული. გთხოვთ შეამოწმოთ ელფოსტა ან ხელახლა გამოაგზავნოთ დადასტურების ბმული.",
+        "resend": "დადასტურების ბმულის ხელახლა გაგზავნა",
+        "resendSent": "დადასტურების ბმული გაიგზავნა, შეამოწმეთ ელფოსტა."
+    },
+    "register": {
+        "title": "შექმენით ანგარიში",
+        "subtitle": "დაიწყეთ თქვენი მოგზაურობა!",
+        "name": "სახელი",
+        "namePlaceholder": "მინიმუმ 3 და მაქსიმუმ 15 პატარა ასო",
+        "email": "ელფოსტა",
+        "emailPlaceholder": "შეიყვანეთ თქვენი ელფოსტა",
+        "password": "პაროლი",
+        "passwordPlaceholder": "მინიმუმ 8 და მაქსიმუმ 15 პატარა ასო",
+        "confirmPassword": "დაადასტურეთ პაროლი",
+        "confirmPasswordPlaceholder": "დაადასტურეთ პაროლი",
+        "submit": "დაწყება",
+        "googleCta": "რეგისტრაცია Google-ით",
+        "switchPrompt": "უკვე გაქვთ ანგარიში?",
+        "switchAction": "შესვლა"
+    },
+    "nav": {
+        "editProfile": "პროფილის რედაქტირება",
+        "newsFeed": "ნიუს ფიდი",
+        "movies": "ფილმების სია"
+    },
+    "feed": {
+        "title": "ნიუს ფიდი",
+        "writeNewQuote": "დაწერე ახალი ციტატა",
+        "noMorePosts": "მეტი პოსტი აღარ არის",
+        "noResults": "შედეგები ვერ მოიძებნა",
+        "chooseMovie": "აირჩიეთ ფილმი",
+        "changeMovie": "ფილმის შეცვლა",
+        "searchForMovie": "მოძებნეთ ფილმი",
+        "searching": "იძებნება…",
+        "noMoviesFound": "ფილმები ვერ მოიძებნა"
+    },
+    "post": {
+        "showMoreComments": "მეტი კომენტარის ჩვენება",
+        "showLessComments": "ნაკლები კომენტარის ჩვენება",
+        "writeComment": "დაწერე კომენტარი",
+        "post": "გამოქვეყნება"
+    },
+    "common": {
+        "cancel": "გაუქმება",
+        "saveChanges": "შენახვა",
+        "search": "ძებნა",
+        "searchExpanded": "შეიყვანეთ @ ფილმებისთვის, # ციტატებისთვის",
+        "edit": "შეცვლა",
+        "delete": "წაშლა",
+        "confirm": "დადასტურება",
+        "goToEmail": "გადადით ჩემს ელფოსტაზე"
+    },
+    "notifications": {
+        "title": "შეტყობინებები",
+        "markAllRead": "მონიშნეთ ყველა წაკითხულად",
+        "empty": "შეტყობინებები ჯერ არ არის",
+        "new": "ახალი",
+        "likeAction": "მოიწონა თქვენი ციტატა",
+        "commentAction": "დააკომენტარა თქვენს ფილმის ციტატას"
+    },
+    "time": {
+        "justNow": "ახლახანს",
+        "minutesAgo": "{{count}} წთ წინ",
+        "hoursAgo": "{{count}} სთ წინ",
+        "daysAgo": "{{count}} დღის წინ",
+        "weeksAgo": "{{count}} კვ წინ",
+        "monthsAgo": "{{count}} თვის წინ",
+        "yearsAgo": "{{count}} წლის წინ"
+    },
+    "errors": {
+        "notFoundTitle": "უი!",
+        "notFoundDescription": "ვერ ვხედავთ გვერდს, რომელსაც ეძებთ",
+        "forbiddenTitle": "თქვენ აქედან ვერ გაივლით!",
+        "forbiddenDescription": "სამწუხაროდ, არ გაქვთ ამ გვერდზე წვდომის უფლება",
+        "returnHome": "დაბრუნება მთავარზე"
+    },
+    "forgotPassword": {
+        "title": "დაგავიწყდათ პაროლი?",
+        "subtitle": "შეიყვანეთ ელფოსტა და გამოგიგზავნით ინსტრუქციებს პაროლის აღსადგენად",
+        "email": "ელფოსტა",
+        "emailPlaceholder": "შეიყვანეთ თქვენი ელფოსტა",
+        "submit": "ინსტრუქციების გაგზავნა",
+        "backToLogin": "შესვლაზე დაბრუნება",
+        "checkEmailTitle": "შეამოწმეთ თქვენი ელფოსტა",
+        "checkEmailSubtitle": "პაროლის აღდგენის ინსტრუქცია გამოგზავნილია თქვენს ელფოსტაზე",
+        "skipConfirmLater": "გამოტოვება, მოგვიანებით დავადასტურებ"
+    },
+    "verifyEmail": {
+        "thankYou": "გმადლობთ!",
+        "subtitle": "გთხოვთ შეამოწმოთ თქვენი ელფოსტა და მიჰყევით ინსტრუქციებს ანგარიშის გასააქტიურებლად."
+    },
+    "emailVerified": {
+        "thankYou": "გმადლობთ!",
+        "subtitle": "თქვენი ანგარიში გააქტიურებულია.",
+        "goToFeed": "გადასვლა ნიუს ფიდზე"
+    },
+    "resetPassword": {
+        "title": "შექმენით ახალი პაროლი",
+        "subtitle": "თქვენი ახალი პაროლი უნდა განსხვავდებოდეს ადრე გამოყენებული პაროლებისგან",
+        "newPassword": "ახალი პაროლი",
+        "newPasswordPlaceholder": "შეიყვანეთ ახალი პაროლი",
+        "confirmNewPassword": "დაადასტურეთ ახალი პაროლი",
+        "confirmNewPasswordPlaceholder": "დაადასტურეთ ახალი პაროლი",
+        "submit": "პაროლის აღდგენა",
+        "backToLogin": "შესვლაზე დაბრუნება",
+        "successTitle": "წარმატებულია!",
+        "successSubtitle": "თქვენი პაროლი წარმატებით შეიცვალა",
+        "logIn": "შესვლა",
+        "linkExpiredTitle": "ბმულს ვადა გაუვიდა!",
+        "linkExpiredSubtitle": "შესვლის ბმულს ვადა გაუვიდა, რადგან არ გამოგიყენებიათ",
+        "requestAnotherLink": "მოითხოვეთ ახალი ბმული"
+    },
+    "profile": {
+        "heading": "ჩემი პროფილი",
+        "username": "მომხმარებლის სახელი",
+        "newUsername": "ახალი მომხმარებლის სახელი",
+        "email": "ელფოსტა",
+        "newEmail": "ახალი ელფოსტა",
+        "pendingEmailNote": "დადასტურების ბმული გაიგზავნა {{email}}-ზე. შეამოწმეთ ელფოსტა ცვლილების დასადასტურებლად.",
+        "password": "პაროლი",
+        "currentPassword": "მიმდინარე პაროლი",
+        "newPassword": "ახალი პაროლი",
+        "confirmPassword": "დაადასტურეთ პაროლი",
+        "uploadNewPhoto": "ახალი ფოტოს ატვირთვა"
+    },
+    "movies": {
+        "myList": "ჩემი ფილმების სია (სულ {{count}})",
+        "addMovie": "დამატება",
+        "addMovieTitle": "ფილმის დამატება",
+        "editMovieTitle": "ფილმის რედაქტირება",
+        "movieDescription": "ფილმის აღწერა",
+        "director": "რეჟისორი:",
+        "quotesTotal": "ციტატები (სულ {{count}})",
+        "addQuote": "დამატება",
+        "addQuoteTitle": "ციტატის დამატება",
+        "editQuoteTitle": "ციტატის რედაქტირება",
+        "viewQuoteTitle": "ციტატის ნახვა",
+        "replacePhoto": "ფოტოს შეცვლა",
+        "viewQuote": "ციტატის ნახვა",
+        "deleteMovieConfirmTitle": "წავშალოთ ეს ფილმი?",
+        "deleteMovieConfirmSubtitle": "ეს წაშლის ასევე მის ყველა ციტატას. ამის დაბრუნება შეუძლებელია.",
+        "deleteQuoteConfirmTitle": "წავშალოთ ეს ციტატა?",
+        "deleteQuoteConfirmSubtitle": "ამ მოქმედების დაბრუნება შეუძლებელია.",
+        "genrePlaceholder": "ჟანრი",
+        "yearPlaceholder": "წელი",
+        "yearLabel": "წელი:",
+        "genreEnglishOnlyError": "ჟანრი უნდა შეიცავდეს მხოლოდ ინგლისურ სიმბოლოებს."
+    },
+    "imageUpload": {
+        "dragDrop": "გადმოიტანეთ სურათი აქ",
+        "chooseFile": "ფაილის არჩევა",
+        "addPhoto": "ფოტოს დამატება",
+        "changeImage": "სურათის შეცვლა",
+        "posterPreview": "პოსტერის გადახედვა"
+    }
+}
