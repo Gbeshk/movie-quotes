@@ -9,6 +9,25 @@ use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
+test('guests cannot view a quote', function () {
+	$quote = Quote::factory()->create();
+
+	$this->getJson(route('quotes.show', $quote))->assertUnauthorized();
+});
+
+test('a signed-in user can view any quote with its comments and like state', function () {
+	$user = User::factory()->create();
+	$author = User::factory()->create();
+	$quote = Quote::factory()->for($author)->create(['text' => ['en' => 'Hello', 'ka' => 'გამარჯობა']]);
+
+	$response = $this->actingAs($user)->getJson(route('quotes.show', $quote));
+
+	$response->assertOk();
+	$response->assertJsonPath('id', $quote->id);
+	$response->assertJsonPath('text.en', 'Hello');
+	$response->assertJsonPath('is_liked_by_me', false);
+});
+
 test('guests cannot add a quote', function () {
 	$movie = Movie::factory()->create();
 
