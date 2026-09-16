@@ -1,9 +1,11 @@
 import ArrowDown from '@/Components/Shared/Icons/ArrowDown';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
 import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
+import { useTranslatable } from '@/lib/translatable';
 import { AuthenticatedPageProps, Movie } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function MoviePicker({
     onSelect,
@@ -12,6 +14,8 @@ export default function MoviePicker({
     onSelect: (movie: Movie) => void;
     autoOpen?: boolean;
 }) {
+    const { t } = useTranslation();
+    const translate = useTranslatable();
     const { movieOptions } = usePage<AuthenticatedPageProps<{ movieOptions?: Movie[] }>>().props;
     const results = movieOptions ?? [];
     const [query, setQuery] = useState('');
@@ -41,7 +45,9 @@ export default function MoviePicker({
             >
                 <div className="flex items-center gap-3">
                     <MoviesIcon />
-                    <p className="text-2xl leading-normal font-normal text-white">Choose movie</p>
+                    <p className="text-2xl leading-normal font-normal text-white">
+                        {t('feed.chooseMovie')}
+                    </p>
                 </div>
                 <ArrowDown size={24} />
             </button>
@@ -54,18 +60,18 @@ export default function MoviePicker({
                             type="text"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Search for a movie"
+                            placeholder={t('feed.searchForMovie')}
                             className="text-input-bg placeholder:text-input-bg flex-1 border-none bg-transparent text-xl leading-normal font-normal tracking-normal outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                         />
                     </div>
                     {isLoading && (
                         <p className="text-modal-secondary-text px-4 py-3 text-base leading-normal font-normal tracking-normal">
-                            Searching…
+                            {t('feed.searching')}
                         </p>
                     )}
                     {!isLoading && results.length === 0 && (
                         <p className="text-modal-secondary-text px-4 py-3 text-base leading-normal font-normal tracking-normal">
-                            No movies found
+                            {t('feed.noMoviesFound')}
                         </p>
                     )}
                     {!isLoading &&
@@ -83,13 +89,13 @@ export default function MoviePicker({
                                     {movie.poster_url && (
                                         <img
                                             src={movie.poster_url}
-                                            alt={movie.title.en}
+                                            alt={translate(movie.title)}
                                             className="h-full w-full object-cover"
                                         />
                                     )}
                                 </div>
                                 <p className="text-xl leading-normal font-normal text-white">
-                                    {movie.title.en} ({movie.release_year})
+                                    {translate(movie.title)} ({movie.release_year})
                                 </p>
                             </button>
                         ))}

@@ -2,18 +2,22 @@ import CommentIcon from '@/Components/Shared/Icons/CommentIcon';
 import HeartIcon from '@/Components/Shared/Icons/HeartIcon';
 import UserAvatar from '@/Components/Shared/UserAvatar';
 import { useQuoteLike } from '@/hooks/useQuoteLike';
+import { useTranslatable } from '@/lib/translatable';
 import PostComment from '@/Pages/Feed/Partials/PostComment';
 import PostCommentForm from '@/Pages/Feed/Partials/PostCommentForm';
 import { Comment, Quote } from '@/types';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const INITIAL_COMMENTS_SHOWN = 2;
 const COMMENTS_PAGE_SIZE = 3;
 
 export default function Post({ quote }: { quote: Quote }) {
-    const { liked, likesCount, toggleLike } = useQuoteLike(quote);
+    const { t } = useTranslation();
+    const translate = useTranslatable();
+    const { liked, likesCount, toggleLike } = useQuoteLike(quote, 'feed');
     const [localComments, setLocalComments] = useState<Comment[]>([]);
-    const comments = [...(quote.comments ?? []), ...localComments];
+    const comments = [...localComments, ...(quote.comments ?? [])];
     const [visibleCount, setVisibleCount] = useState(INITIAL_COMMENTS_SHOWN);
     const visibleComments = comments.slice(0, visibleCount);
     const hasMoreComments = visibleCount < comments.length;
@@ -28,13 +32,13 @@ export default function Post({ quote }: { quote: Quote }) {
                 </p>
             </div>
             <p className="mt-4 text-xl leading-normal font-normal tracking-normal text-white">
-                “{quote.text.en}”
+                “{translate(quote.text)}”
                 {quote.movie && (
                     <>
                         {' '}
                         -{' '}
                         <span className="text-logo-text text-xl leading-normal font-medium tracking-normal">
-                            {quote.movie.title.en}.
+                            {translate(quote.movie.title)}.
                         </span>{' '}
                         ({quote.movie.release_year})
                     </>
@@ -75,7 +79,7 @@ export default function Post({ quote }: { quote: Quote }) {
                             onClick={() => setVisibleCount((count) => count + COMMENTS_PAGE_SIZE)}
                             className="text-modal-secondary-text cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline"
                         >
-                            Show more comments
+                            {t('post.showMoreComments')}
                         </button>
                     )}
                     {canShowLess && (
@@ -84,14 +88,15 @@ export default function Post({ quote }: { quote: Quote }) {
                             onClick={() => setVisibleCount(INITIAL_COMMENTS_SHOWN)}
                             className="text-modal-secondary-text cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline"
                         >
-                            Show less comments
+                            {t('post.showLessComments')}
                         </button>
                     )}
                 </div>
             )}
             <PostCommentForm
                 quoteId={quote.id}
-                onCommentAdded={(comment) => setLocalComments((current) => [...current, comment])}
+                redirectTo="feed"
+                onCommentAdded={(comment) => setLocalComments((current) => [comment, ...current])}
             />
         </div>
     );
