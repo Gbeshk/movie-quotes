@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Database\Factories\QuoteFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -61,6 +63,20 @@ class Quote extends Model implements HasMedia
 	public function registerMediaCollections(): void
 	{
 		$this->addMediaCollection('image')->singleFile();
+	}
+
+	#[Scope]
+	protected function search(Builder $query, ?string $search): void
+	{
+		if (blank($search)) {
+			return;
+		}
+
+		$query->where(
+			fn (Builder $query) => $query
+				->where('text->en', 'like', "%{$search}%")
+				->orWhere('text->ka', 'like', "%{$search}%"),
+		);
 	}
 
 	public function shouldRedirectToFeed(?string $redirectTo): bool

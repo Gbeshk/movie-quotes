@@ -4,15 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
+use App\Http\Resources\QuotePostResource;
 use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class QuoteController extends Controller
 {
 	use AuthorizesRequests;
+
+	public function show(Quote $quote, Request $request): JsonResponse
+	{
+		$quote = Quote::query()
+			->with([
+				'user',
+				'media',
+				'movie.media',
+				'comments' => fn ($query) => $query->with('user')->latest(),
+			])
+			->withCount(['likes', 'comments'])
+			->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $request->user()->id)])
+			->findOrFail($quote->id);
+
+		return response()->json((new QuotePostResource($quote))->resolve($request));
+	}
 
 	public function store(StoreQuoteRequest $request): RedirectResponse
 	{

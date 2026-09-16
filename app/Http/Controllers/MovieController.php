@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Resources\QuotePostResource;
 use App\Models\Movie;
+use App\Models\Quote;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,7 +24,11 @@ class MovieController extends Controller
 
 		$query = fn () => Movie::query()
 			->where('user_id', auth()->id())
-			->search($search);
+			->when(
+				str_starts_with($search, '#'),
+				fn ($query) => $query->whereHas('quotes', fn ($query) => $query->search(substr($search, 1))),
+				fn ($query) => $query->search(str_starts_with($search, '@') ? substr($search, 1) : $search),
+			);
 
 		return Inertia::render('Movies/Index', [
 			'movies' => Inertia::scroll(
@@ -33,16 +39,38 @@ class MovieController extends Controller
 		]);
 	}
 
-	public function show(Movie $movie): Response
+	public function show(Movie $movie, Request $request): Response
 	{
 		$movie->load(['user', 'media']);
 
-		$quotesQuery = fn () => $movie->quotes()->with(['user', 'media', 'movie.media'])->withCount(['likes', 'comments']);
+		$quotesQuery = fn () => $movie->quotes()
+			->with([
+				'user',
+				'media',
+				'movie.media',
+				'comments' => fn ($query) => $query->with('user')->latest(),
+			])
+			->withCount(['likes', 'comments'])
+			->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $request->user()->id)]);
 
 		return Inertia::render('Movies/Show', [
-			'movie'  => $movie,
+			'movie' => [
+				'id'           => $movie->id,
+				'user_id'      => $movie->user_id,
+				'title'        => $movie->getTranslations('title'),
+				'director'     => $movie->getTranslations('director'),
+				'genre'        => $movie->genre,
+				'release_year' => $movie->release_year,
+				'description'  => $movie->getTranslations('description'),
+				'poster_url'   => $movie->poster_url,
+				'user'         => $movie->user,
+			],
 			'quotes' => Inertia::scroll(
-				fn () => $quotesQuery()->latest()->latest('id')->paginate(9),
+				fn () => $quotesQuery()
+					->latest()
+					->latest('id')
+					->paginate(9)
+					->through(fn (Quote $quote) => (new QuotePostResource($quote))->resolve($request)),
 			),
 			'quotesCount' => $quotesQuery()->count(),
 		]);

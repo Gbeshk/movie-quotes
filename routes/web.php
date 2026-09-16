@@ -38,6 +38,7 @@ Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group
 
 	Route::controller(QuoteController::class)->prefix('quotes')->name('quotes.')->group(function () {
 		Route::post('/', 'store')->name('store');
+		Route::get('/{quote}', 'show')->name('show');
 		Route::patch('/{quote}', 'update')->name('update');
 		Route::delete('/{quote}', 'destroy')->name('destroy');
 
