@@ -24,10 +24,12 @@ class QuoteLiked extends Notification implements ShouldQueue
 	public function toArray($notifiable): array
 	{
 		return [
-			'kind'     => 'like',
-			'quote_id' => $this->like->quote_id,
-			'liker_id' => $this->like->user_id,
-			'liker'    => $this->like->user->username,
+			'kind'       => 'like',
+			'quote_id'   => $this->like->quote_id,
+			'movie_id'   => $this->like->quote->movie_id,
+			'liker_id'   => $this->like->user_id,
+			'liker'      => $this->like->user->username,
+			'avatar_url' => $this->like->user->avatar_url,
 		];
 	}
 

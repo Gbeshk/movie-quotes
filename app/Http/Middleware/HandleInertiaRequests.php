@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Inertia\Inertia;
 use Inertia\Middleware;
+use Inertia\ScrollProp;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -41,15 +42,17 @@ class HandleInertiaRequests extends Middleware
 		];
 	}
 
-	/**
-	 * @return Collection<int, DatabaseNotification>
-	 */
-	protected function notifications(Request $request): Collection
+	protected function notifications(Request $request): ScrollProp
 	{
-		return $request->user()
-			?->notifications()
-			->latest()
-			->limit(20)
-			->get(['id', 'data', 'read_at', 'created_at']) ?? new Collection();
+		if (!$request->user()) {
+			return Inertia::scroll(new LengthAwarePaginator([], 0, 20));
+		}
+
+		return Inertia::scroll(
+			fn () => $request->user()
+				->notifications()
+				->latest()
+				->paginate(perPage: 20, columns: ['id', 'data', 'read_at', 'created_at'], pageName: 'notifications_page'),
+		);
 	}
 }

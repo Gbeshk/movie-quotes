@@ -26,9 +26,11 @@ class QuoteCommented extends Notification implements ShouldQueue
 		return [
 			'kind'         => 'comment',
 			'quote_id'     => $this->comment->quote_id,
+			'movie_id'     => $this->comment->quote->movie_id,
 			'comment_id'   => $this->comment->id,
 			'commenter_id' => $this->comment->user_id,
 			'commenter'    => $this->comment->user->username,
+			'avatar_url'   => $this->comment->user->avatar_url,
 			'body'         => $this->comment->body,
 		];
 	}

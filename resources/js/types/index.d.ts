@@ -37,12 +37,21 @@ export type LiveNotification =
     | {
           kind: 'comment';
           quote_id: number;
+          movie_id: number;
           comment_id: number;
           commenter_id: number;
           commenter: string;
+          avatar_url: string | null;
           body: string;
       }
-    | { kind: 'like'; quote_id: number; liker_id: number; liker: string };
+    | {
+          kind: 'like';
+          quote_id: number;
+          movie_id: number;
+          liker_id: number;
+          liker: string;
+          avatar_url: string | null;
+      };
 
 export interface StoredNotification {
     id: string;
@@ -98,7 +107,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         user: User | null;
     };
     unreadNotificationsCount: number;
-    notifications: StoredNotification[];
+    notifications: Paginated<StoredNotification>;
 };
 
 export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<string, unknown>> =
@@ -107,5 +116,5 @@ export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<st
             user: User;
         };
         unreadNotificationsCount: number;
-        notifications: StoredNotification[];
+        notifications: Paginated<StoredNotification>;
     };
