@@ -22,14 +22,9 @@ class QuotePostResource extends JsonResource
 			'likes_count'    => $quote->likes_count,
 			'comments_count' => $quote->comments_count,
 			'is_liked_by_me' => $quote->is_liked_by_me,
-			'user'           => $quote->user,
-			'movie'          => $quote->movie ? [
-				'id'           => $quote->movie->id,
-				'title'        => $quote->movie->getTranslations('title'),
-				'release_year' => $quote->movie->release_year,
-				'poster_url'   => $quote->movie->poster_url,
-			] : null,
-			'comments' => $quote->comments,
+			'user'           => new UserResource($quote->user),
+			'movie'          => $quote->movie ? new MovieResource($quote->movie) : null,
+			'comments'       => CommentResource::collection($quote->comments),
 		];
 	}
 }
