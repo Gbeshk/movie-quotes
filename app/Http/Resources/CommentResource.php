@@ -16,7 +16,7 @@ class CommentResource extends JsonResource
 		return [
 			'id'   => $comment->id,
 			'body' => $comment->body,
-			'user' => new UserResource($comment->user),
+			'user' => UserResource::make($comment->user),
 		];
 	}
 }

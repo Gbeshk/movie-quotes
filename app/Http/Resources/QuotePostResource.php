@@ -22,8 +22,8 @@ class QuotePostResource extends JsonResource
 			'likes_count'    => $quote->likes_count,
 			'comments_count' => $quote->comments_count,
 			'is_liked_by_me' => $quote->is_liked_by_me,
-			'user'           => new UserResource($quote->user),
-			'movie'          => $quote->movie ? new MovieResource($quote->movie) : null,
+			'user'           => UserResource::make($quote->user),
+			'movie'          => $quote->movie ? MovieResource::make($quote->movie) : null,
 			'comments'       => CommentResource::collection($quote->comments),
 		];
 	}
