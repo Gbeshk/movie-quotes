@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuoteResource;
 use App\Models\Movie;
 use App\Models\Quote;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class WelcomeController extends Controller
 {
-	public function index(Request $request): Response
+	public function index(Request $request): Response|RedirectResponse
 	{
+		if ($request->user() && !$request->hasAny(['reset_token', 'verified'])) {
+			return redirect()->route('feed');
+		}
+
 		$movieIds = Movie::query()
 			->whereHas('media', fn ($query) => $query->where('collection_name', 'poster'))
 			->whereHas('quotes')
