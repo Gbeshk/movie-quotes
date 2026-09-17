@@ -44,8 +44,21 @@ test('the notifications list is shared on every authenticated page with the like
 
 	$response->assertInertia(
 		fn ($page) => $page
-		->has('notifications', 1)
-		->where('notifications.0.data.kind', 'like')
-		->where('notifications.0.data.liker', $liker->username)
+		->has('notifications.data', 1)
+		->where('notifications.data.0.data.kind', 'like')
+		->where('notifications.data.0.data.liker', $liker->username)
 	);
+});
+
+test('the shared notifications list only sends the first page', function () {
+	$user = User::factory()->create();
+	$quote = Quote::factory()->for($user)->create();
+
+	User::factory()->count(25)->create()->each(
+		fn (User $liker) => $user->notify(new QuoteLiked($quote->likes()->create(['user_id' => $liker->id]))),
+	);
+
+	$response = $this->actingAs($user)->get(route('feed'));
+
+	$response->assertInertia(fn ($page) => $page->has('notifications.data', 20));
 });
