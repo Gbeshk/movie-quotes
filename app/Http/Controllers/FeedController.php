@@ -19,14 +19,7 @@ class FeedController extends Controller
 		return Inertia::render('Feed/Index', [
 			'quotes' => Inertia::scroll(
 				fn () => Quote::query()
-					->with([
-						'user',
-						'media',
-						'movie.media',
-						'comments' => fn ($query) => $query->with('user')->latest(),
-					])
-					->withCount(['likes', 'comments'])
-					->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $request->user()->id)])
+					->forPost($request->user()->id)
 					->when($search !== '', fn ($query) => $this->applySearch($query, $search))
 					->latest()
 					->latest('id')

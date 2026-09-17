@@ -79,6 +79,20 @@ class Quote extends Model implements HasMedia
 		);
 	}
 
+	#[Scope]
+	protected function forPost(Builder $query, int $viewerId): void
+	{
+		$query
+			->with([
+				'user',
+				'media',
+				'movie.media',
+				'comments' => fn ($query) => $query->with('user')->latest(),
+			])
+			->withCount(['likes', 'comments'])
+			->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $viewerId)]);
+	}
+
 	public function shouldRedirectToFeed(?string $redirectTo): bool
 	{
 		return $redirectTo === 'feed';

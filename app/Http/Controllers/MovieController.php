@@ -44,14 +44,7 @@ class MovieController extends Controller
 		$movie->load(['user', 'media']);
 
 		$quotesQuery = fn () => $movie->quotes()
-			->with([
-				'user',
-				'media',
-				'movie.media',
-				'comments' => fn ($query) => $query->with('user')->latest(),
-			])
-			->withCount(['likes', 'comments'])
-			->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $request->user()->id)]);
+			->forPost($request->user()->id);
 
 		return Inertia::render('Movies/Show', [
 			'movie' => [

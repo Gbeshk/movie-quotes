@@ -20,14 +20,7 @@ class QuoteController extends Controller
 	public function show(Quote $quote, Request $request): JsonResponse
 	{
 		$quote = Quote::query()
-			->with([
-				'user',
-				'media',
-				'movie.media',
-				'comments' => fn ($query) => $query->with('user')->latest(),
-			])
-			->withCount(['likes', 'comments'])
-			->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $request->user()->id)])
+			->forPost($request->user()->id)
 			->findOrFail($quote->id);
 
 		return response()->json((new QuotePostResource($quote))->resolve($request));
