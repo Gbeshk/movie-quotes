@@ -1,14 +1,17 @@
 import ConfirmModal from '@/Components/Shared/ConfirmModal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { useTranslatable } from '@/lib/translatable';
 import { AuthenticatedPageProps, Movie, Paginated, Quote } from '@/types';
 import { Head, InfiniteScroll, useForm, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import EditMovieModal from './Partials/Movie/EditMovieModal';
 import MovieDetails from './Partials/Movie/MovieDetails';
 import AddQuoteModal from './Partials/Quote/AddQuoteModal';
 import EditQuoteModal from './Partials/Quote/EditQuoteModal';
 import MovieQuotesHeader from './Partials/Quote/MovieQuotesHeader';
 import QuoteCard from './Partials/Quote/QuoteCard';
+import ViewQuoteModal from './Partials/Quote/ViewQuoteModal';
 
 export default function Show({
     movie,
@@ -19,6 +22,8 @@ export default function Show({
     quotes: Paginated<Quote>;
     quotesCount: number;
 }) {
+    const { t } = useTranslation();
+    const translate = useTranslatable();
     const { auth } = usePage<AuthenticatedPageProps>().props;
     const isOwner = auth.user.id === movie.user_id;
     const [showEdit, setShowEdit] = useState(false);
@@ -26,6 +31,13 @@ export default function Show({
     const [showAddQuote, setShowAddQuote] = useState(false);
     const [editingQuote, setEditingQuote] = useState<Quote | null>(null);
     const [deletingQuote, setDeletingQuote] = useState<Quote | null>(null);
+    const [viewingQuote, setViewingQuote] = useState<Quote | null>(() => {
+        const viewQuoteId = new URLSearchParams(window.location.search).get('view_quote');
+
+        return viewQuoteId
+            ? (quotes.data.find((quote) => quote.id === Number(viewQuoteId)) ?? null)
+            : null;
+    });
     const { delete: destroy, processing } = useForm();
     const { delete: destroyQuote, processing: processingQuoteDelete } = useForm();
 
@@ -41,9 +53,15 @@ export default function Show({
         }
     };
 
+    useEffect(() => {
+        if (viewingQuote) {
+            window.history.replaceState({}, '', window.location.pathname);
+        }
+    }, [viewingQuote]);
+
     return (
         <AuthenticatedLayout>
-            <Head title={movie.title.en} />
+            <Head title={translate(movie.title)} />
 
             {isOwner && (
                 <EditMovieModal show={showEdit} onClose={() => setShowEdit(false)} movie={movie} />
@@ -54,9 +72,9 @@ export default function Show({
                 onClose={() => setShowDeleteConfirm(false)}
                 onConfirm={confirmDelete}
                 confirmDisabled={processing}
-                title="Delete this movie?"
-                subtitle="This will also delete all of its quotes. This cannot be undone."
-                confirmLabel="Delete"
+                title={t('movies.deleteMovieConfirmTitle')}
+                subtitle={t('movies.deleteMovieConfirmSubtitle')}
+                confirmLabel={t('common.delete')}
             />
 
             {isOwner && (
@@ -79,20 +97,37 @@ export default function Show({
                 />
             )}
 
+            {viewingQuote && (
+                <ViewQuoteModal
+                    show
+                    onClose={() => setViewingQuote(null)}
+                    quote={viewingQuote}
+                    isAuthor={viewingQuote.user_id === auth.user.id}
+                    onEdit={() => {
+                        setEditingQuote(viewingQuote);
+                        setViewingQuote(null);
+                    }}
+                    onDelete={() => {
+                        setDeletingQuote(viewingQuote);
+                        setViewingQuote(null);
+                    }}
+                />
+            )}
+
             <ConfirmModal
                 show={deletingQuote !== null}
                 onClose={() => setDeletingQuote(null)}
                 onConfirm={confirmDeleteQuote}
                 confirmDisabled={processingQuoteDelete}
-                title="Delete this quote?"
-                subtitle="This action cannot be undone."
-                confirmLabel="Delete"
+                title={t('movies.deleteQuoteConfirmTitle')}
+                subtitle={t('movies.deleteQuoteConfirmSubtitle')}
+                confirmLabel={t('common.delete')}
             />
 
             <div className="w-full">
                 <div className="flex items-center justify-between">
                     <p className="text-2xl leading-normal font-medium tracking-normal text-white">
-                        Movie description
+                        {t('movies.movieDescription')}
                     </p>
                 </div>
 
@@ -117,6 +152,7 @@ export default function Show({
                             isAuthor={quote.user_id === auth.user.id}
                             onEdit={() => setEditingQuote(quote)}
                             onDelete={() => setDeletingQuote(quote)}
+                            onView={() => setViewingQuote(quote)}
                         />
                     ))}
                 </InfiniteScroll>

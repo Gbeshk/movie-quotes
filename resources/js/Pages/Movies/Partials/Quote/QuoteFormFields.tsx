@@ -7,14 +7,17 @@ export default function QuoteFormFields({
     data,
     setData,
     errors,
-}: Pick<InertiaFormProps<QuoteFormData>, 'data' | 'setData' | 'errors'>) {
+    textareaHeightClassName = 'h-18',
+}: Pick<InertiaFormProps<QuoteFormData>, 'data' | 'setData' | 'errors'> & {
+    textareaHeightClassName?: string;
+}) {
     return (
         <>
             <FormField
                 variant="placeholder"
                 as="textarea"
                 className="mt-7"
-                textareaHeightClassName="h-18"
+                textareaHeightClassName={textareaHeightClassName}
                 id="quote_text_en"
                 name="text_en"
                 placeholder="“Quote in English.”"
@@ -28,7 +31,7 @@ export default function QuoteFormFields({
                 variant="placeholder"
                 as="textarea"
                 className="mt-6"
-                textareaHeightClassName="h-18"
+                textareaHeightClassName={textareaHeightClassName}
                 id="quote_text_ka"
                 name="text_ka"
                 placeholder="“ციტატა ქართულ ენაზე”"

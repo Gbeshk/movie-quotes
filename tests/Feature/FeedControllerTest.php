@@ -34,6 +34,24 @@ test('the feed lists quotes from every user, including the current user', functi
 	);
 });
 
+test('the feed sends both languages for the quote text and movie title', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	$quote = Quote::factory()->for($movie)->for($user)->create(['text' => ['en' => 'There is no spoon', 'ka' => 'კოვზი არ არსებობს']]);
+
+	$response = $this->actingAs($user)->get(route('feed'));
+
+	$response->assertInertia(
+		fn ($page) => $page
+			->component('Feed/Index')
+			->where('quotes.data.0.id', $quote->id)
+			->where('quotes.data.0.text.en', 'There is no spoon')
+			->where('quotes.data.0.text.ka', 'კოვზი არ არსებობს')
+			->where('quotes.data.0.movie.title.en', 'The Matrix')
+			->where('quotes.data.0.movie.title.ka', 'მატრიცა')
+	);
+});
+
 test('the feed includes each quote\'s movie', function () {
 	$user = User::factory()->create();
 	$otherUser = User::factory()->create();
@@ -71,7 +89,7 @@ test('the feed marks whether the current user has liked each quote', function ()
 	);
 });
 
-test('the feed includes each quote\'s comments with their authors, oldest first', function () {
+test('the feed includes each quote\'s comments with their authors, newest first', function () {
 	$user = User::factory()->create();
 	$otherUser = User::factory()->create();
 	$quote = Quote::factory()->for($otherUser)->create();
@@ -85,10 +103,10 @@ test('the feed includes each quote\'s comments with their authors, oldest first'
 		fn ($page) => $page
 			->component('Feed/Index')
 			->has('quotes.data.0.comments', 2)
-			->where('quotes.data.0.comments.0.id', $firstComment->id)
-			->where('quotes.data.0.comments.0.body', $firstComment->body)
-			->where('quotes.data.0.comments.0.user.id', $firstComment->user_id)
-			->where('quotes.data.0.comments.1.id', $secondComment->id)
+			->where('quotes.data.0.comments.0.id', $secondComment->id)
+			->where('quotes.data.0.comments.0.body', $secondComment->body)
+			->where('quotes.data.0.comments.0.user.id', $secondComment->user_id)
+			->where('quotes.data.0.comments.1.id', $firstComment->id)
 	);
 });
 
@@ -98,6 +116,67 @@ test('the feed does not load movie search results on a full page visit', functio
 	$response = $this->actingAs($user)->get(route('feed'));
 
 	$response->assertInertia(fn ($page) => $page->component('Feed/Index')->missing('movieOptions'));
+});
+
+test('searching the feed with an @ prefix filters quotes by movie title', function () {
+	$user = User::factory()->create();
+
+	$matrixMovie = Movie::factory()->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	$otherMovie = Movie::factory()->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
+	$matchingQuote = Quote::factory()->for($matrixMovie)->create();
+	Quote::factory()->for($otherMovie)->create();
+
+	$response = $this->actingAs($user)->get(route('feed', ['search' => '@matrix']));
+
+	$response->assertInertia(
+		fn ($page) => $page
+			->component('Feed/Index')
+			->has('quotes.data', 1)
+			->where('quotes.data.0.id', $matchingQuote->id)
+	);
+});
+
+test('searching the feed with a # prefix filters quotes by their own text', function () {
+	$user = User::factory()->create();
+
+	$matchingQuote = Quote::factory()->create(['text' => ['en' => 'There is no spoon', 'ka' => 'კოვზი არ არსებობს']]);
+	Quote::factory()->create(['text' => ['en' => 'Why so serious', 'ka' => 'რატომ ხარ ასეთი სერიოზული']]);
+
+	$response = $this->actingAs($user)->get(route('feed', ['search' => '#spoon']));
+
+	$response->assertInertia(
+		fn ($page) => $page
+			->component('Feed/Index')
+			->has('quotes.data', 1)
+			->where('quotes.data.0.id', $matchingQuote->id)
+	);
+});
+
+test('searching the feed without an @ or # prefix matches either the movie title or the quote text', function () {
+	$user = User::factory()->create();
+
+	$movieTitleMatch = Movie::factory()->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	$matchingByMovie = Quote::factory()->for($movieTitleMatch)->create(['text' => ['en' => 'Whoa', 'ka' => 'ვაუ']]);
+	$matchingByText = Quote::factory()->create(['text' => ['en' => 'There is no spoon', 'ka' => 'კოვზი არ არსებობს']]);
+	Quote::factory()->create(['text' => ['en' => 'Why so serious', 'ka' => 'რატომ ხარ ასეთი სერიოზული']]);
+
+	$response = $this->actingAs($user)->get(route('feed', ['search' => 'matrix']));
+
+	$response->assertInertia(
+		fn ($page) => $page
+			->component('Feed/Index')
+			->has('quotes.data', 1)
+			->where('quotes.data.0.id', $matchingByMovie->id)
+	);
+
+	$response = $this->actingAs($user)->get(route('feed', ['search' => 'spoon']));
+
+	$response->assertInertia(
+		fn ($page) => $page
+			->component('Feed/Index')
+			->has('quotes.data', 1)
+			->where('quotes.data.0.id', $matchingByText->id)
+	);
 });
 
 test('the feed only returns the current user\'s own matching movies on a partial reload', function () {

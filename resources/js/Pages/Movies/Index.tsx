@@ -1,12 +1,14 @@
 import Button from '@/Components/Shared/Button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PlusIcon from '@/Components/Shared/Icons/PlusIcon';
+import { cn } from '@/lib/cn';
 import AddMovieModal from '@/Pages/Movies/Partials/Movie/AddMovieModal';
 import MovieCard from '@/Pages/Movies/Partials/Movie/MovieCard';
 import MovieSearch from '@/Pages/Movies/Partials/Movie/MovieSearch';
 import { Movie, Paginated } from '@/types';
 import { InfiniteScroll } from '@inertiajs/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Index({
     movies,
@@ -17,6 +19,7 @@ export default function Index({
     moviesCount: number;
     search: string;
 }) {
+    const { t, i18n } = useTranslation();
     const [showAddMovieModal, setShowAddMovieModal] = useState(false);
 
     return (
@@ -24,7 +27,7 @@ export default function Index({
             <div className="w-full">
                 <div className="flex items-center justify-between">
                     <p className="text-2xl leading-normal font-medium tracking-normal text-white">
-                        My list of movies (Total {moviesCount})
+                        {t('movies.myList', { count: moviesCount })}
                     </p>
                     <div>
                         <div className="flex items-center gap-8">
@@ -32,10 +35,13 @@ export default function Index({
                             <Button
                                 variant="danger-cta"
                                 onClick={() => setShowAddMovieModal(true)}
-                                className="h-12 w-38.5! text-xl leading-normal font-normal tracking-normal"
+                                className={cn(
+                                    'h-12 w-38.5! leading-normal font-normal tracking-normal',
+                                    i18n.language === 'ka' ? 'text-base' : 'text-xl',
+                                )}
                             >
                                 <PlusIcon />
-                                Add movie
+                                {t('movies.addMovie')}
                             </Button>
                         </div>
                     </div>

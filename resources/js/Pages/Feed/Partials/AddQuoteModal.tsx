@@ -9,8 +9,10 @@ import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Movie, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function AddQuoteModal({ show, onClose }: { show: boolean; onClose: () => void }) {
+    const { t } = useTranslation();
     const [movie, setMovie] = useState<Movie | null>(null);
     const [isChangingMovie, setIsChangingMovie] = useState(false);
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm<
@@ -59,7 +61,7 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <ModalHeader title="add quote" onClose={close} />
+            <ModalHeader title={t('movies.addQuoteTitle')} onClose={close} />
             <ModalUserRow />
             <QuoteFormFields data={data} setData={setData} errors={errors} />
             <ImageUpload
@@ -81,7 +83,7 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
                             onClick={changeMovie}
                             className="text-modal-secondary-text ml-auto w-fit cursor-pointer self-start text-base leading-normal font-normal tracking-normal hover:underline"
                         >
-                            Change movie
+                            {t('feed.changeMovie')}
                         </button>
                     }
                 />
@@ -103,7 +105,7 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
                     disabled={processing}
                     className="h-12 text-xl leading-6 font-normal tracking-normal"
                 >
-                    Add quote
+                    {t('movies.addQuote')}
                 </Button>
             </div>
         </Modal>

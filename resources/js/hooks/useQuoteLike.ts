@@ -2,7 +2,7 @@ import { Quote } from '@/types';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 
-export function useQuoteLike(quote: Quote) {
+export function useQuoteLike(quote: Quote, redirectTo?: 'feed') {
     const [liked, setLiked] = useState(quote.is_liked_by_me ?? false);
     const [likesCount, setLikesCount] = useState(quote.likes_count ?? 0);
 
@@ -14,7 +14,7 @@ export function useQuoteLike(quote: Quote) {
 
         router.post(
             route('quotes.likes.toggle', quote.id),
-            { redirect_to: 'feed' },
+            { redirect_to: redirectTo },
             {
                 preserveScroll: true,
                 preserveState: true,

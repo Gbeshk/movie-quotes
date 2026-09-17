@@ -2,32 +2,50 @@ import Header from '@/Components/Shared/Header';
 import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import FeedIcon from '@/Components/Shared/Icons/FeedIcon';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
-import NotificationToasts from '@/Components/Shared/NotificationToasts';
 import { useLiveNotifications } from '@/hooks/useLiveNotifications';
 import { cn } from '@/lib/cn';
-import { AuthenticatedPageProps } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
-import { PropsWithChildren, ReactNode } from 'react';
+import ViewQuoteModal from '@/Pages/Movies/Partials/Quote/ViewQuoteModal';
+import { AuthenticatedPageProps, Quote } from '@/types';
+import { Link, router, usePage } from '@inertiajs/react';
+import axios from 'axios';
+import { PropsWithChildren, ReactNode, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Authenticated({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
+    const { t } = useTranslation();
     const { auth, unreadNotificationsCount } = usePage<AuthenticatedPageProps>().props;
     const user = auth.user;
-    const { unreadCount, setUnreadCount, toasts } = useLiveNotifications(
-        user.id,
-        unreadNotificationsCount,
-    );
+    const { unreadCount, setUnreadCount } = useLiveNotifications(user.id, unreadNotificationsCount);
+    const [viewingQuote, setViewingQuote] = useState<Quote | null>(null);
+
+    const viewQuote = (quoteId: number) => {
+        axios.get<Quote>(route('quotes.show', quoteId)).then((response) => {
+            setViewingQuote(response.data);
+        });
+    };
 
     return (
         <div className="bg-gradient-dark min-h-screen bg-black pb-20">
-            <NotificationToasts toasts={toasts} />
             <Header
                 background="bg-header-bg border-t border-modal-bg/20 backdrop-blur-[50px]"
                 unreadNotificationsCount={unreadCount}
                 onNotificationsRead={() => setUnreadCount(0)}
+                onViewQuote={viewQuote}
             />
+
+            {viewingQuote && (
+                <ViewQuoteModal
+                    show
+                    onClose={() => setViewingQuote(null)}
+                    quote={viewingQuote}
+                    isAuthor={viewingQuote.user_id === user.id}
+                    onEdit={() => router.visit(route('movies.show', viewingQuote.movie_id))}
+                    onDelete={() => router.visit(route('movies.show', viewingQuote.movie_id))}
+                />
+            )}
             <div className="mt-8 flex w-full gap-46.75 px-17.5">
                 <div className="flex w-70 flex-col gap-10">
                     <Link href={route('profile.edit')} className="flex cursor-pointer gap-6">
@@ -52,7 +70,7 @@ export default function Authenticated({
                                 {user.username}
                             </p>
                             <p className="text-base leading-6 font-normal tracking-normal text-white">
-                                Edit your profile
+                                {t('nav.editProfile')}
                             </p>
                         </div>
                     </Link>
@@ -63,7 +81,7 @@ export default function Authenticated({
                     >
                         <FeedIcon active={route().current('feed')} />
                         <p className="text-2xl leading-9 font-normal tracking-normal text-white">
-                            News feed
+                            {t('nav.newsFeed')}
                         </p>
                     </Link>
 
@@ -73,7 +91,7 @@ export default function Authenticated({
                     >
                         <MoviesIcon active={route().current('movies.*')} />
                         <p className="text-2xl leading-9 font-normal tracking-normal text-white">
-                            List of movies
+                            {t('nav.movies')}
                         </p>
                     </Link>
                 </div>

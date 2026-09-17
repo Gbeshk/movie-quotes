@@ -8,6 +8,7 @@ import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Movie, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function AddQuoteModal({
     show,
@@ -18,6 +19,7 @@ export default function AddQuoteModal({
     onClose: () => void;
     movie: Movie;
 }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm<
         QuoteFormData & { movie_id: number }
     >({
@@ -47,7 +49,7 @@ export default function AddQuoteModal({
             cardBgClassName="bg-profile-modal-bg"
             backdropClassName=""
         >
-            <ModalHeader title="add quote" onClose={onClose} />
+            <ModalHeader title={t('movies.addQuoteTitle')} onClose={onClose} />
             <ModalUserRow />
             <MoviePreview movie={movie} />
             <QuoteFormFields data={data} setData={setData} errors={errors} />
@@ -68,7 +70,7 @@ export default function AddQuoteModal({
                     disabled={processing}
                     className="h-12 text-xl leading-6 font-normal tracking-normal"
                 >
-                    Add quote
+                    {t('movies.addQuote')}
                 </Button>
             </div>
         </Modal>

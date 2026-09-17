@@ -8,6 +8,7 @@ import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Quote, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function EditQuoteModal({
     show,
@@ -20,6 +21,7 @@ export default function EditQuoteModal({
     quote: Quote;
     onDelete?: () => void;
 }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, clearErrors, transform } =
         useForm<QuoteFormData>({
             text: { ka: quote.text.ka, en: quote.text.en },
@@ -53,10 +55,10 @@ export default function EditQuoteModal({
             >
                 <TrashIcon />
                 <p className="text-input-bg text-base leading-normal font-normal tracking-normal capitalize">
-                    Delete
+                    {t('common.delete')}
                 </p>
             </button>
-            <ModalHeader title="edit quote" onClose={onClose} />
+            <ModalHeader title={t('movies.editQuoteTitle')} onClose={onClose} />
             <ModalUserRow />
             <QuoteFormFields data={data} setData={setData} errors={errors} />
             <EditImagePreview
@@ -76,7 +78,7 @@ export default function EditQuoteModal({
                     disabled={processing}
                     className="h-12 text-xl leading-6 font-normal tracking-normal"
                 >
-                    Save changes
+                    {t('common.saveChanges')}
                 </Button>
             </div>
         </Modal>
