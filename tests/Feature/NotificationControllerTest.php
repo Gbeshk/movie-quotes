@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('guests cannot mark notifications as read', function () {
-	$this->post(route('notifications.read'))->assertRedirect(route('login'));
+	$this->post(route('notifications.read'))->assertForbidden();
 });
 
 test('a signed-in user can mark all their notifications as read', function () {
