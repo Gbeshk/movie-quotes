@@ -3,7 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -42,6 +42,14 @@ class AuthenticationTest extends TestCase
 		]);
 
 		$this->assertGuest();
+	}
+
+	public function test_guests_are_forbidden_from_authenticated_routes(): void
+	{
+		$response = $this->get(route('feed'));
+
+		$response->assertForbidden();
+		$response->assertInertia(fn ($page) => $page->component('Error/Forbidden'));
 	}
 
 	public function test_users_can_logout(): void
