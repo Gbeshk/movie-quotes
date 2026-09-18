@@ -25,7 +25,7 @@
                     <tr>
                         <td align="left" style="padding-top:76px;">
                             <p style="margin:0; color:#ffffff; font-size:16px; font-weight:400; line-height:1.625; letter-spacing:normal; text-align:left;">
-                                Hi {{ $username }}!
+                                {{ __('emails.greeting', ['username' => $username]) }}
                             </p>
                         </td>
                     </tr>
@@ -33,7 +33,7 @@
                     <tr>
                         <td align="left" style="padding-top:40px;">
                             <p style="margin:0; color:#ffffff; font-size:16px; font-weight:400; line-height:1.625; letter-spacing:normal; text-align:left;">
-                                If you have any problems, please contact us:
+                                {{ __('emails.help') }}
                                 <a href="mailto:support@moviequotes.ge" style="color:#ffffff; text-decoration:none;">support@moviequotes.ge</a>
                             </p>
                         </td>
@@ -41,7 +41,7 @@
                     <tr>
                         <td align="left" style="padding-top:24px; padding-bottom:16px;">
                             <p style="margin:0; color:#ffffff; font-size:16px; font-weight:400; line-height:1.625; letter-spacing:normal; text-align:left;">
-                                MovieQuotes Crew
+                                {{ __('emails.signature') }}
                             </p>
                         </td>
                     </tr>

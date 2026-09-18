@@ -7,6 +7,10 @@ import { initReactI18next } from 'react-i18next';
 export const SUPPORTED_LANGUAGES = ['en', 'ka'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
+i18n.on('languageChanged', (lng) => {
+    document.cookie = `locale=${lng}; path=/; max-age=31536000; SameSite=Lax`;
+});
+
 i18n.use(LanguageDetector)
     .use(initReactI18next)
     .init({

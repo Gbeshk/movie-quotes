@@ -37,7 +37,12 @@ class ProfileController extends Controller
 		$user->save();
 
 		if ($user->pending_email !== null) {
-			Notification::route('mail', $user->pending_email)->notify(new ConfirmPendingEmail($user));
+			$locale = $request->cookie('locale') === 'ka' ? 'ka' : 'en';
+
+			Notification::locale($locale)->send(
+				Notification::route('mail', $user->pending_email),
+				new ConfirmPendingEmail($user)
+			);
 		}
 
 		return Redirect::route('profile.edit');

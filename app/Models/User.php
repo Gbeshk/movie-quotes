@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Notification;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -51,11 +52,16 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
 	public function sendEmailVerificationNotification(): void
 	{
-		$this->notify(new VerifyEmail());
+		Notification::locale($this->emailLocale())->send($this, new VerifyEmail());
 	}
 
 	public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
 	{
-		$this->notify(new ResetPassword($token));
+		Notification::locale($this->emailLocale())->send($this, new ResetPassword($token));
+	}
+
+	private function emailLocale(): string
+	{
+		return request()?->cookie('locale') === 'ka' ? 'ka' : 'en';
 	}
 }

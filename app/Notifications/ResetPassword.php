@@ -10,10 +10,13 @@ class ResetPassword extends BaseResetPassword
 	public function toMail($notifiable): MailMessage
 	{
 		return (new MailMessage())
-			->subject('Reset your password')
-			->view('emails.reset-password', [
-				'username'  => $notifiable->username,
-				'actionUrl' => $this->resetUrl($notifiable),
+			->subject(__('emails.reset.subject'))
+			->view('emails.action', [
+				'username'   => $notifiable->username,
+				'title'      => __('emails.reset.subject'),
+				'intro'      => __('emails.reset.intro'),
+				'buttonText' => __('emails.reset.button'),
+				'actionUrl'  => $this->resetUrl($notifiable),
 			]);
 	}
 }

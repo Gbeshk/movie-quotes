@@ -10,10 +10,13 @@ class VerifyEmail extends BaseVerifyEmail
 	public function toMail($notifiable): MailMessage
 	{
 		return (new MailMessage())
-			->subject('Verify your email address')
-			->view('emails.verify-email', [
-				'username'  => $notifiable->username,
-				'actionUrl' => $this->verificationUrl($notifiable),
+			->subject(__('emails.verify.subject'))
+			->view('emails.action', [
+				'username'   => $notifiable->username,
+				'title'      => __('emails.verify.subject'),
+				'intro'      => __('emails.verify.intro'),
+				'buttonText' => __('emails.verify.button'),
+				'actionUrl'  => $this->verificationUrl($notifiable),
 			]);
 	}
 }
