@@ -3,7 +3,7 @@ import ErrorShadowIcon from '@/Components/Shared/Icons/ErrorShadowIcon';
 import ErrorLayout from '@/Layouts/ErrorLayout';
 import { useTranslation } from 'react-i18next';
 
-export default function Show() {
+export default function NotFound() {
     const { t } = useTranslation();
 
     return (

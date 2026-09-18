@@ -40,7 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
 			$page = match ($response->getStatusCode()) {
 				403     => 'Error/Forbidden',
-				404     => 'Error/Show',
+				404     => 'Error/NotFound',
 				default => null,
 			};
 
