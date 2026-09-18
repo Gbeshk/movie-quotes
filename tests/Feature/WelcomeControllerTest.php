@@ -2,11 +2,36 @@
 
 use App\Models\Movie;
 use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
+
+test('a signed-in user visiting the welcome page is redirected to the feed', function () {
+	$user = User::factory()->create();
+
+	$this->actingAs($user)->get(route('welcome'))->assertRedirect(route('feed'));
+});
+
+test('a signed-in user is not redirected away from the email verified confirmation', function () {
+	$user = User::factory()->create();
+
+	$response = $this->actingAs($user)->get(route('welcome', ['verified' => 1]));
+
+	$response->assertOk();
+	$response->assertInertia(fn ($page) => $page->component('Welcome'));
+});
+
+test('a signed-in user is not redirected away from the password reset flow', function () {
+	$user = User::factory()->create();
+
+	$response = $this->actingAs($user)->get(route('welcome', ['reset_token' => 'abc123', 'reset_email' => 'user@example.com']));
+
+	$response->assertOk();
+	$response->assertInertia(fn ($page) => $page->component('Welcome'));
+});
 
 test('the welcome page reports whether an email was just verified', function () {
 	$response = $this->get(route('welcome', ['verified' => 1]));

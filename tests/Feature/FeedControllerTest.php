@@ -9,8 +9,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('guests are redirected away from the feed', function () {
-	$this->get(route('feed'))->assertRedirect(route('login'));
+test('guests are forbidden from the feed', function () {
+	$this->get(route('feed'))->assertForbidden();
 });
 
 test('the feed lists quotes from every user, including the current user', function () {

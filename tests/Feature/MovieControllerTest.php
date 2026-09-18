@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
-test('guests are redirected away from the movies index', function () {
-	$this->get(route('movies.index'))->assertRedirect(route('login'));
+test('guests are forbidden from the movies index', function () {
+	$this->get(route('movies.index'))->assertForbidden();
 });
 
 test('the movies index only lists the authenticated user\'s own movies', function () {
@@ -158,10 +158,10 @@ test('the movie page marks whether the current user has liked each quote', funct
 	);
 });
 
-test('guests are redirected away from a movie page', function () {
+test('guests are forbidden from a movie page', function () {
 	$movie = Movie::factory()->create();
 
-	$this->get(route('movies.show', $movie))->assertRedirect(route('login'));
+	$this->get(route('movies.show', $movie))->assertForbidden();
 });
 
 test('a signed-in user can add a movie with a poster', function () {
@@ -227,7 +227,7 @@ test('creating a movie with mismatched language text fails validation', function
 });
 
 test('guests cannot add a movie', function () {
-	$this->post(route('movies.store'), [])->assertRedirect(route('login'));
+	$this->post(route('movies.store'), [])->assertForbidden();
 });
 
 test('the owner can update their movie', function () {
@@ -303,6 +303,6 @@ test('a user cannot delete a movie they do not own', function () {
 test('guests cannot update or delete a movie', function () {
 	$movie = Movie::factory()->create();
 
-	$this->patch(route('movies.update', $movie), [])->assertRedirect(route('login'));
-	$this->delete(route('movies.destroy', $movie))->assertRedirect(route('login'));
+	$this->patch(route('movies.update', $movie), [])->assertForbidden();
+	$this->delete(route('movies.destroy', $movie))->assertForbidden();
 });

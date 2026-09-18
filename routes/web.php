@@ -9,10 +9,13 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Middleware\RedirectVerifiedUsersToFeed;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/', [WelcomeController::class, 'index'])
+	->middleware(RedirectVerifiedUsersToFeed::class)
+	->name('welcome');
 
 Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group(function () {
 	Route::get('/feed', [FeedController::class, 'index'])->name('feed');

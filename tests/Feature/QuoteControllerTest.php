@@ -31,7 +31,7 @@ test('a signed-in user can view any quote with its comments and like state', fun
 test('guests cannot add a quote', function () {
 	$movie = Movie::factory()->create();
 
-	$this->post(route('quotes.store'), ['movie_id' => $movie->id])->assertRedirect(route('login'));
+	$this->post(route('quotes.store'), ['movie_id' => $movie->id])->assertForbidden();
 });
 
 test('a signed-in user can add a quote with an image to their own movie', function () {
@@ -128,7 +128,7 @@ test('creating a quote with mismatched language text fails validation', function
 test('guests cannot update a quote', function () {
 	$quote = Quote::factory()->create();
 
-	$this->patch(route('quotes.update', $quote), [])->assertRedirect(route('login'));
+	$this->patch(route('quotes.update', $quote), [])->assertForbidden();
 });
 
 test('the quote author can update their quote', function () {
@@ -160,7 +160,7 @@ test('a user cannot update a quote they do not own', function () {
 test('guests cannot delete a quote', function () {
 	$quote = Quote::factory()->create();
 
-	$this->delete(route('quotes.destroy', $quote))->assertRedirect(route('login'));
+	$this->delete(route('quotes.destroy', $quote))->assertForbidden();
 });
 
 test('the quote author can delete their quote', function () {

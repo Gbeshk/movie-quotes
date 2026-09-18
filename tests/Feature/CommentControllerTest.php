@@ -12,7 +12,7 @@ test('guests cannot add a comment', function () {
 	$quote = Quote::factory()->create();
 
 	$this->post(route('quotes.comments.store', $quote), ['body' => 'Nice quote'])
-		->assertRedirect(route('login'));
+		->assertForbidden();
 });
 
 test('a signed-in user can add a comment to any quote', function () {
