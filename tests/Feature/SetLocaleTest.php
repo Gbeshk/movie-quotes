@@ -1,7 +1,7 @@
 <?php
 
 test('the locale cookie switches the app locale to georgian', function () {
-	$this->withCookie('locale', 'ka')->get(route('welcome'));
+	$this->withUnencryptedCookies(['locale' => 'ka'])->get(route('welcome'));
 
 	expect(app()->getLocale())->toBe('ka');
 });
@@ -13,7 +13,7 @@ test('a missing locale cookie defaults the app locale to english', function () {
 });
 
 test('an unsupported locale cookie falls back to english', function () {
-	$this->withCookie('locale', 'fr')->get(route('welcome'));
+	$this->withUnencryptedCookies(['locale' => 'fr'])->get(route('welcome'));
 
 	expect(app()->getLocale())->toBe('en');
 });

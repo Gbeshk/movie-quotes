@@ -56,7 +56,7 @@ class RegistrationTest extends TestCase
 
 	public function test_the_verification_email_uses_the_locale_cookie(): void
 	{
-		$this->withCookie('locale', 'ka')->post('/register', $this->validRegistrationData());
+		$this->withUnencryptedCookies(['locale' => 'ka'])->post('/register', $this->validRegistrationData());
 
 		$user = User::where('email', 'test@example.com')->firstOrFail();
 		$mail = (new VerifyEmail())->toMail($user);
