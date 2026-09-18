@@ -2,7 +2,7 @@ import AddPostIcon from '@/Components/Shared/Icons/AddPostIcon';
 import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { cn } from '@/lib/cn';
-import { renderSearchPlaceholder } from '@/utils/renderSearchPlaceholder';
+import { renderSearchPlaceholder } from '@/Components/Shared/renderSearchPlaceholder';
 import AddQuoteModal from '@/Pages/Feed/Partials/AddQuoteModal';
 import Post from '@/Pages/Feed/Partials/Post';
 import { Paginated, Quote } from '@/types';

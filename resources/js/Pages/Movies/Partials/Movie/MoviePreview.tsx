@@ -1,7 +1,7 @@
 import GenreTags from '@/Pages/Movies/Partials/Movie/GenreTags';
 import MovieDirector from '@/Pages/Movies/Partials/Movie/MovieDirector';
 import { cn } from '@/lib/cn';
-import { useTranslatable } from '@/utils/translatable';
+import { useTranslatable } from '@/lib/translatable';
 import { Movie } from '@/types';
 import { ReactNode } from 'react';
 

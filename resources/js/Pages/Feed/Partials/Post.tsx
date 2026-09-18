@@ -2,7 +2,7 @@ import CommentIcon from '@/Components/Shared/Icons/CommentIcon';
 import HeartIcon from '@/Components/Shared/Icons/HeartIcon';
 import UserAvatar from '@/Components/Shared/UserAvatar';
 import { useQuoteLike } from '@/hooks/useQuoteLike';
-import { useTranslatable } from '@/utils/translatable';
+import { useTranslatable } from '@/lib/translatable';
 import PostComment from '@/Pages/Feed/Partials/PostComment';
 import PostCommentForm from '@/Pages/Feed/Partials/PostCommentForm';
 import { Comment, Quote } from '@/types';

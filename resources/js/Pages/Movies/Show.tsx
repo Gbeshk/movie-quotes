@@ -1,6 +1,6 @@
 import ConfirmModal from '@/Components/Shared/ConfirmModal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useTranslatable } from '@/utils/translatable';
+import { useTranslatable } from '@/lib/translatable';
 import { AuthenticatedPageProps, Movie, Paginated, Quote } from '@/types';
 import { Head, InfiniteScroll, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';

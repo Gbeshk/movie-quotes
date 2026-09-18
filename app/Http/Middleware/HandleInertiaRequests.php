@@ -37,16 +37,12 @@ class HandleInertiaRequests extends Middleware
 				'user' => $request->user(),
 			],
 			'unreadNotificationsCount' => $request->user()?->unreadNotifications()->count() ?? 0,
-			'notifications'            => $this->notifications($request),
+			'notifications'            => $request->user() ? $this->notifications($request) : null,
 		];
 	}
 
-	protected function notifications(Request $request): ?ScrollProp
+	protected function notifications(Request $request): ScrollProp
 	{
-		if (!$request->user()) {
-			return null;
-		}
-
 		return Inertia::scroll(
 			fn () => $request->user()
 				->notifications()

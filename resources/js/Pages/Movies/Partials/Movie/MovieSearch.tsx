@@ -1,5 +1,5 @@
 import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
-import { renderSearchPlaceholder } from '@/utils/renderSearchPlaceholder';
+import { renderSearchPlaceholder } from '@/Components/Shared/renderSearchPlaceholder';
 import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

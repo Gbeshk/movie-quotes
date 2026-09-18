@@ -1,5 +1,5 @@
 import QuotesIcon from '@/Components/Shared/Icons/QuotesIcon';
-import { useTranslatable } from '@/utils/translatable';
+import { useTranslatable } from '@/lib/translatable';
 import { Movie } from '@/types';
 import { Link } from '@inertiajs/react';
 
