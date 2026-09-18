@@ -1,5 +1,5 @@
 import EditableFieldGroup from '@/Components/Shared/EditableFieldGroup';
-import { validateEmail, validateUsername } from '@/lib/validators';
+import { validateEmail, validateUsername } from '@/utils/validators';
 import { User } from '@/types';
 import { InertiaFormProps } from '@inertiajs/react';
 import { FormEventHandler } from 'react';

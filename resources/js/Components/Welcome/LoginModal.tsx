@@ -4,7 +4,7 @@ import Checkbox from '@/Components/Shared/Checkbox';
 import AuthGoogleButton from '@/Components/Welcome/AuthGoogleButton';
 import FormField from '@/Components/Shared/FormField';
 import Modal from '@/Components/Shared/Modal';
-import { validateEmail } from '@/lib/validators';
+import { validateEmail } from '@/utils/validators';
 import { router, useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';

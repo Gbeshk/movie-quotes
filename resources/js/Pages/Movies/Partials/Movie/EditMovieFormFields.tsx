@@ -5,7 +5,7 @@ import {
     validateEnglishText,
     validateGeorgianText,
     validateReleaseYear,
-} from '@/lib/validators';
+} from '@/utils/validators';
 import { InertiaFormProps } from '@inertiajs/react';
 import { MovieFormData } from '@/types';
 import { useTranslation } from 'react-i18next';

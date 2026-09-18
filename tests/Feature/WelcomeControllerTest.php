@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
+test('guests do not receive a notifications prop', function () {
+	$response = $this->get(route('welcome'));
+
+	$response->assertInertia(fn ($page) => $page->where('notifications', null));
+});
+
 test('a signed-in user visiting the welcome page is redirected to the feed', function () {
 	$user = User::factory()->create();
 

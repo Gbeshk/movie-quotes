@@ -1,5 +1,5 @@
 import FormField from '@/Components/Shared/FormField';
-import { validateEnglishText, validateGeorgianText } from '@/lib/validators';
+import { validateEnglishText, validateGeorgianText } from '@/utils/validators';
 import { InertiaFormProps } from '@inertiajs/react';
 import { QuoteFormData } from '@/types';
 
