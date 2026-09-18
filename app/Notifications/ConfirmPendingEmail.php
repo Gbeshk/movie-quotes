@@ -27,9 +27,13 @@ class ConfirmPendingEmail extends Notification
 		);
 
 		return (new MailMessage())
-			->subject('Confirm your new email address')
-			->line('You recently asked to change the email address on your account.')
-			->action('Confirm email address', $url)
-			->line('This link expires in 60 minutes. If you did not request this change, no further action is required.');
+			->subject(__('emails.confirm_email.subject'))
+			->view('emails.action', [
+				'username'   => $this->user->username,
+				'title'      => __('emails.confirm_email.subject'),
+				'intro'      => __('emails.confirm_email.intro'),
+				'buttonText' => __('emails.confirm_email.button'),
+				'actionUrl'  => $url,
+			]);
 	}
 }
