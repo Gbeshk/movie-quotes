@@ -19,9 +19,10 @@ i18n.use(LanguageDetector)
         load: 'languageOnly',
         interpolation: { escapeValue: false },
         detection: {
-            order: ['localStorage', 'navigator'],
-            caches: ['localStorage'],
-            lookupLocalStorage: 'locale',
+            order: ['cookie', 'navigator'],
+            caches: ['cookie'],
+            lookupCookie: 'locale',
+            cookieMinutes: 525600,
         },
     });
 

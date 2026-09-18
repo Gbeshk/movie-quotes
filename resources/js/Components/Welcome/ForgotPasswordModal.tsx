@@ -45,7 +45,7 @@ export default function ForgotPasswordModal({
         return (
             <Modal show={show} onClose={onClose} cardClassName="w-full max-w-134.5 px-22 py-12">
                 <EmailSentIcon />
-                <h2 className="mt-5 text-3xl leading-normal font-medium tracking-normal text-white">
+                <h2 className="mt-5 w-full text-center text-3xl leading-normal font-medium tracking-normal text-white">
                     {t('forgotPassword.checkEmailTitle')}
                 </h2>
                 <h3 className="mt-8 w-full text-center text-base leading-normal font-normal text-white">

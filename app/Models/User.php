@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPassword;
+use App\Notifications\VerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -45,5 +47,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 	public function registerMediaCollections(): void
 	{
 		$this->addMediaCollection('avatar')->singleFile();
+	}
+
+	public function sendEmailVerificationNotification(): void
+	{
+		$this->notify(new VerifyEmail());
+	}
+
+	public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
+	{
+		$this->notify(new ResetPassword($token));
 	}
 }

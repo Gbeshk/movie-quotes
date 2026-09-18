@@ -11,7 +11,7 @@ uses(RefreshDatabase::class);
 test('guests cannot like a quote', function () {
 	$quote = Quote::factory()->create();
 
-	$this->post(route('quotes.likes.toggle', $quote))->assertRedirect(route('login'));
+	$this->post(route('quotes.likes.toggle', $quote))->assertForbidden();
 });
 
 test('a signed-in user can like a quote', function () {
