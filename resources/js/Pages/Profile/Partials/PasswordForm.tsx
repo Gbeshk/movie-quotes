@@ -1,6 +1,6 @@
 import FormFieldRow from '@/Components/Shared/FormFieldRow';
 import ReadOnlyFieldRow from '@/Components/Shared/ReadOnlyFieldRow';
-import { validateNewPassword, validatePasswordConfirmation } from '@/lib/validators';
+import { validateNewPassword, validatePasswordConfirmation } from '@/utils/validators';
 import { InertiaFormProps } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';

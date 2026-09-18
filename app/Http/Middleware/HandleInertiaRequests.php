@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Middleware;
 use Inertia\ScrollProp;
@@ -42,10 +41,10 @@ class HandleInertiaRequests extends Middleware
 		];
 	}
 
-	protected function notifications(Request $request): ScrollProp
+	protected function notifications(Request $request): ?ScrollProp
 	{
 		if (!$request->user()) {
-			return Inertia::scroll(new LengthAwarePaginator([], 0, 20));
+			return null;
 		}
 
 		return Inertia::scroll(

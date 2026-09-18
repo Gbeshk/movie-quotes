@@ -2,8 +2,8 @@ import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import NotificationCommentIcon from '@/Components/Shared/Icons/NotificationCommentIcon';
 import NotificationHeartIcon from '@/Components/Shared/Icons/NotificationHeartIcon';
 import { cn } from '@/lib/cn';
-import { notificationAction, notificationActor } from '@/lib/notificationMessage';
-import { timeAgo } from '@/lib/timeAgo';
+import { notificationAction, notificationActor } from '@/utils/notificationMessage';
+import { timeAgo } from '@/utils/timeAgo';
 import { StoredNotification } from '@/types';
 import { useTranslation } from 'react-i18next';
 

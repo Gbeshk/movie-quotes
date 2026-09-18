@@ -1,6 +1,6 @@
 import EditIcon from '@/Components/Shared/Icons/EditIcon';
 import TrashIcon from '@/Components/Shared/Icons/TrashIcon';
-import { useTranslatable } from '@/lib/translatable';
+import { useTranslatable } from '@/utils/translatable';
 import GenreTags from '@/Pages/Movies/Partials/Movie/GenreTags';
 import MovieDirector from '@/Pages/Movies/Partials/Movie/MovieDirector';
 import { Movie } from '@/types';

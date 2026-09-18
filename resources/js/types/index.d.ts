@@ -107,7 +107,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         user: User | null;
     };
     unreadNotificationsCount: number;
-    notifications: Paginated<StoredNotification>;
+    notifications: Paginated<StoredNotification> | null;
 };
 
 export type AuthenticatedPageProps<T extends Record<string, unknown> = Record<string, unknown>> =

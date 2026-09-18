@@ -1,7 +1,7 @@
 import ArrowDown from '@/Components/Shared/Icons/ArrowDown';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
 import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
-import { useTranslatable } from '@/lib/translatable';
+import { useTranslatable } from '@/utils/translatable';
 import { AuthenticatedPageProps, Movie } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';

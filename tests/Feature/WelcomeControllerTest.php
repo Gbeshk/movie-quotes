@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
+test('guests do not receive a notifications prop', function () {
+	$response = $this->get(route('welcome'));
+
+	$response->assertInertia(fn ($page) => $page->where('notifications', null));
+});
+
 test('the welcome page reports whether an email was just verified', function () {
 	$response = $this->get(route('welcome', ['verified' => 1]));
 

@@ -8,7 +8,7 @@ import {
     validatePassword,
     validatePasswordConfirmation,
     validateUsername,
-} from '@/lib/validators';
+} from '@/utils/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';

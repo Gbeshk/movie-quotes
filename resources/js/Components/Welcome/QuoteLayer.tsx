@@ -1,4 +1,4 @@
-import { useTranslatable } from '@/lib/translatable';
+import { useTranslatable } from '@/utils/translatable';
 import { WelcomeQuote } from '@/types';
 
 export default function QuoteLayer({

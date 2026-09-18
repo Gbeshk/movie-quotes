@@ -3,7 +3,7 @@ import FormField from '@/Components/Shared/FormField';
 import ArrowLeftIcon from '@/Components/Shared/Icons/ArrowLeftIcon';
 import EmailSentIcon from '@/Components/Shared/Icons/EmailSentIcon';
 import Modal from '@/Components/Shared/Modal';
-import { validateEmail } from '@/lib/validators';
+import { validateEmail } from '@/utils/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';

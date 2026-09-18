@@ -4,7 +4,7 @@ import ArrowLeftIcon from '@/Components/Shared/Icons/ArrowLeftIcon';
 import CheckCircleIcon from '@/Components/Shared/Icons/CheckCircleIcon';
 import LinkExpiredIcon from '@/Components/Shared/Icons/LinkExpiredIcon';
 import Modal from '@/Components/Shared/Modal';
-import { validateNewPassword, validatePasswordConfirmation } from '@/lib/validators';
+import { validateNewPassword, validatePasswordConfirmation } from '@/utils/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';

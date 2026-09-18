@@ -5,7 +5,7 @@ import TrashIcon from '@/Components/Shared/Icons/TrashIcon';
 import ViewIcon from '@/Components/Shared/Icons/ViewIcon';
 import OptionsMenu from '@/Components/Shared/OptionsMenu';
 import { useQuoteLike } from '@/hooks/useQuoteLike';
-import { useTranslatable } from '@/lib/translatable';
+import { useTranslatable } from '@/utils/translatable';
 import PostCommentForm from '@/Pages/Feed/Partials/PostCommentForm';
 import { Quote } from '@/types';
 import { useState } from 'react';
