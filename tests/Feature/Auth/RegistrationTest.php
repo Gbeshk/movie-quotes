@@ -54,6 +54,18 @@ class RegistrationTest extends TestCase
 		Notification::assertSentTo($user, VerifyEmail::class);
 	}
 
+	public function test_the_verification_email_uses_the_locale_cookie(): void
+	{
+		$this->withCookie('locale', 'ka')->post('/register', $this->validRegistrationData());
+
+		$user = User::where('email', 'test@example.com')->firstOrFail();
+		$mail = (new VerifyEmail())->toMail($user);
+
+		$this->assertSame('ka', app()->getLocale());
+		$this->assertSame(__('emails.verify.subject', [], 'ka'), $mail->subject);
+		$this->assertNotSame(__('emails.verify.subject', [], 'en'), $mail->subject);
+	}
+
 	public function test_registration_fails_with_empty_fields(): void
 	{
 		$response = $this->post('/register', []);

@@ -8,11 +8,14 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\UpdateLocaleController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+Route::post('/locale', UpdateLocaleController::class)->name('locale.update');
 
 Route::middleware(['auth', EnsureEmailIsVerified::redirectTo('welcome')])->group(function () {
 	Route::get('/feed', [FeedController::class, 'index'])->name('feed');
