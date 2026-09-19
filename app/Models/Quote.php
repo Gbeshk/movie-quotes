@@ -93,11 +93,6 @@ class Quote extends Model implements HasMedia
 			->withExists(['likes as is_liked_by_me' => fn ($query) => $query->where('user_id', $viewerId)]);
 	}
 
-	public function shouldRedirectToFeed(?string $redirectTo): bool
-	{
-		return $redirectTo === 'feed';
-	}
-
 	protected function imageUrl(): Attribute
 	{
 		return Attribute::make(
