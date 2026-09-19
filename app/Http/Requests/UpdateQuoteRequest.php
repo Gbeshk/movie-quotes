@@ -16,8 +16,8 @@ class UpdateQuoteRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'text.ka' => ['required', 'string', new GeorgianText()],
-			'text.en' => ['required', 'string', new EnglishText()],
+			'text.ka' => ['required', 'string', 'max:255', new GeorgianText()],
+			'text.en' => ['required', 'string', 'max:255', new EnglishText()],
 			'image'   => ['nullable', 'image', 'max:4096'],
 		];
 	}

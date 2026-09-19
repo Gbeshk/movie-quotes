@@ -40,11 +40,13 @@ test('a signed-in user can add a quote with an image to their own movie', functi
 	$user = User::factory()->create();
 	$movie = Movie::factory()->for($user)->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.store'), [
-		'movie_id' => $movie->id,
-		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
-		'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
-	]);
+	$response = $this->actingAs($user)
+		->from(route('movies.show', $movie))
+		->post(route('quotes.store'), [
+			'movie_id' => $movie->id,
+			'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+			'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+		]);
 
 	$response->assertRedirect(route('movies.show', $movie));
 
@@ -67,18 +69,19 @@ test('a user cannot add a quote to a movie they do not own', function () {
 	expect($movie->quotes()->count())->toBe(0);
 });
 
-test('adding a quote with redirect_to feed returns to the feed', function () {
+test('adding a quote redirects back to the page it was added from', function () {
 	Storage::fake('public');
 
 	$user = User::factory()->create();
 	$movie = Movie::factory()->for($user)->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.store'), [
-		'movie_id'    => $movie->id,
-		'text'        => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
-		'image'       => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
-		'redirect_to' => 'feed',
-	]);
+	$response = $this->actingAs($user)
+		->from(route('feed'))
+		->post(route('quotes.store'), [
+			'movie_id' => $movie->id,
+			'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+			'image'    => UploadedFile::fake()->create('quote.jpg', 100, 'image/jpeg'),
+		]);
 
 	$response->assertRedirect(route('feed'));
 });
@@ -98,10 +101,12 @@ test('a quote without its own image falls back to the movie poster', function ()
 	$movie = Movie::factory()->for($user)->create();
 	$movie->addMedia(UploadedFile::fake()->create('poster.jpg', 100, 'image/jpeg'))->toMediaCollection('poster');
 
-	$response = $this->actingAs($user)->post(route('quotes.store'), [
-		'movie_id' => $movie->id,
-		'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
-	]);
+	$response = $this->actingAs($user)
+		->from(route('movies.show', $movie))
+		->post(route('quotes.store'), [
+			'movie_id' => $movie->id,
+			'text'     => ['ka' => 'ციტატა', 'en' => 'A memorable line'],
+		]);
 
 	$response->assertRedirect(route('movies.show', $movie));
 
@@ -125,6 +130,18 @@ test('creating a quote with mismatched language text fails validation', function
 	$response->assertSessionHasErrors(['text.ka', 'text.en']);
 });
 
+test('creating a quote fails validation when the text exceeds 255 characters', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
+
+	$response = $this->actingAs($user)->post(route('quotes.store'), [
+		'movie_id' => $movie->id,
+		'text'     => ['ka' => str_repeat('ა', 256), 'en' => str_repeat('a', 256)],
+	]);
+
+	$response->assertSessionHasErrors(['text.ka', 'text.en']);
+});
+
 test('guests cannot update a quote', function () {
 	$quote = Quote::factory()->create();
 
@@ -142,6 +159,18 @@ test('the quote author can update their quote', function () {
 
 	$response->assertRedirect(route('movies.show', $movie));
 	expect($quote->fresh()->getTranslation('text', 'en'))->toBe('Updated line');
+});
+
+test('updating a quote fails validation when the text exceeds 255 characters', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->create();
+	$quote = Quote::factory()->for($movie)->for($user)->create();
+
+	$response = $this->actingAs($user)->patch(route('quotes.update', $quote), [
+		'text' => ['ka' => str_repeat('ა', 256), 'en' => str_repeat('a', 256)],
+	]);
+
+	$response->assertSessionHasErrors(['text.ka', 'text.en']);
 });
 
 test('a user cannot update a quote they do not own', function () {
