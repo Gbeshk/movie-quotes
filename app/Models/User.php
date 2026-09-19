@@ -22,7 +22,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 	/** @use HasFactory<UserFactory> */
 	use HasFactory, InteractsWithMedia, Notifiable;
 
-	protected $appends = ['avatar_url'];
+	protected $appends = ['avatar_url', 'has_password'];
 
 	/**
 	 * Get the attributes that should be cast.
@@ -41,6 +41,13 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 	{
 		return Attribute::make(
 			get: fn () => $this->getFirstMediaUrl('avatar') ?: null,
+		);
+	}
+
+	protected function hasPassword(): Attribute
+	{
+		return Attribute::make(
+			get: fn () => $this->password !== null,
 		);
 	}
 
