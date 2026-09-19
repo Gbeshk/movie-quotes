@@ -15,8 +15,7 @@ class StoreCommentRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'body'        => ['required', 'string', 'max:2000'],
-			'redirect_to' => ['nullable', 'in:feed'],
+			'body' => ['required', 'string', 'max:2000'],
 		];
 	}
 }

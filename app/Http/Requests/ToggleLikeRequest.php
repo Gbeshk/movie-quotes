@@ -13,8 +13,6 @@ class ToggleLikeRequest extends FormRequest
 
 	public function rules(): array
 	{
-		return [
-			'redirect_to' => ['nullable', 'in:feed'],
-		];
+		return [];
 	}
 }
