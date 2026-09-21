@@ -34,7 +34,7 @@ export default function OptionsMenu({
             </button>
 
             {isOpen && (
-                <div className="border-modal-secondary-text bg-header-bg absolute top-6 left-0 z-10 flex h-50 w-62.5 flex-col justify-between gap-4 rounded-lg px-10 py-8">
+                <div className="border-modal-secondary-text bg-header-bg absolute top-6 left-0 z-10 flex h-50 w-62.5 flex-col justify-between gap-4 rounded-lg px-10 py-8 max-xl:-left-50 max-sm:-top-51 max-sm:-left-55">
                     {actions.map((action) => (
                         <button
                             key={action.label}
