@@ -10,6 +10,8 @@ export default function Modal({
     cardClassName = 'w-150 px-30 py-13.25 max-sm:w-full',
     cardBgClassName = 'bg-modal-bg',
     backdropClassName = 'bg-black/54 backdrop-blur-xs',
+    contentClassName = 'items-center justify-center',
+    titleClassName,
     children,
 }: PropsWithChildren<{
     show: boolean;
@@ -20,6 +22,8 @@ export default function Modal({
     cardClassName?: string;
     cardBgClassName?: string;
     backdropClassName?: string;
+    contentClassName?: string;
+    titleClassName?: string;
 }>) {
     useEffect(() => {
         if (!show) {
@@ -39,10 +43,10 @@ export default function Modal({
     }
 
     return (
-        <div className={cn('fixed inset-0 z-50 w-full overflow-y-auto', backdropClassName)}>
+        <div className={cn('z-modal fixed inset-0 w-full overflow-y-auto', backdropClassName)}>
             <div className="fixed inset-0 w-full" onClick={onClose} />
 
-            <div className="flex min-h-full w-full items-center justify-center">
+            <div className={cn('flex min-h-full w-full', contentClassName)}>
                 <form
                     onSubmit={onSubmit ?? ((e) => e.preventDefault())}
                     className={cn(
@@ -52,7 +56,12 @@ export default function Modal({
                     )}
                 >
                     {title && (
-                        <h2 className="text-center text-3xl leading-snug font-medium tracking-normal text-white">
+                        <h2
+                            className={cn(
+                                'text-center text-3xl leading-snug font-medium tracking-normal text-white',
+                                titleClassName,
+                            )}
+                        >
                             {title}
                         </h2>
                     )}

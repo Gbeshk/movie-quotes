@@ -79,9 +79,9 @@ export default function ImageUpload({
                         <p className="text-logo-text align-middle text-base leading-6 font-bold tracking-normal uppercase">
                             {resolvedHeading}
                         </p>
-                        <div className="mt-4.5 flex items-center gap-2">
+                        <div className="mt-4.5 flex items-center gap-2 max-md:hidden">
                             <PhotoIcon />
-                            <p className="text-xl leading-6 font-normal tracking-normal text-white">
+                            <p className="text-xl leading-6 font-normal tracking-normal text-white max-sm:text-base">
                                 {file ? file.name : t('imageUpload.dragDrop')}
                             </p>
                         </div>
@@ -95,7 +95,7 @@ export default function ImageUpload({
                         <button
                             type="button"
                             onClick={() => inputRef.current?.click()}
-                            className="bg-choose-file-bg mt-4 flex cursor-pointer items-center justify-center gap-1 rounded-xs p-2.5 text-xl leading-6 font-normal tracking-normal text-white"
+                            className="bg-choose-file-bg mt-4 flex cursor-pointer items-center justify-center gap-1 rounded-xs p-2.5 text-xl leading-6 font-normal tracking-normal text-white max-sm:text-base"
                         >
                             {t('imageUpload.chooseFile')}
                         </button>
@@ -107,14 +107,19 @@ export default function ImageUpload({
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     className={cn(
-                        'border-modal-secondary-text flex h-21 w-full items-center gap-2 rounded border px-4',
+                        'border-modal-secondary-text flex h-21 w-full items-center justify-between gap-2 rounded border px-4',
                         isDraggingOver && 'border-danger',
                     )}
                 >
-                    <PhotoIcon />
-                    <p className="text-xl leading-6 font-normal tracking-normal text-white">
-                        {t('imageUpload.dragDrop')}
-                    </p>
+                    <div className="flex items-center gap-2">
+                        <PhotoIcon />
+                        <p className="text-xl leading-6 font-normal tracking-normal text-white max-sm:hidden">
+                            {t('imageUpload.dragDrop')}
+                        </p>
+                        <p className="hidden text-base leading-6 font-normal tracking-normal text-white max-sm:block">
+                            {t('imageUpload.uploadImage')}
+                        </p>
+                    </div>
                     <input
                         ref={inputRef}
                         type="file"
@@ -125,7 +130,7 @@ export default function ImageUpload({
                     <button
                         type="button"
                         onClick={() => inputRef.current?.click()}
-                        className="bg-choose-file-bg ml-2 flex cursor-pointer items-center justify-center gap-1 rounded-xs p-2.5 text-xl leading-6 font-normal tracking-normal text-white"
+                        className="bg-choose-file-bg flex cursor-pointer items-center justify-center gap-1 rounded-xs p-2.5 text-xl leading-6 font-normal tracking-normal text-white max-sm:text-base"
                     >
                         {t('imageUpload.chooseFile')}
                     </button>
