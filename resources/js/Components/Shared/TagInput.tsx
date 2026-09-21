@@ -7,12 +7,14 @@ export default function TagInput({
     error,
     validate,
     placeholder,
+    maxLength,
 }: {
     tags: string[];
     onChange: (tags: string[]) => void;
     error?: string;
     validate?: (value: string) => true | string;
     placeholder?: string;
+    maxLength?: number;
 }) {
     const [text, setText] = useState('');
     const [localError, setLocalError] = useState<string>();
@@ -58,7 +60,7 @@ export default function TagInput({
                         key={tag}
                         className="bg-modal-secondary-text flex shrink-0 items-center gap-1 rounded-xs px-1.5 py-0.5"
                     >
-                        <span className="text-xl leading-6 font-normal tracking-normal text-white">
+                        <span className="max-w-50 text-xl leading-6 font-normal tracking-normal wrap-break-word text-white max-sm:text-base">
                             {tag}
                         </span>
                         <button type="button" onClick={() => removeTag(tag)}>
@@ -76,7 +78,8 @@ export default function TagInput({
                     onKeyDown={handleKeyDown}
                     onBlur={addTag}
                     placeholder={tags.length === 0 ? placeholder : undefined}
-                    className="m-0 min-w-24 flex-1 appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none placeholder:text-white focus:border-0 focus:shadow-none focus:ring-0"
+                    maxLength={maxLength}
+                    className="m-0 min-w-24 flex-1 appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none placeholder:text-white focus:border-0 focus:shadow-none focus:ring-0 max-sm:text-base"
                 />
             </div>
             {(localError ?? error) && (

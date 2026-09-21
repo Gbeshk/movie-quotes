@@ -32,6 +32,7 @@ type PlaceholderFieldProps = {
     badge?: string;
     className?: string;
     textareaHeightClassName?: string;
+    maxLength?: number;
 };
 
 type InlineLabelFieldProps = {
@@ -47,6 +48,7 @@ type InlineLabelFieldProps = {
     validate?: (value: string) => true | string;
     badge?: string;
     className?: string;
+    maxLength?: number;
 };
 
 type FormFieldProps = DefaultFieldProps | PlaceholderFieldProps | InlineLabelFieldProps;

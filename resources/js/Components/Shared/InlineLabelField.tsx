@@ -14,6 +14,7 @@ export default function InlineLabelField({
     validate,
     badge,
     className,
+    maxLength,
 }: {
     as?: 'input' | 'textarea';
     id: string;
@@ -26,6 +27,7 @@ export default function InlineLabelField({
     validate?: (value: string) => true | string;
     badge?: string;
     className?: string;
+    maxLength?: number;
 }) {
     const { status, errorMessage, markTouched } = useFieldStatus(value, error, validate);
 
@@ -47,6 +49,7 @@ export default function InlineLabelField({
                         value={value}
                         onChange={onChange}
                         onBlur={markTouched}
+                        maxLength={maxLength}
                         className={cn('min-w-0 flex-1', badge && 'pr-12')}
                     />
                     {badge && (
@@ -83,6 +86,7 @@ export default function InlineLabelField({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     onBlur={markTouched}
+                    maxLength={maxLength}
                     className="m-0 min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none focus:border-0 focus:shadow-none focus:ring-0"
                 />
                 {badge && (
