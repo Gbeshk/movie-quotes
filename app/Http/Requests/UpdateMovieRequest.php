@@ -25,15 +25,15 @@ class UpdateMovieRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'title.ka'       => ['required', 'string', 'max:100', new GeorgianText()],
-			'title.en'       => ['required', 'string', 'max:100', new EnglishText()],
+			'title.ka'       => ['required', 'string', 'max:255', new GeorgianText()],
+			'title.en'       => ['required', 'string', 'max:255', new EnglishText()],
 			'director.ka'    => ['required', 'string', 'max:255', new GeorgianText()],
 			'director.en'    => ['required', 'string', 'max:255', new EnglishText()],
 			'genre'          => ['required', 'array', 'min:1'],
 			'genre.*'        => ['string', 'max:255', new EnglishText()],
 			'release_year'   => ['required', 'integer', 'min:1888', 'max:' . now()->year],
-			'description.ka' => ['required', 'string', new GeorgianText()],
-			'description.en' => ['required', 'string', new EnglishText()],
+			'description.ka' => ['required', 'string', 'max:255', new GeorgianText()],
+			'description.en' => ['required', 'string', 'max:255', new EnglishText()],
 			'poster'         => ['nullable', 'image', 'max:4096'],
 		];
 	}

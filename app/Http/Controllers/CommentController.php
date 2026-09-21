@@ -6,7 +6,6 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Models\Quote;
 use App\Notifications\QuoteCommented;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 
 class CommentController extends Controller
 {
@@ -21,8 +20,6 @@ class CommentController extends Controller
 			$quote->user->notify(new QuoteCommented($comment));
 		}
 
-		return $quote->shouldRedirectToFeed($request->validated('redirect_to'))
-			? Redirect::route('feed')
-			: Redirect::route('movies.show', $quote->movie_id);
+		return back();
 	}
 }

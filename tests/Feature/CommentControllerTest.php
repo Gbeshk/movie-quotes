@@ -24,7 +24,7 @@ test('a signed-in user can add a comment to any quote', function () {
 		'body' => 'What a great line!',
 	]);
 
-	$response->assertRedirect(route('movies.show', $quote->movie_id));
+	$response->assertStatus(302);
 
 	$comment = $quote->comments()->firstOrFail();
 	expect($comment->user_id)->toBe($user->id);
@@ -40,16 +40,21 @@ test('creating a comment without required fields fails validation', function () 
 	$response->assertSessionHasErrors(['body']);
 });
 
-test('adding a comment with redirect_to feed returns to the feed', function () {
+test('adding a comment redirects back to the page it was added from', function () {
 	$user = User::factory()->create();
 	$quote = Quote::factory()->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.comments.store', $quote), [
-		'body'        => 'Loved it',
-		'redirect_to' => 'feed',
-	]);
+	$response = $this->actingAs($user)
+		->from(route('feed'))
+		->post(route('quotes.comments.store', $quote), ['body' => 'Loved it']);
 
 	$response->assertRedirect(route('feed'));
+
+	$response = $this->actingAs($user)
+		->from(route('movies.show', $quote->movie_id))
+		->post(route('quotes.comments.store', $quote), ['body' => 'Loved it again']);
+
+	$response->assertRedirect(route('movies.show', $quote->movie_id));
 });
 
 test('commenting on someone else\'s quote notifies the author', function () {

@@ -197,11 +197,11 @@ test('creating a movie without required fields fails validation', function () {
 	]);
 });
 
-test('creating a movie with a title longer than 100 characters fails validation', function () {
+test('creating a movie with a title longer than 255 characters fails validation', function () {
 	$user = User::factory()->create();
 
 	$response = $this->actingAs($user)->post(route('movies.store'), [
-		'title'        => ['ka' => str_repeat('ა', 101), 'en' => str_repeat('a', 101)],
+		'title'        => ['ka' => str_repeat('ა', 256), 'en' => str_repeat('a', 256)],
 		'director'     => ['ka' => 'ტესტი რეჟისორი', 'en' => 'Test Director'],
 		'genre'        => ['Drama'],
 		'release_year' => 2020,
@@ -209,6 +209,20 @@ test('creating a movie with a title longer than 100 characters fails validation'
 	]);
 
 	$response->assertSessionHasErrors(['title.ka', 'title.en']);
+});
+
+test('creating a movie with a description longer than 255 characters fails validation', function () {
+	$user = User::factory()->create();
+
+	$response = $this->actingAs($user)->post(route('movies.store'), [
+		'title'        => ['ka' => 'ტესტი', 'en' => 'Test Movie'],
+		'director'     => ['ka' => 'ტესტი რეჟისორი', 'en' => 'Test Director'],
+		'genre'        => ['Drama'],
+		'release_year' => 2020,
+		'description'  => ['ka' => str_repeat('ა', 256), 'en' => str_repeat('a', 256)],
+	]);
+
+	$response->assertSessionHasErrors(['description.ka', 'description.en']);
 });
 
 test('creating a movie with mismatched language text fails validation', function () {
@@ -260,6 +274,21 @@ test('updating a movie with mismatched language text fails validation', function
 
 	$response->assertSessionHasErrors(['title.ka', 'title.en']);
 	expect($movie->fresh()->getTranslation('title', 'en'))->not->toBe('ახალი');
+});
+
+test('updating a movie with a description longer than 255 characters fails validation', function () {
+	$user = User::factory()->create();
+	$movie = Movie::factory()->for($user)->create();
+
+	$response = $this->actingAs($user)->patch(route('movies.update', $movie), [
+		'title'        => $movie->getTranslations('title'),
+		'director'     => $movie->getTranslations('director'),
+		'genre'        => $movie->genre,
+		'release_year' => $movie->release_year,
+		'description'  => ['ka' => str_repeat('ა', 256), 'en' => str_repeat('a', 256)],
+	]);
+
+	$response->assertSessionHasErrors(['description.ka', 'description.en']);
 });
 
 test('a user cannot update a movie they do not own', function () {

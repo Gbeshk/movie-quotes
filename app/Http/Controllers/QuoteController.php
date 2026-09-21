@@ -39,9 +39,7 @@ class QuoteController extends Controller
 			$quote->addMediaFromRequest('image')->toMediaCollection('image');
 		}
 
-		return $quote->shouldRedirectToFeed($request->validated('redirect_to'))
-			? Redirect::route('feed')
-			: Redirect::route('movies.show', $quote->movie_id);
+		return back();
 	}
 
 	public function update(UpdateQuoteRequest $request, Quote $quote): RedirectResponse

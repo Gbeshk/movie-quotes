@@ -20,7 +20,7 @@ test('a signed-in user can like a quote', function () {
 
 	$response = $this->actingAs($user)->post(route('quotes.likes.toggle', $quote));
 
-	$response->assertRedirect(route('movies.show', $quote->movie_id));
+	$response->assertStatus(302);
 	expect($quote->likes()->where('user_id', $user->id)->exists())->toBeTrue();
 });
 
@@ -34,15 +34,21 @@ test('liking an already-liked quote unlikes it', function () {
 	expect($quote->likes()->where('user_id', $user->id)->exists())->toBeFalse();
 });
 
-test('liking a quote with redirect_to feed returns to the feed', function () {
+test('liking a quote redirects back to the page it was liked from', function () {
 	$user = User::factory()->create();
 	$quote = Quote::factory()->create();
 
-	$response = $this->actingAs($user)->post(route('quotes.likes.toggle', $quote), [
-		'redirect_to' => 'feed',
-	]);
+	$response = $this->actingAs($user)
+		->from(route('feed'))
+		->post(route('quotes.likes.toggle', $quote));
 
 	$response->assertRedirect(route('feed'));
+
+	$response = $this->actingAs($user)
+		->from(route('movies.show', $quote->movie_id))
+		->post(route('quotes.likes.toggle', $quote));
+
+	$response->assertRedirect(route('movies.show', $quote->movie_id));
 });
 
 test('liking someone else\'s quote notifies the author', function () {

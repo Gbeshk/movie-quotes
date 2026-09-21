@@ -26,6 +26,24 @@ class ProfileTest extends TestCase
 		$response->assertOk();
 	}
 
+	public function test_a_password_user_who_also_linked_google_still_has_a_password(): void
+	{
+		$user = User::factory()->create(['google_id' => 'google-id-123']);
+
+		$response = $this->actingAs($user)->get('/profile');
+
+		$response->assertInertia(fn ($page) => $page->where('auth.user.has_password', true));
+	}
+
+	public function test_a_google_only_user_has_no_password(): void
+	{
+		$user = User::factory()->create(['password' => null, 'google_id' => 'google-id-123']);
+
+		$response = $this->actingAs($user)->get('/profile');
+
+		$response->assertInertia(fn ($page) => $page->where('auth.user.has_password', false));
+	}
+
 	public function test_the_username_can_be_updated_immediately(): void
 	{
 		$user = User::factory()->create();

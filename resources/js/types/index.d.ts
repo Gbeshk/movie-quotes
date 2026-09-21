@@ -6,6 +6,7 @@ export interface User {
     email_verified_at?: string;
     avatar_url: string | null;
     google_id: string | null;
+    has_password: boolean;
 }
 
 export interface Translatable {
