@@ -21,7 +21,7 @@ class UserResource extends JsonResource
 			'email_verified_at' => $user->email_verified_at,
 			'avatar_url'        => $user->avatar_url,
 			'google_id'         => $user->google_id,
-			'has_password'      => $user->password !== null,
+			'has_password'      => $user->has_password,
 		];
 	}
 }
