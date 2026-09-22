@@ -20,7 +20,7 @@ class QuoteResource extends JsonResource
 		return [
 			'id'        => $quote->id,
 			'text'      => $quote->getTranslations('text'),
-			'image_url' => $quote->getFirstMediaUrl('image'),
+			'image_url' => $quote->getFirstMediaUrl('image') ?: $quote->movie->getFirstMediaUrl('poster'),
 			'movie'     => [
 				'title'        => $quote->movie->getTranslations('title'),
 				'release_year' => $quote->movie->release_year,

@@ -2,6 +2,7 @@ import Button from '@/Components/Shared/Button';
 import FormField from '@/Components/Shared/FormField';
 import ArrowLeftIcon from '@/Components/Shared/Icons/ArrowLeftIcon';
 import CheckCircleIcon from '@/Components/Shared/Icons/CheckCircleIcon';
+import CloseIcon from '@/Components/Shared/Icons/CloseIcon';
 import LinkExpiredIcon from '@/Components/Shared/Icons/LinkExpiredIcon';
 import Modal from '@/Components/Shared/Modal';
 import { validateNewPassword, validatePasswordConfirmation } from '@/utils/validators';
@@ -54,9 +55,21 @@ export default function ResetPasswordModal({
 
     if (changed) {
         return (
-            <Modal show={show} onClose={onClose} cardClassName="w-full max-w-134.5 px-22 py-18">
+            <Modal
+                show={show}
+                onClose={onClose}
+                cardClassName="w-full max-w-134.5 px-22 py-18 max-sm:min-h-screen max-sm:rounded-none max-sm:px-8.5 max-sm:pt-18 max-sm:pb-10"
+                cardBgClassName="bg-modal-bg max-sm:bg-gradient-dark max-sm:bg-black"
+            >
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="absolute top-6 right-6 hidden cursor-pointer max-sm:block"
+                >
+                    <CloseIcon />
+                </button>
                 <CheckCircleIcon />
-                <h2 className="mt-5 text-3xl leading-[1.2] font-medium tracking-normal text-white">
+                <h2 className="leading-heading mt-5 text-3xl font-medium tracking-normal text-white max-sm:text-2xl">
                     {t('resetPassword.successTitle')}
                 </h2>
                 <h3 className="mt-8 w-full text-center text-base leading-normal font-normal text-white">
@@ -71,9 +84,21 @@ export default function ResetPasswordModal({
 
     if (expired) {
         return (
-            <Modal show={show} onClose={onClose} cardClassName="w-full max-w-137 px-22 py-18">
+            <Modal
+                show={show}
+                onClose={onClose}
+                cardClassName="w-full max-w-137 px-22 py-18 max-sm:min-h-screen max-sm:rounded-none max-sm:px-8.5 max-sm:pt-18 max-sm:pb-10"
+                cardBgClassName="bg-modal-bg max-sm:bg-gradient-dark max-sm:bg-black"
+            >
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="absolute top-6 right-6 hidden cursor-pointer max-sm:block"
+                >
+                    <CloseIcon />
+                </button>
                 <LinkExpiredIcon />
-                <h2 className="mt-5 text-3xl leading-[1.2] font-medium tracking-normal text-white">
+                <h2 className="leading-heading mt-5 text-3xl font-medium tracking-normal text-white">
                     {t('resetPassword.linkExpiredTitle')}
                 </h2>
                 <h3 className="mt-8 w-full text-center text-base leading-normal font-normal text-white">
@@ -93,7 +118,17 @@ export default function ResetPasswordModal({
             onSubmit={submit}
             title={t('resetPassword.title')}
             subtitle={t('resetPassword.subtitle')}
+            cardClassName="w-150 px-30 py-13.25 max-sm:w-full max-sm:min-h-screen max-sm:rounded-none max-sm:px-8.5 max-sm:pt-18 max-sm:pb-10"
+            cardBgClassName="bg-modal-bg max-sm:bg-gradient-dark max-sm:bg-black"
+            titleClassName="max-sm:text-2xl"
         >
+            <button
+                type="button"
+                onClick={onClose}
+                className="absolute top-6 right-6 hidden cursor-pointer max-sm:block"
+            >
+                <CloseIcon />
+            </button>
             <div className="mt-6 w-full space-y-4">
                 <FormField
                     label={t('resetPassword.newPassword')}

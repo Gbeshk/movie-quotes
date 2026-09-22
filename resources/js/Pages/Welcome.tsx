@@ -54,7 +54,7 @@ export default function Welcome({
     return (
         <>
             <div>
-                <div className="bg-black bg-[linear-gradient(180deg,#11101A_0%,#08080D_50.52%,rgba(0,0,0,0)_100%)]">
+                <div className="bg-gradient-fade bg-black">
                     <Header
                         background="bg-transparent"
                         onOpenLogin={() => setShowLogin(true)}
@@ -62,8 +62,8 @@ export default function Welcome({
                         unreadNotificationsCount={unreadNotificationsCount}
                     />
 
-                    <div className="flex h-180 w-full flex-col items-center justify-center gap-6">
-                        <p className="text-logo-text font-montserrat text-center text-6xl leading-normal font-bold tracking-normal">
+                    <div className="flex h-180 w-full flex-col items-center justify-center gap-6 max-sm:h-88 max-sm:gap-8">
+                        <p className="text-logo-text font-montserrat text-center text-6xl leading-normal font-bold tracking-normal max-sm:text-2xl">
                             {t('welcome.heading')
                                 .split('\n')
                                 .map((line, index, lines) => (
@@ -77,14 +77,14 @@ export default function Welcome({
                             onClick={() =>
                                 auth.user ? router.visit(route('feed')) : setShowLogin(true)
                             }
-                            className="bg-sign-up-btn-bg flex cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white"
+                            className="bg-sign-up-btn-bg flex h-12 w-33.25 cursor-pointer items-center justify-center rounded px-4.25 py-2.25 text-base leading-normal font-normal tracking-normal text-white max-sm:h-9.5 max-sm:w-27.25 max-sm:px-2 max-sm:whitespace-nowrap"
                         >
                             {t('welcome.getStarted')}
                         </button>
                     </div>
                 </div>
                 <QuoteSequence quotes={quotes} />
-                <div className="bg-gradient-dark text-logo-text flex h-12 items-center px-17.5 text-xs leading-normal font-medium tracking-normal uppercase">
+                <div className="bg-gradient-dark text-logo-text max-sm:text-tiny flex h-12 items-center px-17.5 text-xs leading-normal font-medium tracking-normal uppercase max-sm:px-0 max-sm:pl-8">
                     {t('welcome.copyright')}
                 </div>
             </div>
