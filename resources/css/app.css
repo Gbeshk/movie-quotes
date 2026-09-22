@@ -44,10 +44,14 @@
     --color-link-text: #0d6efd;
     --color-success: #198754;
     --color-danger: #e31221;
+    --color-notification-badge: #e33812;
     --color-add-movie-line: #efefef33;
     --color-choose-file-bg: #9747ff66;
     --color-error-text: #dc3545;
     --color-profile-modal-bg: #11101a;
+    --color-toast-success-bg: #d1e7dd;
+    --color-toast-success-border: #badbcc;
+    --color-toast-success-text: #0f5132;
     --background-image-gradient-dark: linear-gradient(
         187.16deg,
         #181623 0.07%,
@@ -60,5 +64,32 @@
         #191725cc 51.65%,
         #0d0b14cc 98.75%
     );
+    --background-image-gradient-fade: linear-gradient(
+        180deg,
+        #11101a 0%,
+        #08080d 50.52%,
+        rgba(0, 0, 0, 0) 100%
+    );
     --blur-50: 50px;
+    --width-notifications-panel: 50vw;
+    --width-write-quote-button: calc(100% - 130px);
+    --width-feed-content: 53%;
+    --width-movie-poster: 42vw;
+    --width-movie-details: 30vw;
+    --width-movie-content: calc(var(--width-movie-poster) + var(--width-movie-details) + 1.5rem);
+    --width-movie-poster-wrap: 40vw;
+    --width-movie-mobile: 90vw;
+    --width-movie-preview-poster: 31%;
+    --margin-feed-inset: 10%;
+    --margin-profile-panel: 8%;
+    --margin-profile-heading: calc(var(--margin-profile-panel) + 60px);
+    --height-modal: 90vh;
+    --text-tiny: 8px;
+    --leading-heading: 1.2;
+    --z-index-header: 60;
+    --z-index-drawer: 70;
+    --z-index-modal: 80;
+    --grid-template-columns-movies: repeat(auto-fill, minmax(358px, 1fr));
+    --breakpoint-movies-compact: 1200px;
+    --breakpoint-movie-wrap: 1700px;
 }
