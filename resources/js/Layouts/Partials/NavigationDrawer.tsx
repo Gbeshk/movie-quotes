@@ -3,10 +3,11 @@ import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import FeedIcon from '@/Components/Shared/Icons/FeedIcon';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
 import LanguageSwitcher from '@/Components/Shared/LanguageSwitcher';
+import { useSwipeToClose } from '@/hooks/useSwipeToClose';
 import { cn } from '@/lib/cn';
 import { User } from '@/types';
 import { Link } from '@inertiajs/react';
-import { TouchEvent, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function NavigationDrawer({
@@ -19,30 +20,12 @@ export default function NavigationDrawer({
     onClose: () => void;
 }) {
     const { t } = useTranslation();
-    const touchStartX = useRef<number | null>(null);
     const [hasOpened, setHasOpened] = useState(false);
+    const { onTouchStart, onTouchEnd } = useSwipeToClose(onClose);
 
     if (isOpen && !hasOpened) {
         setHasOpened(true);
     }
-
-    const handleTouchStart = (e: TouchEvent) => {
-        touchStartX.current = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-        if (touchStartX.current === null) {
-            return;
-        }
-
-        const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-
-        if (deltaX < -50) {
-            onClose();
-        }
-
-        touchStartX.current = null;
-    };
 
     return (
         <>
@@ -53,8 +36,8 @@ export default function NavigationDrawer({
                 />
             )}
             <div
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
                 className={cn(
                     'max-lg:bg-profile-modal-bg flex w-71 shrink-0 flex-col gap-10 max-lg:fixed max-lg:top-0 max-lg:right-8 max-lg:left-0 max-lg:h-150 max-lg:w-auto max-lg:rounded-r-xl max-lg:px-8 max-lg:py-10',
                     isOpen && 'z-drawer',
