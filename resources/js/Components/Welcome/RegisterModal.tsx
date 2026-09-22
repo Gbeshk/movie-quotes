@@ -1,5 +1,6 @@
 import AuthSwitchPrompt from '@/Components/Shared/AuthSwitchPrompt';
 import Button from '@/Components/Shared/Button';
+import CloseIcon from '@/Components/Shared/Icons/CloseIcon';
 import AuthGoogleButton from '@/Components/Welcome/AuthGoogleButton';
 import FormField from '@/Components/Shared/FormField';
 import Modal from '@/Components/Shared/Modal';
@@ -61,7 +62,17 @@ export default function RegisterModal({
             onSubmit={submit}
             title={t('register.title')}
             subtitle={t('register.subtitle')}
+            cardClassName="w-150 px-30 py-13.25 max-sm:w-full max-sm:min-h-screen max-sm:rounded-none max-sm:px-8.5 max-sm:pt-18 max-sm:pb-10"
+            cardBgClassName="bg-modal-bg max-sm:bg-gradient-dark max-sm:bg-black"
+            titleClassName="max-sm:text-2xl"
         >
+            <button
+                type="button"
+                onClick={onClose}
+                className="absolute top-6 right-6 hidden cursor-pointer max-sm:block"
+            >
+                <CloseIcon />
+            </button>
             <div className="mt-6 w-full space-y-4">
                 <FormField
                     label={t('register.name')}
