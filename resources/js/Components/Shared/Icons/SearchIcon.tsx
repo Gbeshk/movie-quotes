@@ -1,5 +1,3 @@
-import { cn } from '@/lib/cn';
-
 export default function SearchIcon({ className }: { className?: string }) {
     return (
         <svg
@@ -8,7 +6,7 @@ export default function SearchIcon({ className }: { className?: string }) {
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={cn(className)}
+            className={className}
         >
             <g clipPath="url(#clip0_46869_908)">
                 <path

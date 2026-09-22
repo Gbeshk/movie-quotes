@@ -1,5 +1,3 @@
-import { cn } from '@/lib/cn';
-
 export default function FeedIcon({
     active = false,
     className,
@@ -16,7 +14,7 @@ export default function FeedIcon({
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={cn(className)}
+            className={className}
         >
             <path
                 fillRule="evenodd"

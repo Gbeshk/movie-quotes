@@ -1,5 +1,3 @@
-import { cn } from '@/lib/cn';
-
 export default function MoviesIcon({
     active = false,
     className,
@@ -16,7 +14,7 @@ export default function MoviesIcon({
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={cn(className)}
+            className={className}
         >
             <g clipPath="url(#clip0_46779_37)">
                 <path
