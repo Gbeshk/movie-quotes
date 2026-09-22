@@ -1,4 +1,10 @@
-export default function FeedIcon({ active = false }: { active?: boolean }) {
+export default function FeedIcon({
+    active = false,
+    className,
+}: {
+    active?: boolean;
+    className?: string;
+}) {
     const fill = active ? 'var(--color-danger)' : 'white';
 
     return (
@@ -8,6 +14,7 @@ export default function FeedIcon({ active = false }: { active?: boolean }) {
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className={className}
         >
             <path
                 fillRule="evenodd"
