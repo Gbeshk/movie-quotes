@@ -41,18 +41,18 @@ export default function MoviePicker({
             <button
                 type="button"
                 onClick={() => setIsOpen((open) => !open)}
-                className="flex h-21.5 w-full cursor-pointer items-center justify-between gap-4 rounded bg-black px-6"
+                className="flex h-21.5 w-full cursor-pointer items-center justify-between gap-4 rounded bg-black px-6 max-sm:h-16 max-sm:px-4"
             >
                 <div className="flex items-center gap-3">
-                    <MoviesIcon />
-                    <p className="text-2xl leading-normal font-normal text-white">
+                    <MoviesIcon className="max-sm:h-5 max-sm:w-5" />
+                    <p className="text-2xl leading-normal font-normal text-white max-sm:text-lg">
                         {t('feed.chooseMovie')}
                     </p>
                 </div>
                 <ArrowDown size={24} />
             </button>
             {isOpen && (
-                <div className="bg-profile-modal-bg border-modal-secondary-text absolute bottom-full left-8 z-10 mb-2.5 max-h-72 w-100 overflow-y-auto rounded-xl border">
+                <div className="bg-profile-modal-bg border-modal-secondary-text absolute bottom-full left-8 z-10 mb-2.5 max-h-72 w-100 overflow-y-auto rounded-xl border max-sm:w-80">
                     <div className="border-modal-secondary-text flex items-center gap-4 border-b px-4 py-3">
                         <SearchIcon />
                         <input
@@ -83,9 +83,9 @@ export default function MoviePicker({
                                     onSelect(movie);
                                     setIsOpen(false);
                                 }}
-                                className="flex w-full cursor-pointer items-center gap-4 px-4 py-3 text-left hover:bg-white/5"
+                                className="flex w-full min-w-0 cursor-pointer items-center gap-4 px-4 py-3 text-left hover:bg-white/5"
                             >
-                                <div className="bg-input-bg h-13 w-13 shrink-0 overflow-hidden rounded-lg">
+                                <div className="bg-input-bg h-13 w-13 shrink-0 overflow-hidden rounded-lg max-sm:h-10 max-sm:w-10">
                                     {movie.poster_url && (
                                         <img
                                             src={movie.poster_url}
@@ -94,7 +94,7 @@ export default function MoviePicker({
                                         />
                                     )}
                                 </div>
-                                <p className="text-xl leading-normal font-normal text-white">
+                                <p className="truncate text-xl leading-normal font-normal text-white max-sm:text-base">
                                     {translate(movie.title)} ({movie.release_year})
                                 </p>
                             </button>
