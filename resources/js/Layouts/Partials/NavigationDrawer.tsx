@@ -3,7 +3,6 @@ import DefaultAvatarIcon from '@/Components/Shared/Icons/DefaultAvatarIcon';
 import FeedIcon from '@/Components/Shared/Icons/FeedIcon';
 import MoviesIcon from '@/Components/Shared/Icons/MoviesIcon';
 import LanguageSwitcher from '@/Components/Shared/LanguageSwitcher';
-import { useSwipeToClose } from '@/hooks/useSwipeToClose';
 import { cn } from '@/lib/cn';
 import { User } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -21,7 +20,6 @@ export default function NavigationDrawer({
 }) {
     const { t } = useTranslation();
     const [hasOpened, setHasOpened] = useState(false);
-    const { onTouchStart, onTouchEnd } = useSwipeToClose(onClose);
 
     if (isOpen && !hasOpened) {
         setHasOpened(true);
@@ -36,8 +34,6 @@ export default function NavigationDrawer({
                 />
             )}
             <div
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd}
                 className={cn(
                     'max-lg:bg-profile-modal-bg flex w-71 shrink-0 flex-col gap-10 max-lg:fixed max-lg:top-0 max-lg:right-8 max-lg:left-0 max-lg:h-150 max-lg:w-auto max-lg:rounded-r-xl max-lg:px-8 max-lg:py-10',
                     isOpen && 'z-drawer',
