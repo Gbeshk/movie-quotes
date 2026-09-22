@@ -8,7 +8,7 @@ import { cn } from '@/lib/cn';
 import { PageProps } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Header({
@@ -35,13 +35,8 @@ export default function Header({
     const { auth } = usePage<PageProps>().props;
     const { t } = useTranslation();
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-    const notificationsRef = useRef<HTMLDivElement>(null);
 
-    const closeNotifications = useCallback(() => {
-        if (!isNotificationsOpen) {
-            return;
-        }
-
+    const closeNotifications = () => {
         if (unreadNotificationsCount > 0) {
             onNotificationsRead?.();
             axios.post(route('notifications.read')).then(() => {
@@ -50,19 +45,7 @@ export default function Header({
         }
 
         setIsNotificationsOpen(false);
-    }, [isNotificationsOpen, unreadNotificationsCount, onNotificationsRead]);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (!notificationsRef.current?.contains(e.target as Node)) {
-                closeNotifications();
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [closeNotifications]);
+    };
 
     const toggleNotifications = () => {
         if (isNotificationsOpen) {
@@ -112,7 +95,7 @@ export default function Header({
                         </button>
                     )}
                     {auth.user && (
-                        <div ref={notificationsRef} className="relative z-50">
+                        <div className="relative z-50">
                             <button
                                 type="button"
                                 onClick={toggleNotifications}
@@ -128,6 +111,9 @@ export default function Header({
                                     </span>
                                 )}
                             </button>
+                            {isNotificationsOpen && (
+                                <div onClick={closeNotifications} className="fixed inset-0 z-40" />
+                            )}
                             <NotificationsPanel
                                 open={isNotificationsOpen}
                                 onViewQuote={onViewQuote}
