@@ -9,18 +9,22 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class FeedController extends Controller
 {
 	public function index(Request $request): Response
 	{
-		$search = trim((string) $request->query('search', ''));
+		$search = trim((string) $request->query('filter.search', ''));
 
 		return Inertia::render('Feed/Index', [
 			'quotes' => Inertia::scroll(
-				fn () => Quote::query()
+				fn () => QueryBuilder::for(Quote::class)
 					->forPost($request->user()->id)
-					->when($search !== '', fn ($query) => $this->applySearch($query, $search))
+					->allowedFilters(
+						AllowedFilter::callback('search', fn ($query, $value) => $this->applySearch($query, (string) $value)),
+					)
 					->latest()
 					->latest('id')
 					->paginate(9)
@@ -41,6 +45,10 @@ class FeedController extends Controller
 
 	private function applySearch(Builder $query, string $search): void
 	{
+		if ($search === '') {
+			return;
+		}
+
 		if (str_starts_with($search, '@')) {
 			$query->whereHas('movie', fn ($query) => $query->search(substr($search, 1)));
 
