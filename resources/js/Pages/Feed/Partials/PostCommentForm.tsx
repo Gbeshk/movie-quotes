@@ -6,18 +6,15 @@ import { useTranslation } from 'react-i18next';
 
 export default function PostCommentForm({
     quoteId,
-    redirectTo,
     onCommentAdded,
 }: {
     quoteId: number;
-    redirectTo?: 'feed';
     onCommentAdded: (comment: Comment) => void;
 }) {
     const { t } = useTranslation();
     const { auth } = usePage<AuthenticatedPageProps>().props;
     const { data, setData, post, processing, reset } = useForm({
         body: '',
-        redirect_to: redirectTo,
     });
 
     const submit = () => {
@@ -44,15 +41,15 @@ export default function PostCommentForm({
     };
 
     return (
-        <div className="mt-6 flex h-13 items-center gap-6">
-            <UserAvatar user={auth.user} />
+        <div className="mt-6 flex h-13 items-center gap-6 max-sm:h-10">
+            <UserAvatar user={auth.user} className="max-sm:h-10 max-sm:w-10" />
             <input
                 value={data.body}
                 onChange={(e) => setData('body', e.target.value)}
                 onKeyDown={submitOnEnter}
                 disabled={processing}
                 placeholder={t('post.writeComment')}
-                className="bg-header-bg/60 text-input-bg placeholder:text-input-bg h-full flex-1 rounded-xl border-0 px-4 text-xl leading-normal font-normal tracking-normal outline-none focus:border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="bg-header-bg/60 text-input-bg placeholder:text-input-bg h-full flex-1 rounded-xl border-0 px-4 text-xl leading-normal font-normal tracking-normal outline-none focus:border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 max-sm:text-base"
             />
             {data.body.trim() !== '' && (
                 <button

@@ -1,7 +1,9 @@
 import CommentIcon from '@/Components/Shared/Icons/CommentIcon';
 import HeartIcon from '@/Components/Shared/Icons/HeartIcon';
 import UserAvatar from '@/Components/Shared/UserAvatar';
+import { useClampOverflow } from '@/hooks/useClampOverflow';
 import { useQuoteLike } from '@/hooks/useQuoteLike';
+import { cn } from '@/lib/cn';
 import { useTranslatable } from '@/lib/translatable';
 import PostComment from '@/Pages/Feed/Partials/PostComment';
 import PostCommentForm from '@/Pages/Feed/Partials/PostCommentForm';
@@ -15,37 +17,55 @@ const COMMENTS_PAGE_SIZE = 3;
 export default function Post({ quote }: { quote: Quote }) {
     const { t } = useTranslation();
     const translate = useTranslatable();
-    const { liked, likesCount, toggleLike } = useQuoteLike(quote, 'feed');
+    const { liked, likesCount, toggleLike } = useQuoteLike(quote);
     const [localComments, setLocalComments] = useState<Comment[]>([]);
     const comments = [...localComments, ...(quote.comments ?? [])];
     const [visibleCount, setVisibleCount] = useState(INITIAL_COMMENTS_SHOWN);
     const visibleComments = comments.slice(0, visibleCount);
     const hasMoreComments = visibleCount < comments.length;
     const canShowLess = visibleCount > INITIAL_COMMENTS_SHOWN;
+    const { ref: quoteTextRef, isClamped: isQuoteClamped } =
+        useClampOverflow<HTMLParagraphElement>();
+    const [isQuoteExpanded, setIsQuoteExpanded] = useState(false);
 
     return (
-        <div className="bg-profile-modal-bg flex flex-col rounded-xl p-6 pb-10 backdrop-blur-3xl">
+        <div className="bg-profile-modal-bg flex flex-col rounded-xl p-6 pb-10 backdrop-blur-3xl max-sm:rounded-none max-sm:px-8 max-sm:pt-7 max-sm:pb-10">
             <div className="flex items-center gap-4">
-                {quote.user && <UserAvatar user={quote.user} />}
-                <p className="text-xl leading-normal font-normal text-white">
+                {quote.user && <UserAvatar user={quote.user} className="max-sm:h-10 max-sm:w-10" />}
+                <p className="text-xl leading-normal font-normal text-white max-sm:text-base">
                     {quote.user?.username}
                 </p>
             </div>
-            <p className="mt-4 text-xl leading-normal font-normal tracking-normal text-white">
+            <p
+                ref={quoteTextRef}
+                className={cn(
+                    'mt-4 text-xl leading-normal font-normal tracking-normal wrap-break-word text-white max-sm:text-base',
+                    !isQuoteExpanded && 'line-clamp-3',
+                )}
+            >
                 “{translate(quote.text)}”
                 {quote.movie && (
                     <>
                         {' '}
                         -{' '}
-                        <span className="text-logo-text text-xl leading-normal font-medium tracking-normal">
+                        <span className="text-logo-text text-xl leading-normal font-medium tracking-normal max-sm:text-base">
                             {translate(quote.movie.title)}.
                         </span>{' '}
                         ({quote.movie.release_year})
                     </>
                 )}
             </p>
+            {(isQuoteClamped || isQuoteExpanded) && (
+                <button
+                    type="button"
+                    onClick={() => setIsQuoteExpanded((current) => !current)}
+                    className="text-modal-secondary-text mt-2 w-fit cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:text-sm"
+                >
+                    {isQuoteExpanded ? t('post.seeLessQuote') : t('post.seeFullQuote')}
+                </button>
+            )}
             {quote.image_url && (
-                <div className="mt-7 h-125 w-full overflow-hidden rounded-xl">
+                <div className="mt-7 h-125 w-full overflow-hidden rounded-xl max-sm:h-50">
                     <img src={quote.image_url} alt="" className="h-full w-full object-cover" />
                 </div>
             )}
@@ -54,7 +74,7 @@ export default function Post({ quote }: { quote: Quote }) {
                     <p className="text-xl leading-normal font-normal tracking-normal text-white">
                         {comments.length}
                     </p>
-                    <CommentIcon />
+                    <CommentIcon className="max-sm:h-6 max-sm:w-6" />
                 </div>
                 <button
                     type="button"
@@ -64,7 +84,7 @@ export default function Post({ quote }: { quote: Quote }) {
                     <p className="text-xl leading-normal font-normal tracking-normal text-white">
                         {likesCount}
                     </p>
-                    <HeartIcon filled={liked} />
+                    <HeartIcon filled={liked} className="max-sm:h-6 max-sm:w-6" />
                 </button>
             </div>
             <div className="bg-line mt-6 h-px w-full"></div>
@@ -77,7 +97,7 @@ export default function Post({ quote }: { quote: Quote }) {
                         <button
                             type="button"
                             onClick={() => setVisibleCount((count) => count + COMMENTS_PAGE_SIZE)}
-                            className="text-modal-secondary-text cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline"
+                            className="text-modal-secondary-text cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:text-sm"
                         >
                             {t('post.showMoreComments')}
                         </button>
@@ -86,7 +106,7 @@ export default function Post({ quote }: { quote: Quote }) {
                         <button
                             type="button"
                             onClick={() => setVisibleCount(INITIAL_COMMENTS_SHOWN)}
-                            className="text-modal-secondary-text cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline"
+                            className="text-modal-secondary-text cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:text-sm"
                         >
                             {t('post.showLessComments')}
                         </button>
@@ -95,7 +115,6 @@ export default function Post({ quote }: { quote: Quote }) {
             )}
             <PostCommentForm
                 quoteId={quote.id}
-                redirectTo="feed"
                 onCommentAdded={(comment) => setLocalComments((current) => [comment, ...current])}
             />
         </div>
