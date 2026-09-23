@@ -3,12 +3,13 @@ import SearchIcon from '@/Components/Shared/Icons/SearchIcon';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { cn } from '@/lib/cn';
 import { renderSearchPlaceholder } from '@/Components/Shared/renderSearchPlaceholder';
+import { useDebouncedSearch } from '@/hooks/useDebouncedSearch';
 import AddQuoteModal from '@/Pages/Feed/Partials/AddQuoteModal';
 import Post from '@/Pages/Feed/Partials/Post';
 import SearchModal from '@/Components/Shared/SearchModal';
 import { Paginated, Quote } from '@/types';
-import { Head, InfiniteScroll, router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { Head, InfiniteScroll } from '@inertiajs/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Index({
@@ -22,27 +23,10 @@ export default function Index({
     const [showAddQuote, setShowAddQuote] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-    const [search, setSearch] = useState(initialSearch);
-    const isFirstRender = useRef(true);
-
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-
-        const timeout = setTimeout(() => {
-            router.get(route('feed'), search ? { filter: { search } } : {}, {
-                preserveState: true,
-                preserveScroll: true,
-                replace: true,
-                only: ['quotes'],
-                reset: ['quotes'],
-            });
-        }, 300);
-
-        return () => clearTimeout(timeout);
-    }, [search]);
+    const { search, setSearch } = useDebouncedSearch(initialSearch, 'feed', {
+        only: ['quotes'],
+        reset: ['quotes'],
+    });
 
     return (
         <AuthenticatedLayout onOpenSearch={() => setIsSearchModalOpen(true)}>

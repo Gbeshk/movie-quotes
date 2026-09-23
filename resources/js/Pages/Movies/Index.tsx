@@ -6,9 +6,10 @@ import AddMovieModal from '@/Pages/Movies/Partials/Movie/AddMovieModal';
 import MovieCard from '@/Pages/Movies/Partials/Movie/MovieCard';
 import MovieSearch from '@/Pages/Movies/Partials/Movie/MovieSearch';
 import SearchModal from '@/Components/Shared/SearchModal';
+import { useDebouncedSearch } from '@/hooks/useDebouncedSearch';
 import { Movie, Paginated } from '@/types';
-import { InfiniteScroll, router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { InfiniteScroll } from '@inertiajs/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Index({
@@ -23,25 +24,7 @@ export default function Index({
     const { t, i18n } = useTranslation();
     const [showAddMovieModal, setShowAddMovieModal] = useState(false);
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-    const [search, setSearch] = useState(initialSearch);
-    const isFirstRender = useRef(true);
-
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-
-        const timeout = setTimeout(() => {
-            router.get(route('movies.index'), search ? { filter: { search } } : {}, {
-                preserveState: true,
-                preserveScroll: true,
-                replace: true,
-            });
-        }, 300);
-
-        return () => clearTimeout(timeout);
-    }, [search]);
+    const { search, setSearch } = useDebouncedSearch(initialSearch, 'movies.index');
 
     return (
         <AuthenticatedLayout
