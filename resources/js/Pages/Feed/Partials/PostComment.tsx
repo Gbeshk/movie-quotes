@@ -1,14 +1,10 @@
+import ClampText from '@/Components/Shared/ClampText';
 import UserAvatar from '@/Components/Shared/UserAvatar';
-import { useClampOverflow } from '@/hooks/useClampOverflow';
-import { cn } from '@/lib/cn';
 import { Comment } from '@/types';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PostComment({ comment }: { comment: Comment }) {
     const { t } = useTranslation();
-    const { ref: bodyRef, isClamped } = useClampOverflow<HTMLParagraphElement>();
-    const [expanded, setExpanded] = useState(false);
 
     return (
         <div className="mt-6">
@@ -18,24 +14,14 @@ export default function PostComment({ comment }: { comment: Comment }) {
                     {comment.user.username}
                 </p>
             </div>
-            <p
-                ref={bodyRef}
-                className={cn(
-                    'ml-17 text-xl leading-normal font-normal tracking-normal wrap-break-word text-white max-sm:mt-3 max-sm:ml-0 max-sm:text-base',
-                    !expanded && 'line-clamp-3',
-                )}
+            <ClampText
+                className="ml-17 text-xl leading-normal font-normal tracking-normal wrap-break-word text-white max-sm:mt-3 max-sm:ml-0 max-sm:text-base"
+                moreLabel={t('post.seeFullComment')}
+                lessLabel={t('post.seeLessComment')}
+                buttonClassName="text-modal-secondary-text ml-17 cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:ml-0 max-sm:text-sm"
             >
                 {comment.body}
-            </p>
-            {(isClamped || expanded) && (
-                <button
-                    type="button"
-                    onClick={() => setExpanded((current) => !current)}
-                    className="text-modal-secondary-text ml-17 cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:ml-0 max-sm:text-sm"
-                >
-                    {expanded ? t('post.seeLessComment') : t('post.seeFullComment')}
-                </button>
-            )}
+            </ClampText>
             <div className="bg-line mt-4 h-px w-full"></div>
         </div>
     );

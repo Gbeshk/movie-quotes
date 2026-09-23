@@ -1,14 +1,13 @@
+import ClampText from '@/Components/Shared/ClampText';
 import CommentIcon from '@/Components/Shared/Icons/CommentIcon';
 import HeartIcon from '@/Components/Shared/Icons/HeartIcon';
 import UserAvatar from '@/Components/Shared/UserAvatar';
-import { useClampOverflow } from '@/hooks/useClampOverflow';
 import { useQuoteLike } from '@/hooks/useQuoteLike';
-import { cn } from '@/lib/cn';
 import { useTranslatable } from '@/lib/translatable';
 import PostComment from '@/Pages/Feed/Partials/PostComment';
 import PostCommentForm from '@/Pages/Feed/Partials/PostCommentForm';
 import { Comment, Quote } from '@/types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const INITIAL_COMMENTS_SHOWN = 2;
@@ -24,9 +23,7 @@ export default function Post({ quote }: { quote: Quote }) {
     const visibleComments = comments.slice(0, visibleCount);
     const hasMoreComments = visibleCount < comments.length;
     const canShowLess = visibleCount > INITIAL_COMMENTS_SHOWN;
-    const { ref: quoteTextRef, isClamped: isQuoteClamped } =
-        useClampOverflow<HTMLParagraphElement>();
-    const [isQuoteExpanded, setIsQuoteExpanded] = useState(false);
+    const commentInputRef = useRef<HTMLInputElement>(null);
 
     return (
         <div className="bg-profile-modal-bg flex flex-col rounded-xl p-6 pb-10 backdrop-blur-3xl max-sm:rounded-none max-sm:px-8 max-sm:pt-7 max-sm:pb-10">
@@ -36,12 +33,11 @@ export default function Post({ quote }: { quote: Quote }) {
                     {quote.user?.username}
                 </p>
             </div>
-            <p
-                ref={quoteTextRef}
-                className={cn(
-                    'mt-4 text-xl leading-normal font-normal tracking-normal wrap-break-word text-white max-sm:text-base',
-                    !isQuoteExpanded && 'line-clamp-3',
-                )}
+            <ClampText
+                className="mt-4 text-xl leading-normal font-normal tracking-normal wrap-break-word text-white max-sm:text-base"
+                moreLabel={t('post.seeFullQuote')}
+                lessLabel={t('post.seeLessQuote')}
+                buttonClassName="text-modal-secondary-text mt-2 w-fit cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:text-sm"
             >
                 “{translate(quote.text)}”
                 {quote.movie && (
@@ -54,32 +50,27 @@ export default function Post({ quote }: { quote: Quote }) {
                         ({quote.movie.release_year})
                     </>
                 )}
-            </p>
-            {(isQuoteClamped || isQuoteExpanded) && (
-                <button
-                    type="button"
-                    onClick={() => setIsQuoteExpanded((current) => !current)}
-                    className="text-modal-secondary-text mt-2 w-fit cursor-pointer text-base leading-normal font-normal tracking-normal hover:underline max-sm:text-sm"
-                >
-                    {isQuoteExpanded ? t('post.seeLessQuote') : t('post.seeFullQuote')}
-                </button>
-            )}
+            </ClampText>
             {quote.image_url && (
                 <div className="mt-7 h-125 w-full overflow-hidden rounded-xl max-sm:h-50">
                     <img src={quote.image_url} alt="" className="h-full w-full object-cover" />
                 </div>
             )}
             <div className="mt-6 flex h-8 gap-6">
-                <div className="flex items-center gap-3">
+                <button
+                    type="button"
+                    onClick={() => commentInputRef.current?.focus()}
+                    className="group flex cursor-pointer items-center gap-3"
+                >
                     <p className="text-xl leading-normal font-normal tracking-normal text-white">
                         {comments.length}
                     </p>
                     <CommentIcon className="max-sm:h-6 max-sm:w-6" />
-                </div>
+                </button>
                 <button
                     type="button"
                     onClick={toggleLike}
-                    className="flex cursor-pointer items-center gap-3"
+                    className="group flex cursor-pointer items-center gap-3"
                 >
                     <p className="text-xl leading-normal font-normal tracking-normal text-white">
                         {likesCount}
@@ -114,6 +105,7 @@ export default function Post({ quote }: { quote: Quote }) {
                 </div>
             )}
             <PostCommentForm
+                ref={commentInputRef}
                 quoteId={quote.id}
                 onCommentAdded={(comment) => setLocalComments((current) => [comment, ...current])}
             />
