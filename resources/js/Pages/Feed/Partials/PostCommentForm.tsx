@@ -1,16 +1,16 @@
 import UserAvatar from '@/Components/Shared/UserAvatar';
 import { AuthenticatedPageProps, Comment } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
-import { KeyboardEventHandler } from 'react';
+import { forwardRef, KeyboardEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export default function PostCommentForm({
-    quoteId,
-    onCommentAdded,
-}: {
-    quoteId: number;
-    onCommentAdded: (comment: Comment) => void;
-}) {
+const PostCommentForm = forwardRef<
+    HTMLInputElement,
+    {
+        quoteId: number;
+        onCommentAdded: (comment: Comment) => void;
+    }
+>(function PostCommentForm({ quoteId, onCommentAdded }, ref) {
     const { t } = useTranslation();
     const { auth } = usePage<AuthenticatedPageProps>().props;
     const { data, setData, post, processing, reset } = useForm({
@@ -44,6 +44,7 @@ export default function PostCommentForm({
         <div className="mt-6 flex h-13 items-center gap-6 max-sm:h-10">
             <UserAvatar user={auth.user} className="max-sm:h-10 max-sm:w-10" />
             <input
+                ref={ref}
                 value={data.body}
                 onChange={(e) => setData('body', e.target.value)}
                 onKeyDown={submitOnEnter}
@@ -56,11 +57,13 @@ export default function PostCommentForm({
                     type="button"
                     onClick={submit}
                     disabled={processing}
-                    className="bg-danger flex h-full shrink-0 cursor-pointer items-center justify-center rounded-xl px-6 text-xl leading-normal font-normal tracking-normal text-white"
+                    className="bg-danger hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active flex h-full shrink-0 cursor-pointer items-center justify-center rounded-xl px-6 text-xl leading-normal font-normal tracking-normal text-white transition-colors duration-150"
                 >
                     {t('post.post')}
                 </button>
             )}
         </div>
     );
-}
+});
+
+export default PostCommentForm;
