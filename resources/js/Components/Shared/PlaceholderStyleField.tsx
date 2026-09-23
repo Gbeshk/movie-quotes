@@ -16,6 +16,7 @@ export default function PlaceholderStyleField({
     className,
     textareaHeightClassName,
     maxLength,
+    readOnly = false,
 }: {
     as?: 'input' | 'textarea';
     id: string;
@@ -30,6 +31,7 @@ export default function PlaceholderStyleField({
     className?: string;
     textareaHeightClassName?: string;
     maxLength?: number;
+    readOnly?: boolean;
 }) {
     const { status, errorMessage, markTouched } = useFieldStatus(value, error, validate);
 
@@ -52,6 +54,7 @@ export default function PlaceholderStyleField({
                         className={cn('w-full placeholder:text-white', badge && 'pr-12')}
                         heightClassName={textareaHeightClassName}
                         maxLength={maxLength}
+                        readOnly={readOnly}
                     />
                 </div>
                 {badge && (
@@ -80,6 +83,7 @@ export default function PlaceholderStyleField({
                 onChange={(e) => onChange(e.target.value)}
                 onBlur={markTouched}
                 maxLength={maxLength}
+                readOnly={readOnly}
                 className={cn(
                     'border-modal-secondary-text focus:border-modal-secondary-text w-full rounded border bg-transparent py-2 pl-4 text-xl leading-6 font-normal tracking-normal text-white outline-none placeholder:text-white max-sm:text-base',
                     badge ? 'pr-16' : 'pr-4',
