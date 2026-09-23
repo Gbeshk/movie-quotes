@@ -53,12 +53,13 @@ export default function MovieSearch({
                         )}
                     </div>
                 ) : (
-                    <p
+                    <button
+                        type="button"
                         onClick={() => setIsSearchOpen(true)}
-                        className="text-input-bg group-hover:text-modal-secondary-text cursor-pointer text-xl leading-normal font-normal tracking-normal transition-colors duration-150"
+                        className="text-input-bg group-hover:text-modal-secondary-text cursor-pointer border-0 bg-transparent p-0 text-xl leading-normal font-normal tracking-normal transition-colors duration-150"
                     >
                         {t('common.search')}
-                    </p>
+                    </button>
                 )}
             </div>
             {isSearchOpen && <div className="bg-line absolute top-10 mt-2 h-px w-full" />}
