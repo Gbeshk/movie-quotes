@@ -44,22 +44,26 @@ export default function EditQuoteModal({
             show={show}
             onClose={onClose}
             onSubmit={submit}
-            cardClassName="w-225 max-h-[90vh] max-sm:w-full overflow-y-auto py-10 pb-18"
+            cardClassName="w-225 max-h-modal max-sm:w-full max-sm:min-h-screen max-sm:max-h-screen max-sm:rounded-none overflow-y-auto py-10 pb-18"
             cardBgClassName="bg-profile-modal-bg"
-            backdropClassName=""
+            contentClassName="items-center justify-center max-sm:items-start"
         >
             <button
                 type="button"
                 onClick={onDelete}
-                className="absolute top-10 left-8 flex cursor-pointer items-center gap-2"
+                className="absolute top-10 left-8 flex cursor-pointer items-center gap-2 max-sm:top-11"
             >
                 <TrashIcon />
                 <p className="text-input-bg text-base leading-normal font-normal tracking-normal capitalize">
                     {t('common.delete')}
                 </p>
             </button>
-            <ModalHeader title={t('movies.editQuoteTitle')} onClose={onClose} />
-            <ModalUserRow />
+            <ModalHeader
+                title={t('movies.editQuoteTitle')}
+                onClose={onClose}
+                titleClassName="max-sm:text-xl"
+            />
+            <ModalUserRow avatarClassName="max-sm:h-10 max-sm:w-10" />
             <QuoteFormFields data={data} setData={setData} errors={errors} />
             <EditImagePreview
                 file={data.image}
@@ -69,6 +73,7 @@ export default function EditQuoteModal({
                     clearErrors('image');
                 }}
                 error={errors.image}
+                imageClassName="max-sm:h-75.5"
             />
 
             <div className="mt-15 flex w-full items-center justify-center px-8">
