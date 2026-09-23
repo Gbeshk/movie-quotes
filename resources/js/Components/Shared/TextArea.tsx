@@ -10,6 +10,7 @@ export default function Textarea({
     className,
     heightClassName = 'h-21',
     maxLength,
+    readOnly = false,
 }: {
     id: string;
     name: string;
@@ -20,6 +21,7 @@ export default function Textarea({
     className?: string;
     heightClassName?: string;
     maxLength?: number;
+    readOnly?: boolean;
 }) {
     return (
         <textarea
@@ -30,6 +32,7 @@ export default function Textarea({
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             maxLength={maxLength}
+            readOnly={readOnly}
             className={cn(
                 'm-0 resize-y appearance-none border-0 bg-transparent p-0 text-xl leading-6 font-normal tracking-normal text-white outline-none focus:border-0 focus:shadow-none focus:ring-0 max-sm:text-base',
                 heightClassName,

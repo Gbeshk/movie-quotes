@@ -70,7 +70,7 @@ export default function SearchModal({
                         <button
                             type="button"
                             onClick={confirm}
-                            className="bg-danger cursor-pointer rounded-lg px-3 py-1.5 text-sm leading-normal font-normal tracking-normal text-white"
+                            className="bg-danger hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active cursor-pointer rounded-lg px-3 py-1.5 text-sm leading-normal font-normal tracking-normal text-white transition-colors duration-150"
                         >
                             {t('common.search')}
                         </button>

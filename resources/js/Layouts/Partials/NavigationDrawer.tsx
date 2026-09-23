@@ -51,12 +51,14 @@ export default function NavigationDrawer({
 
                 <Link
                     href={route('profile.edit')}
-                    className="flex cursor-pointer items-center gap-6"
+                    className="group flex cursor-pointer items-center gap-6"
                 >
                     <div
                         className={cn(
-                            'h-15 w-15 shrink-0 overflow-hidden rounded-full max-sm:h-10 max-sm:w-10',
-                            route().current('profile.edit') && 'border-danger border-2',
+                            'h-15 w-15 shrink-0 overflow-hidden rounded-full transition-[border-width] duration-150 max-sm:h-10 max-sm:w-10',
+                            route().current('profile.edit')
+                                ? 'border-danger border-2'
+                                : 'border-danger group-hover:border',
                         )}
                     >
                         {user.avatar_url ? (
@@ -81,23 +83,29 @@ export default function NavigationDrawer({
 
                 <Link
                     href={route('feed')}
-                    className="ml-2 flex cursor-pointer items-center gap-10 max-sm:ml-0 max-sm:gap-6"
+                    className="group relative ml-2 flex cursor-pointer items-center gap-10 max-sm:ml-0 max-sm:gap-6"
                 >
+                    {route().current('feed') && (
+                        <div className="bg-header-bg pointer-events-none absolute top-1/2 left-1/2 -z-10 h-13 w-[calc(100%+4rem)] -translate-x-1/2 -translate-y-1/2 lg:hidden" />
+                    )}
                     <FeedIcon active={route().current('feed')} className="max-sm:h-6 max-sm:w-6" />
-                    <p className="text-2xl leading-9 font-normal tracking-normal text-white max-sm:text-xl">
+                    <p className="lg:group-hover:text-modal-secondary-text text-2xl leading-9 font-normal tracking-normal text-white transition-colors duration-150 max-sm:text-xl">
                         {t('nav.newsFeed')}
                     </p>
                 </Link>
 
                 <Link
                     href={route('movies.index')}
-                    className="ml-2.5 flex cursor-pointer items-center gap-10 max-sm:ml-0 max-sm:gap-6"
+                    className="group relative ml-2.5 flex cursor-pointer items-center gap-10 max-sm:ml-0 max-sm:gap-6"
                 >
+                    {route().current('movies.*') && (
+                        <div className="bg-header-bg pointer-events-none absolute top-1/2 left-1/2 -z-10 h-13 w-[calc(100%+4rem)] -translate-x-1/2 -translate-y-1/2 lg:hidden" />
+                    )}
                     <MoviesIcon
                         active={route().current('movies.*')}
                         className="max-sm:h-6 max-sm:w-6"
                     />
-                    <p className="text-2xl leading-9 font-normal tracking-normal text-white max-sm:text-xl">
+                    <p className="lg:group-hover:text-modal-secondary-text text-2xl leading-9 font-normal tracking-normal text-white transition-colors duration-150 max-sm:text-xl">
                         {t('nav.movies')}
                     </p>
                 </Link>

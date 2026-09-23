@@ -99,7 +99,7 @@ export default function Header({
                             <button
                                 type="button"
                                 onClick={toggleNotifications}
-                                className="relative flex cursor-pointer items-center justify-center"
+                                className="relative z-50 flex cursor-pointer items-center justify-center"
                             >
                                 <NotificationIcon
                                     active={unreadNotificationsCount > 0}

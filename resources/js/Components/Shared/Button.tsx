@@ -21,7 +21,7 @@ const variantClasses: Record<ButtonVariant, string> = {
     ),
     cta: 'bg-sign-up-btn-bg hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active flex h-9.5 w-full cursor-pointer items-center justify-center rounded text-base text-white disabled:opacity-50',
     'danger-cta':
-        'bg-danger hover:bg-danger/90 active:bg-danger/80 flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded text-base text-white disabled:opacity-50',
+        'bg-danger hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded text-base text-white disabled:opacity-50',
 };
 
 export default function Button({

@@ -78,12 +78,14 @@ export default function Index({
                         </button>
                         <div
                             className={cn(
-                                'flex min-w-0 items-center gap-4 max-sm:hidden',
-                                isSearchOpen ? 'relative ml-4 flex-1' : 'ml-4 shrink',
+                                'group flex min-w-0 items-center gap-4 max-sm:hidden',
+                                isSearchOpen
+                                    ? 'relative ml-4 flex-1'
+                                    : 'ml-4 shrink cursor-pointer',
                             )}
                         >
                             <div className="shrink-0">
-                                <SearchIcon />
+                                <SearchIcon className="group-hover:text-modal-secondary-text" />
                             </div>
                             <div
                                 className={cn(
@@ -103,7 +105,7 @@ export default function Index({
                                     )}
                                 />
                                 {search === '' && (
-                                    <p className="text-input-bg pointer-events-none absolute inset-0 flex items-center overflow-hidden text-xl leading-normal font-normal tracking-normal whitespace-nowrap">
+                                    <p className="text-input-bg group-hover:text-modal-secondary-text pointer-events-none absolute inset-0 flex items-center overflow-hidden text-xl leading-normal font-normal tracking-normal whitespace-nowrap transition-colors duration-150">
                                         {isSearchOpen
                                             ? renderSearchPlaceholder(t('common.searchExpanded'))
                                             : t('common.search')}

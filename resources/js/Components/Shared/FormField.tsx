@@ -33,6 +33,7 @@ type PlaceholderFieldProps = {
     className?: string;
     textareaHeightClassName?: string;
     maxLength?: number;
+    readOnly?: boolean;
 };
 
 type InlineLabelFieldProps = {
