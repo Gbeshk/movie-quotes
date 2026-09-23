@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\QuotePostResource;
 use App\Models\Movie;
 use App\Models\Quote;
-use Illuminate\Database\Eloquent\Builder;
+use App\QueryFilters\MovieSearchFilter;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class MovieController extends Controller
 		$query = fn () => QueryBuilder::for(Movie::class)
 			->where('user_id', auth()->id())
 			->allowedFilters(
-				AllowedFilter::callback('search', fn ($query, $value) => $this->applySearch($query, (string) $value)),
+				AllowedFilter::custom('search', new MovieSearchFilter()),
 			);
 
 		return Inertia::render('Movies/Index', [
@@ -102,30 +102,5 @@ class MovieController extends Controller
 		$movie->delete();
 
 		return Redirect::route('movies.index');
-	}
-
-	private function applySearch(Builder $query, string $search): void
-	{
-		if ($search === '') {
-			return;
-		}
-
-		if (str_starts_with($search, '@')) {
-			$query->search(substr($search, 1));
-
-			return;
-		}
-
-		if (str_starts_with($search, '#')) {
-			$query->whereHas('quotes', fn ($query) => $query->search(substr($search, 1)));
-
-			return;
-		}
-
-		$query->where(
-			fn ($query) => $query
-				->search($search)
-				->orWhere(fn ($query) => $query->whereHas('quotes', fn ($query) => $query->search($search))),
-		);
 	}
 }
