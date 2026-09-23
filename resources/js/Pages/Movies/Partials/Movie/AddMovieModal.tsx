@@ -37,11 +37,14 @@ export default function AddMovieModal({ show, onClose }: { show: boolean; onClos
             show={show}
             onClose={onClose}
             onSubmit={submit}
-            cardClassName="w-225 max-h-[90vh] max-sm:w-full overflow-y-auto py-10"
+            cardClassName="w-225 max-h-modal max-sm:w-full max-sm:min-h-screen max-sm:max-h-screen max-sm:rounded-none overflow-y-auto py-10"
             cardBgClassName="bg-profile-modal-bg"
-            backdropClassName=""
         >
-            <ModalHeader title={t('movies.addMovieTitle')} onClose={onClose} />
+            <ModalHeader
+                title={t('movies.addMovieTitle')}
+                onClose={onClose}
+                titleClassName="max-sm:text-xl"
+            />
             <ModalUserRow />
 
             <AddMovieFormFields

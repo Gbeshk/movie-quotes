@@ -39,7 +39,7 @@ test('the movies index can be filtered by search', function () {
 	$matching = Movie::factory()->for($user)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
 	Movie::factory()->for($user)->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
 
-	$response = $this->actingAs($user)->get(route('movies.index', ['search' => 'matrix']));
+	$response = $this->actingAs($user)->get(route('movies.index', ['filter' => ['search' => 'matrix']]));
 
 	$response->assertInertia(
 		fn ($page) => $page
@@ -56,7 +56,7 @@ test('the movies index can be filtered by search with an @ prefix', function () 
 	$matching = Movie::factory()->for($user)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
 	Movie::factory()->for($user)->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
 
-	$response = $this->actingAs($user)->get(route('movies.index', ['search' => '@matrix']));
+	$response = $this->actingAs($user)->get(route('movies.index', ['filter' => ['search' => '@matrix']]));
 
 	$response->assertInertia(
 		fn ($page) => $page
@@ -75,13 +75,32 @@ test('the movies index can be filtered by search with a # prefix matching a quot
 	$otherMovie = Movie::factory()->for($user)->create();
 	Quote::factory()->for($otherMovie)->create(['text' => ['en' => 'Why so serious', 'ka' => 'რატომ ხარ ასეთი სერიოზული']]);
 
-	$response = $this->actingAs($user)->get(route('movies.index', ['search' => '#spoon']));
+	$response = $this->actingAs($user)->get(route('movies.index', ['filter' => ['search' => '#spoon']]));
 
 	$response->assertInertia(
 		fn ($page) => $page
 		->component('Movies/Index')
 		->has('movies.data', 1)
 		->where('movies.data.0.id', $matchingMovie->id)
+	);
+});
+
+test('the movies index search with no prefix also matches a quote', function () {
+	$user = User::factory()->create();
+
+	$matchingByQuote = Movie::factory()->for($user)->create(['title' => ['en' => 'The Matrix', 'ka' => 'მატრიცა']]);
+	Quote::factory()->for($matchingByQuote)->create(['text' => ['en' => 'There is no spoon', 'ka' => 'კოვზი არ არსებობს']]);
+
+	$otherMovie = Movie::factory()->for($user)->create(['title' => ['en' => 'Inception', 'ka' => 'დასაწყისი']]);
+	Quote::factory()->for($otherMovie)->create(['text' => ['en' => 'Why so serious', 'ka' => 'რატომ ხარ ასეთი სერიოზული']]);
+
+	$response = $this->actingAs($user)->get(route('movies.index', ['filter' => ['search' => 'spoon']]));
+
+	$response->assertInertia(
+		fn ($page) => $page
+		->component('Movies/Index')
+		->has('movies.data', 1)
+		->where('movies.data.0.id', $matchingByQuote->id)
 	);
 });
 

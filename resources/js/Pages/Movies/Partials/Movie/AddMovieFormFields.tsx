@@ -31,6 +31,7 @@ export default function AddMovieFormFields({
                 error={errors['title.en']}
                 validate={validateEnglishText}
                 badge="Eng"
+                maxLength={255}
             />
             <FormField
                 variant="placeholder"
@@ -43,6 +44,7 @@ export default function AddMovieFormFields({
                 error={errors['title.ka']}
                 validate={validateGeorgianText}
                 badge="ქარ"
+                maxLength={255}
             />
             <TagInput
                 tags={data.genre}
@@ -53,6 +55,7 @@ export default function AddMovieFormFields({
                     clearErrors('genre');
                 }}
                 error={errors.genre}
+                maxLength={255}
             />
             <FormField
                 variant="placeholder"
@@ -77,6 +80,7 @@ export default function AddMovieFormFields({
                 error={errors['director.en']}
                 validate={validateEnglishText}
                 badge="Eng"
+                maxLength={255}
             />
             <FormField
                 variant="placeholder"
@@ -89,6 +93,7 @@ export default function AddMovieFormFields({
                 error={errors['director.ka']}
                 validate={validateGeorgianText}
                 badge="ქარ"
+                maxLength={255}
             />
             <FormField
                 variant="placeholder"
@@ -101,6 +106,7 @@ export default function AddMovieFormFields({
                 error={errors['description.en']}
                 validate={validateEnglishText}
                 badge="Eng"
+                maxLength={255}
             />
             <FormField
                 variant="placeholder"
@@ -113,6 +119,7 @@ export default function AddMovieFormFields({
                 error={errors['description.ka']}
                 validate={validateGeorgianText}
                 badge="ქარ"
+                maxLength={255}
             />
         </>
     );
