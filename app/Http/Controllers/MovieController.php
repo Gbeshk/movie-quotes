@@ -7,12 +7,15 @@ use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\QuotePostResource;
 use App\Models\Movie;
 use App\Models\Quote;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class MovieController extends Controller
 {
@@ -20,14 +23,12 @@ class MovieController extends Controller
 
 	public function index(Request $request): Response
 	{
-		$search = trim((string) $request->query('search', ''));
+		$search = trim((string) $request->query('filter.search', ''));
 
-		$query = fn () => Movie::query()
+		$query = fn () => QueryBuilder::for(Movie::class)
 			->where('user_id', auth()->id())
-			->when(
-				str_starts_with($search, '#'),
-				fn ($query) => $query->whereHas('quotes', fn ($query) => $query->search(substr($search, 1))),
-				fn ($query) => $query->search(str_starts_with($search, '@') ? substr($search, 1) : $search),
+			->allowedFilters(
+				AllowedFilter::callback('search', fn ($query, $value) => $this->applySearch($query, (string) $value)),
 			);
 
 		return Inertia::render('Movies/Index', [
@@ -101,5 +102,30 @@ class MovieController extends Controller
 		$movie->delete();
 
 		return Redirect::route('movies.index');
+	}
+
+	private function applySearch(Builder $query, string $search): void
+	{
+		if ($search === '') {
+			return;
+		}
+
+		if (str_starts_with($search, '@')) {
+			$query->search(substr($search, 1));
+
+			return;
+		}
+
+		if (str_starts_with($search, '#')) {
+			$query->whereHas('quotes', fn ($query) => $query->search(substr($search, 1)));
+
+			return;
+		}
+
+		$query->where(
+			fn ($query) => $query
+				->search($search)
+				->orWhere(fn ($query) => $query->whereHas('quotes', fn ($query) => $query->search($search))),
+		);
 	}
 }
