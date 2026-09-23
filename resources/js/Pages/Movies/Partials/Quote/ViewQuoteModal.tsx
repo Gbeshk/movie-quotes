@@ -12,7 +12,7 @@ import ModalUserRow from '@/Pages/Movies/Partials/ModalUserRow';
 import QuoteFormFields from '@/Pages/Movies/Partials/Quote/QuoteFormFields';
 import { Comment, Quote, QuoteFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const INITIAL_COMMENTS_SHOWN = 2;
@@ -45,17 +45,18 @@ export default function ViewQuoteModal({
     const visibleComments = comments.slice(0, visibleCount);
     const hasMoreComments = visibleCount < comments.length;
     const canShowLess = visibleCount > INITIAL_COMMENTS_SHOWN;
+    const commentInputRef = useRef<HTMLInputElement>(null);
 
     return (
         <Modal
             show={show}
             onClose={onClose}
-            cardClassName="w-225 max-h-[90vh] max-sm:w-full overflow-y-auto py-10 pb-18"
+            cardClassName="w-225 max-h-modal max-sm:w-full max-sm:min-h-screen max-sm:max-h-screen max-sm:rounded-none overflow-y-auto py-10 pb-18"
             cardBgClassName="bg-profile-modal-bg"
-            backdropClassName=""
+            contentClassName="items-center justify-center max-sm:items-start"
         >
             {isAuthor && (
-                <div className="absolute top-10 left-8 flex items-center gap-6">
+                <div className="absolute top-10 left-8 flex items-center gap-6 max-sm:top-11">
                     <button type="button" onClick={onEdit} className="cursor-pointer">
                         <EditIcon />
                     </button>
@@ -65,13 +66,19 @@ export default function ViewQuoteModal({
                     </button>
                 </div>
             )}
-            <ModalHeader title={t('movies.viewQuoteTitle')} onClose={onClose} />
-            <ModalUserRow />
+            <ModalHeader
+                title={t('movies.viewQuoteTitle')}
+                onClose={onClose}
+                titleClassName="max-sm:hidden"
+                dividerClassName="max-sm:mt-13"
+            />
+            <ModalUserRow avatarClassName="max-sm:h-10 max-sm:w-10" />
             <QuoteFormFields
                 data={data}
                 setData={setData}
                 errors={errors}
                 textareaHeightClassName="h-13"
+                readOnly
             />
             <EditImagePreview
                 file={data.image}
@@ -81,25 +88,31 @@ export default function ViewQuoteModal({
                     clearErrors('image');
                 }}
                 error={errors.image}
+                imageClassName="max-sm:h-75.5"
+                readOnly
             />
 
             <div className="mt-10 flex w-full flex-col px-8">
                 <div className="flex h-8 gap-6">
-                    <div className="flex items-center gap-3">
+                    <button
+                        type="button"
+                        onClick={() => commentInputRef.current?.focus()}
+                        className="group flex cursor-pointer items-center gap-3"
+                    >
                         <p className="text-xl leading-normal font-normal tracking-normal text-white">
                             {comments.length}
                         </p>
-                        <CommentIcon />
-                    </div>
+                        <CommentIcon className="max-sm:h-6 max-sm:w-6" />
+                    </button>
                     <button
                         type="button"
                         onClick={toggleLike}
-                        className="flex cursor-pointer items-center gap-3"
+                        className="group flex cursor-pointer items-center gap-3"
                     >
                         <p className="text-xl leading-normal font-normal tracking-normal text-white">
                             {likesCount}
                         </p>
-                        <HeartIcon filled={liked} />
+                        <HeartIcon filled={liked} className="max-sm:h-6 max-sm:w-6" />
                     </button>
                 </div>
                 <div className="bg-line mt-6 h-px w-full"></div>
@@ -131,6 +144,7 @@ export default function ViewQuoteModal({
                     </div>
                 )}
                 <PostCommentForm
+                    ref={commentInputRef}
                     quoteId={quote.id}
                     onCommentAdded={(comment) =>
                         setLocalComments((current) => [comment, ...current])

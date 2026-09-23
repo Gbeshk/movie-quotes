@@ -8,8 +8,10 @@ export default function QuoteFormFields({
     setData,
     errors,
     textareaHeightClassName = 'h-18',
+    readOnly = false,
 }: Pick<InertiaFormProps<QuoteFormData>, 'data' | 'setData' | 'errors'> & {
     textareaHeightClassName?: string;
+    readOnly?: boolean;
 }) {
     return (
         <>
@@ -26,6 +28,8 @@ export default function QuoteFormFields({
                 error={errors['text.en']}
                 validate={validateEnglishText}
                 badge="Eng"
+                maxLength={255}
+                readOnly={readOnly}
             />
             <FormField
                 variant="placeholder"
@@ -40,6 +44,8 @@ export default function QuoteFormFields({
                 error={errors['text.ka']}
                 validate={validateGeorgianText}
                 badge="ქარ"
+                maxLength={255}
+                readOnly={readOnly}
             />
         </>
     );
