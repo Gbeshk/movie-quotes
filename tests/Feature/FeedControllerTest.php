@@ -126,7 +126,7 @@ test('searching the feed with an @ prefix filters quotes by movie title', functi
 	$matchingQuote = Quote::factory()->for($matrixMovie)->create();
 	Quote::factory()->for($otherMovie)->create();
 
-	$response = $this->actingAs($user)->get(route('feed', ['search' => '@matrix']));
+	$response = $this->actingAs($user)->get(route('feed', ['filter' => ['search' => '@matrix']]));
 
 	$response->assertInertia(
 		fn ($page) => $page
@@ -142,7 +142,7 @@ test('searching the feed with a # prefix filters quotes by their own text', func
 	$matchingQuote = Quote::factory()->create(['text' => ['en' => 'There is no spoon', 'ka' => 'კოვზი არ არსებობს']]);
 	Quote::factory()->create(['text' => ['en' => 'Why so serious', 'ka' => 'რატომ ხარ ასეთი სერიოზული']]);
 
-	$response = $this->actingAs($user)->get(route('feed', ['search' => '#spoon']));
+	$response = $this->actingAs($user)->get(route('feed', ['filter' => ['search' => '#spoon']]));
 
 	$response->assertInertia(
 		fn ($page) => $page
@@ -160,7 +160,7 @@ test('searching the feed without an @ or # prefix matches either the movie title
 	$matchingByText = Quote::factory()->create(['text' => ['en' => 'There is no spoon', 'ka' => 'კოვზი არ არსებობს']]);
 	Quote::factory()->create(['text' => ['en' => 'Why so serious', 'ka' => 'რატომ ხარ ასეთი სერიოზული']]);
 
-	$response = $this->actingAs($user)->get(route('feed', ['search' => 'matrix']));
+	$response = $this->actingAs($user)->get(route('feed', ['filter' => ['search' => 'matrix']]));
 
 	$response->assertInertia(
 		fn ($page) => $page
@@ -169,7 +169,7 @@ test('searching the feed without an @ or # prefix matches either the movie title
 			->where('quotes.data.0.id', $matchingByMovie->id)
 	);
 
-	$response = $this->actingAs($user)->get(route('feed', ['search' => 'spoon']));
+	$response = $this->actingAs($user)->get(route('feed', ['filter' => ['search' => 'spoon']]));
 
 	$response->assertInertia(
 		fn ($page) => $page

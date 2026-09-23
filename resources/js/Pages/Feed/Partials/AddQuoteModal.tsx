@@ -16,12 +16,11 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
     const [movie, setMovie] = useState<Movie | null>(null);
     const [isChangingMovie, setIsChangingMovie] = useState(false);
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm<
-        QuoteFormData & { movie_id: number | null; redirect_to: 'feed' }
+        QuoteFormData & { movie_id: number | null }
     >({
         text: { ka: '', en: '' },
         image: null,
         movie_id: null,
-        redirect_to: 'feed',
     });
 
     const selectMovie = (selected: Movie) => {
@@ -57,9 +56,9 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
             show={show}
             onClose={close}
             onSubmit={submit}
-            cardClassName="w-225 max-sm:w-full my-13 py-10 pb-10"
+            cardClassName="w-225 max-sm:w-full max-sm:my-0 max-sm:rounded-none my-13 py-10 pb-10"
             cardBgClassName="bg-profile-modal-bg"
-            backdropClassName=""
+            contentClassName="items-center justify-center max-sm:items-start"
         >
             <ModalHeader title={t('movies.addQuoteTitle')} onClose={close} />
             <ModalUserRow />
@@ -98,7 +97,7 @@ export default function AddQuoteModal({ show, onClose }: { show: boolean; onClos
                 </>
             )}
 
-            <div className="mt-10 flex w-full items-center justify-center px-8">
+            <div className="mt-10 flex w-full items-center justify-center px-8 max-sm:pb-13">
                 <Button
                     type="submit"
                     variant="danger-cta"
