@@ -60,7 +60,7 @@ export default function Show({
     }, [viewingQuote]);
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout contentShrink0={false}>
             <Head title={translate(movie.title)} />
 
             {isOwner && (
@@ -124,38 +124,43 @@ export default function Show({
                 confirmLabel={t('common.delete')}
             />
 
-            <div className="w-full">
-                <div className="flex items-center justify-between">
-                    <p className="text-2xl leading-normal font-medium tracking-normal text-white">
-                        {t('movies.movieDescription')}
-                    </p>
+            <div className="w-full lg:pl-8">
+                <div className="w-movie-content max-movie-wrap:w-full ml-auto max-lg:flex max-lg:flex-col max-lg:items-center">
+                    <div className="flex items-center justify-between max-sm:hidden">
+                        <p className="text-2xl leading-normal font-medium tracking-normal text-white">
+                            {t('movies.movieDescription')}
+                        </p>
+                    </div>
+
+                    <MovieDetails
+                        movie={movie}
+                        isOwner={isOwner}
+                        onEdit={() => setShowEdit(true)}
+                        onDelete={() => setShowDeleteConfirm(true)}
+                    />
+
+                    <MovieQuotesHeader
+                        quotesCount={quotesCount}
+                        isOwner={isOwner}
+                        onAddQuote={() => setShowAddQuote(true)}
+                    />
+
+                    <InfiniteScroll
+                        data="quotes"
+                        className="w-movie-poster max-movie-wrap:w-movie-poster-wrap md:max-movie-wrap:min-w-160 max-md:w-movie-mobile mt-16 flex flex-col gap-10 max-sm:w-full"
+                    >
+                        {quotes.data.map((quote) => (
+                            <QuoteCard
+                                key={quote.id}
+                                quote={quote}
+                                isAuthor={quote.user_id === auth.user.id}
+                                onEdit={() => setEditingQuote(quote)}
+                                onDelete={() => setDeletingQuote(quote)}
+                                onView={() => setViewingQuote(quote)}
+                            />
+                        ))}
+                    </InfiniteScroll>
                 </div>
-
-                <MovieDetails
-                    movie={movie}
-                    isOwner={isOwner}
-                    onEdit={() => setShowEdit(true)}
-                    onDelete={() => setShowDeleteConfirm(true)}
-                />
-
-                <MovieQuotesHeader
-                    quotesCount={quotesCount}
-                    isOwner={isOwner}
-                    onAddQuote={() => setShowAddQuote(true)}
-                />
-
-                <InfiniteScroll data="quotes" className="mt-16 flex w-3/5 flex-col gap-10">
-                    {quotes.data.map((quote) => (
-                        <QuoteCard
-                            key={quote.id}
-                            quote={quote}
-                            isAuthor={quote.user_id === auth.user.id}
-                            onEdit={() => setEditingQuote(quote)}
-                            onDelete={() => setDeletingQuote(quote)}
-                            onView={() => setViewingQuote(quote)}
-                        />
-                    ))}
-                </InfiniteScroll>
             </div>
         </AuthenticatedLayout>
     );

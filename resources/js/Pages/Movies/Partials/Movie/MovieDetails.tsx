@@ -19,8 +19,8 @@ export default function MovieDetails({
     const translate = useTranslatable();
 
     return (
-        <div className="mt-8 flex w-full gap-3">
-            <div className="bg-input-bg h-110 w-3/5 overflow-hidden rounded-xl">
+        <div className="max-movie-wrap:flex-col mt-8 flex gap-6 max-lg:items-center max-sm:w-full">
+            <div className="bg-input-bg w-movie-poster max-movie-wrap:h-75 max-movie-wrap:w-movie-poster-wrap md:max-movie-wrap:min-w-160 max-md:w-movie-mobile h-110 shrink-0 overflow-hidden rounded-xl max-sm:w-full">
                 {movie.poster_url && (
                     <img
                         src={movie.poster_url}
@@ -29,7 +29,7 @@ export default function MovieDetails({
                     />
                 )}
             </div>
-            <div className="w-2/5">
+            <div className="w-movie-details max-movie-wrap:w-movie-poster-wrap md:max-movie-wrap:min-w-160 max-md:w-movie-mobile min-w-0 shrink-0 max-sm:w-full">
                 <div className="flex items-center justify-between gap-3">
                     <p className="text-logo-text flex min-w-0 items-baseline gap-1 text-2xl font-medium">
                         <span className="truncate">{translate(movie.title)}</span>
@@ -61,7 +61,7 @@ export default function MovieDetails({
                 <div className="mt-2.5">
                     <MovieDirector director={translate(movie.director)} />
                 </div>
-                <div className="text-input-bg mt-5 text-lg font-normal">
+                <div className="text-input-bg mt-5 text-lg font-normal wrap-break-word">
                     {translate(movie.description)}
                 </div>
             </div>

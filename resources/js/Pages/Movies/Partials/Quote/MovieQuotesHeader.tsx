@@ -15,7 +15,7 @@ export default function MovieQuotesHeader({
     const { t, i18n } = useTranslation();
 
     return (
-        <div className="mt-8 flex items-center gap-4">
+        <div className="mt-8 flex items-center gap-4 max-sm:w-full max-sm:self-start">
             <p className="text-2xl font-normal text-white uppercase">
                 {t('movies.quotesTotal', { count: quotesCount })}
             </p>
