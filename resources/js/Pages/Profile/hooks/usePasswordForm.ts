@@ -1,7 +1,7 @@
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
-export function usePasswordForm() {
+export function usePasswordForm(onSaved?: () => void) {
     const [editingPassword, setEditingPassword] = useState(false);
 
     const passwordForm = useForm({
@@ -23,6 +23,7 @@ export function usePasswordForm() {
             onSuccess: () => {
                 passwordForm.reset();
                 setEditingPassword(false);
+                onSaved?.();
             },
         });
     };

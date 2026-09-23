@@ -2,7 +2,7 @@ import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
-export function useAccountDetailsForm(user: User) {
+export function useAccountDetailsForm(user: User, onSaved?: () => void) {
     const [editingUsername, setEditingUsername] = useState(false);
     const [editingEmail, setEditingEmail] = useState(false);
 
@@ -22,6 +22,7 @@ export function useAccountDetailsForm(user: User) {
             onSuccess: () => {
                 setEditingUsername(false);
                 setEditingEmail(false);
+                onSaved?.();
             },
         });
     };
@@ -51,6 +52,8 @@ export function useAccountDetailsForm(user: User) {
         emailChanged,
         submitProfile,
         cancelProfileEdit,
+        cancelUsernameEdit,
+        cancelEmailEdit,
         toggleUsername: () => (editingUsername ? cancelUsernameEdit() : setEditingUsername(true)),
         toggleEmail: () => (editingEmail ? cancelEmailEdit() : setEditingEmail(true)),
     };

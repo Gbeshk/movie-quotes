@@ -27,7 +27,11 @@ export default function AccountDetailsForm({
     const { t } = useTranslation();
 
     return (
-        <form id="profile-form" onSubmit={onSubmit} className="mt-10 flex w-132 flex-col gap-14">
+        <form
+            id="profile-form"
+            onSubmit={onSubmit}
+            className="mt-10 flex w-1/2 flex-col gap-14 max-xl:w-3/4 max-sm:w-full max-sm:gap-8 max-sm:px-8"
+        >
             <EditableFieldGroup
                 readOnlyLabel={t('profile.username')}
                 readOnlyValue={user.username}

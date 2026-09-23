@@ -20,7 +20,7 @@ export default function AvatarUploadForm({
 
     return (
         <>
-            <div className="absolute top-5.5 left-1/2 h-47 w-47 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-white">
+            <div className="absolute top-5.5 left-1/2 h-47 w-47 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-white max-sm:static max-sm:mt-8 max-sm:translate-x-0 max-sm:translate-y-0">
                 {avatarPreview || user.avatar_url ? (
                     <img
                         src={avatarPreview ?? user.avatar_url ?? undefined}
@@ -42,7 +42,7 @@ export default function AvatarUploadForm({
                 />
                 <p
                     onClick={() => avatarInputRef.current?.click()}
-                    className="mt-31 cursor-pointer text-center text-xl leading-relaxed font-normal tracking-normal text-white"
+                    className="mt-31 cursor-pointer text-center text-xl leading-relaxed font-normal tracking-normal text-white max-sm:mt-4"
                 >
                     {t('profile.uploadNewPhoto')}
                 </p>
