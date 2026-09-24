@@ -7,6 +7,24 @@ export default function HeartIcon({
     filled?: boolean;
     className?: string;
 }) {
+    if (filled) {
+        return (
+            <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className={cn('text-danger transition-colors duration-150', className)}
+            >
+                <path
+                    d="M15.9996 2.6281C24.8756 -6.4959 47.0676 9.4701 15.9996 30.0001C-15.0684 9.4721 7.12357 -6.4959 15.9996 2.6281Z"
+                    fill="currentColor"
+                />
+            </svg>
+        );
+    }
+
     return (
         <svg
             width="32"
@@ -15,8 +33,7 @@ export default function HeartIcon({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className={cn(
-                'transition-colors duration-150',
-                filled ? 'text-danger' : 'group-hover:text-danger text-white',
+                'group-hover:text-danger text-white transition-colors duration-150',
                 className,
             )}
         >
