@@ -23,7 +23,11 @@ export default function PasswordForm({
     const { t } = useTranslation();
 
     return (
-        <form id="password-form" onSubmit={onSubmit} className="mt-14 flex w-132 flex-col">
+        <form
+            id="password-form"
+            onSubmit={onSubmit}
+            className="mt-14 flex w-1/2 flex-col max-xl:w-3/4 max-sm:mt-8 max-sm:w-full max-sm:px-8"
+        >
             <ReadOnlyFieldRow
                 label={t('profile.password')}
                 value="••••••••••••"
