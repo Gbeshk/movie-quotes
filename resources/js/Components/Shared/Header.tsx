@@ -106,7 +106,7 @@ export default function Header({
                                     className="max-sm:h-6 max-sm:w-6"
                                 />
                                 {unreadNotificationsCount > 0 && (
-                                    <span className="bg-notification-badge absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-xs leading-none font-medium text-white">
+                                    <span className="bg-notification-badge absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-xs leading-none font-medium text-white max-sm:h-5 max-sm:w-5">
                                         {unreadNotificationsCount}
                                     </span>
                                 )}
