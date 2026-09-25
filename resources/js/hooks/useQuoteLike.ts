@@ -27,5 +27,5 @@ export function useQuoteLike(quote: Quote) {
         );
     };
 
-    return { liked, likesCount, toggleLike };
+    return { liked, likesCount, setLikesCount, toggleLike };
 }

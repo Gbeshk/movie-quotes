@@ -1,9 +1,11 @@
 <?php
 
+use App\Events\QuoteLikeToggled;
 use App\Models\Quote;
 use App\Models\User;
 use App\Notifications\QuoteLiked;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 uses(RefreshDatabase::class);
@@ -85,4 +87,18 @@ test('unliking a quote does not send another notification', function () {
 	$this->actingAs($user)->post(route('quotes.likes.toggle', $quote));
 
 	Notification::assertSentToTimes($author, QuoteLiked::class, 1);
+});
+
+test('liking a quote broadcasts the updated like count to other viewers', function () {
+	Event::fake([QuoteLikeToggled::class]);
+
+	$user = User::factory()->create();
+	$quote = Quote::factory()->create();
+
+	$this->actingAs($user)->post(route('quotes.likes.toggle', $quote));
+
+	Event::assertDispatched(
+		QuoteLikeToggled::class,
+		fn (QuoteLikeToggled $event) => $event->quote->is($quote),
+	);
 });
