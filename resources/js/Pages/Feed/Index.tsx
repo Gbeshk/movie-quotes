@@ -109,7 +109,8 @@ export default function Index({
                             !isNavOpen && 'md:max-lg:mx-auto',
                         )}
                         next={({ hasNext }) =>
-                            !hasNext && (
+                            !hasNext &&
+                            quotes.data.length === 0 && (
                                 <p
                                     className={cn(
                                         'w-feed-content min-w-140 max-lg:w-full max-md:mr-0 max-md:ml-0 max-md:w-auto max-md:min-w-0 max-sm:mt-0',
@@ -118,9 +119,7 @@ export default function Index({
                                         'text-modal-secondary-text py-6 text-center text-base leading-normal font-normal tracking-normal',
                                     )}
                                 >
-                                    {search !== '' && quotes.data.length === 0
-                                        ? t('feed.noResults')
-                                        : t('feed.noMorePosts')}
+                                    {search !== '' ? t('feed.noResults') : t('feed.noPosts')}
                                 </p>
                             )
                         }
