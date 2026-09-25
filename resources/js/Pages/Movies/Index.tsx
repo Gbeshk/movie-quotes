@@ -8,7 +8,7 @@ import MovieSearch from '@/Pages/Movies/Partials/Movie/MovieSearch';
 import SearchModal from '@/Components/Shared/SearchModal';
 import { useDebouncedSearch } from '@/hooks/useDebouncedSearch';
 import { Movie, Paginated } from '@/types';
-import { InfiniteScroll } from '@inertiajs/react';
+import { Head, InfiniteScroll } from '@inertiajs/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +32,7 @@ export default function Index({
             searchButtonClassName="hidden cursor-pointer max-lg:mr-4 max-lg:flex"
             contentShrink0={false}
         >
+            <Head title={t('movies.myList')} />
             <div className="w-full lg:pl-8">
                 <div className="flex flex-col">
                     <div className="lg:max-movies-compact:flex-col lg:max-movies-compact:items-stretch lg:max-movies-compact:gap-4 flex items-center justify-between gap-8">
@@ -64,11 +65,10 @@ export default function Index({
                     data="movies"
                     className="grid-cols-movies mt-16 grid gap-15 max-sm:mt-8"
                     next={({ hasNext }) =>
-                        !hasNext && (
+                        !hasNext &&
+                        movies.data.length === 0 && (
                             <p className="text-modal-secondary-text py-6 text-center text-base leading-normal font-normal tracking-normal">
-                                {search !== '' && movies.data.length === 0
-                                    ? t('movies.noResults')
-                                    : t('movies.noMoreMovies')}
+                                {t('movies.noResults')}
                             </p>
                         )
                     }

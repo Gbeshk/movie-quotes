@@ -51,7 +51,7 @@
     "feed": {
         "title": "ნიუს ფიდი",
         "writeNewQuote": "დაწერე ახალი ციტატა",
-        "noMorePosts": "მეტი პოსტი აღარ არის",
+        "noPosts": "პოსტები ჯერ არ არის",
         "noResults": "შედეგები ვერ მოიძებნა",
         "chooseMovie": "აირჩიეთ ფილმი",
         "changeMovie": "ფილმის შეცვლა",
@@ -130,7 +130,7 @@
         "title": "შექმენით ახალი პაროლი",
         "subtitle": "თქვენი ახალი პაროლი უნდა განსხვავდებოდეს ადრე გამოყენებული პაროლებისგან",
         "newPassword": "ახალი პაროლი",
-        "newPasswordPlaceholder": "შეიყვანეთ ახალი პაროლი",
+        "newPasswordPlaceholder": "მინიმუმ 8 და მაქსიმუმ 15 პატარა ასო",
         "confirmNewPassword": "დაადასტურეთ ახალი პაროლი",
         "confirmNewPasswordPlaceholder": "დაადასტურეთ ახალი პაროლი",
         "submit": "პაროლის აღდგენა",
@@ -155,7 +155,7 @@
         "currentPassword": "მიმდინარე პაროლი",
         "currentPasswordPlaceholder": "შეიყვანეთ მიმდინარე პაროლი",
         "newPassword": "ახალი პაროლი",
-        "newPasswordPlaceholder": "შეიყვანეთ ახალი პაროლი",
+        "newPasswordPlaceholder": "მინიმუმ 8 და მაქსიმუმ 15 პატარა ასო",
         "confirmPassword": "დაადასტურეთ პაროლი",
         "confirmPasswordPlaceholder": "დაადასტურეთ პაროლი",
         "confirmSaveChanges": "დარწმუნებული ხართ, რომ გსურთ ცვლილებების შენახვა?",
@@ -188,8 +188,7 @@
         "showLessGenres": "ნაკლების ჩვენება",
         "showMoreDetails": "მეტის ნახვა",
         "showLessDetails": "ნაკლების ჩვენება",
-        "noResults": "ფილმები ვერ მოიძებნა",
-        "noMoreMovies": "მეტი ფილმი აღარ არის"
+        "noResults": "ფილმები ვერ მოიძებნა"
     },
     "imageUpload": {
         "dragDrop": "გადმოიტანეთ სურათი აქ",

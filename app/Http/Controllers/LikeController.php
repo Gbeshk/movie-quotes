@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QuoteLikeToggled;
 use App\Http\Requests\ToggleLikeRequest;
 use App\Models\Quote;
 use App\Notifications\QuoteLiked;
@@ -22,6 +23,8 @@ class LikeController extends Controller
 				$quote->user->notify(new QuoteLiked($like));
 			}
 		}
+
+		broadcast(new QuoteLikeToggled($quote));
 
 		return back();
 	}

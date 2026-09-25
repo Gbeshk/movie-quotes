@@ -13,7 +13,7 @@ import { useActiveProfileField } from '@/Pages/Profile/hooks/useActiveProfileFie
 import { useAvatarForm } from '@/Pages/Profile/hooks/useAvatarForm';
 import { usePasswordForm } from '@/Pages/Profile/hooks/usePasswordForm';
 import { AuthenticatedPageProps } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -64,6 +64,7 @@ export default function Edit() {
                 </h2>
             }
         >
+            <Head title={t('profile.heading')} />
             <div
                 className={cn(
                     'bg-profile-modal-bg max-sm:bg-header-bg ml-profile-panel relative mt-31.25 flex min-h-175.75 w-3/4 flex-col items-center rounded-xl pb-16 backdrop-blur-2xl max-lg:mx-auto max-md:mx-0 max-md:w-auto max-sm:-mx-8 max-sm:mt-16',

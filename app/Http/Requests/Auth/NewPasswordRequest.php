@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\Password;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
 
 class NewPasswordRequest extends FormRequest
 {
@@ -26,7 +26,7 @@ class NewPasswordRequest extends FormRequest
 		return [
 			'token'    => ['required'],
 			'email'    => ['required', 'email'],
-			'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'password' => ['required', 'confirmed', new Password()],
 		];
 	}
 }

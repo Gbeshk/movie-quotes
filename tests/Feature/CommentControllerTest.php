@@ -1,9 +1,11 @@
 <?php
 
+use App\Events\CommentPosted;
 use App\Models\Quote;
 use App\Models\User;
 use App\Notifications\QuoteCommented;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 uses(RefreshDatabase::class);
@@ -82,4 +84,21 @@ test('commenting on your own quote does not notify yourself', function () {
 	]);
 
 	Notification::assertNothingSent();
+});
+
+test('adding a comment broadcasts it to other viewers', function () {
+	Event::fake([CommentPosted::class]);
+
+	$user = User::factory()->create();
+	$quote = Quote::factory()->create();
+
+	$this->actingAs($user)->post(route('quotes.comments.store', $quote), [
+		'body' => 'Loved it',
+	]);
+
+	Event::assertDispatched(
+		CommentPosted::class,
+		fn (CommentPosted $event) => $event->comment->quote_id === $quote->id
+			&& $event->comment->body === 'Loved it',
+	);
 });

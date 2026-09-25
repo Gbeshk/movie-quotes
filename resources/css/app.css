@@ -89,7 +89,7 @@
     --z-index-header: 60;
     --z-index-drawer: 70;
     --z-index-modal: 80;
-    --grid-template-columns-movies: repeat(auto-fill, minmax(358px, 1fr));
+    --grid-template-columns-movies: repeat(auto-fill, minmax(min(358px, 100%), 1fr));
     --breakpoint-movies-compact: 1200px;
     --breakpoint-movie-wrap: 1700px;
 }

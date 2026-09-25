@@ -3,10 +3,12 @@ import CommentIcon from '@/Components/Shared/Icons/CommentIcon';
 import HeartIcon from '@/Components/Shared/Icons/HeartIcon';
 import UserAvatar from '@/Components/Shared/UserAvatar';
 import { useQuoteLike } from '@/hooks/useQuoteLike';
+import { useQuoteRealtime } from '@/hooks/useQuoteRealtime';
 import { useTranslatable } from '@/lib/translatable';
 import PostComment from '@/Pages/Feed/Partials/PostComment';
 import PostCommentForm from '@/Pages/Feed/Partials/PostCommentForm';
-import { Comment, Quote } from '@/types';
+import { AuthenticatedPageProps, Comment, Quote } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,8 +18,10 @@ const COMMENTS_PAGE_SIZE = 3;
 export default function Post({ quote }: { quote: Quote }) {
     const { t } = useTranslation();
     const translate = useTranslatable();
-    const { liked, likesCount, toggleLike } = useQuoteLike(quote);
+    const { auth } = usePage<AuthenticatedPageProps>().props;
+    const { liked, likesCount, setLikesCount, toggleLike } = useQuoteLike(quote);
     const [localComments, setLocalComments] = useState<Comment[]>([]);
+    useQuoteRealtime(quote.id, auth.user.id, setLikesCount, setLocalComments);
     const comments = [...localComments, ...(quote.comments ?? [])];
     const [visibleCount, setVisibleCount] = useState(INITIAL_COMMENTS_SHOWN);
     const visibleComments = comments.slice(0, visibleCount);

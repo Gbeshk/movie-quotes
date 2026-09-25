@@ -4,7 +4,7 @@ import { usePasswordForm } from '@/Pages/Profile/hooks/usePasswordForm';
 import MobileFieldEditForm from '@/Pages/Profile/Partials/MobileFieldEditForm';
 import {
     validateEmail,
-    validateNewPassword,
+    validatePassword,
     validatePasswordConfirmation,
     validateUsername,
 } from '@/utils/validators';
@@ -107,7 +107,7 @@ export default function MobileFieldEditors({
                     value={password.passwordForm.data.password}
                     onChange={(value) => password.passwordForm.setData('password', value)}
                     error={password.passwordForm.errors.password}
-                    validate={validateNewPassword}
+                    validate={validatePassword}
                     autoComplete="new-password"
                     heightClassName="h-12"
                 />

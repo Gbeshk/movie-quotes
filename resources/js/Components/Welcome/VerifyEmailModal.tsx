@@ -39,7 +39,7 @@ export default function VerifyEmailModal({
     return (
         <Modal show={show} onClose={onClose} cardClassName="w-full max-w-134.5 px-22 py-18">
             <EmailSentIcon />
-            <h2 className="mt-5 text-3xl leading-[1.2] font-medium tracking-normal text-white">
+            <h2 className="leading-heading mt-5 text-3xl font-medium tracking-normal text-white">
                 {t('verifyEmail.thankYou')}
             </h2>
             <h3 className="mt-8 w-full text-center text-base leading-normal font-normal text-white">

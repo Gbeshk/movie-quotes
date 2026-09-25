@@ -56,7 +56,7 @@ export default function SearchModal({
                     onChange={(e) => setDraft(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && confirm()}
                     placeholder={t('common.search')}
-                    className="flex-1 border-none bg-transparent p-0 text-base leading-normal font-normal tracking-normal text-white outline-none placeholder:text-white focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="min-w-0 flex-1 border-none bg-transparent p-0 text-base leading-normal font-normal tracking-normal text-white outline-none placeholder:text-white focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 {draft.trim() !== '' && (
                     <div className="flex shrink-0 items-center gap-2">

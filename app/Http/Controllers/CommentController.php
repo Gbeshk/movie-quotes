@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentPosted;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Quote;
 use App\Notifications\QuoteCommented;
@@ -19,6 +20,8 @@ class CommentController extends Controller
 		if ($quote->user_id !== $request->user()->id) {
 			$quote->user->notify(new QuoteCommented($comment));
 		}
+
+		broadcast(new CommentPosted($comment));
 
 		return back();
 	}

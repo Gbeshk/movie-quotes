@@ -3,7 +3,7 @@ import { usePasswordForm } from '@/Pages/Profile/hooks/usePasswordForm';
 import { useState } from 'react';
 import {
     validateEmail,
-    validateNewPassword,
+    validatePassword,
     validatePasswordConfirmation,
     validateUsername,
 } from '@/utils/validators';
@@ -69,7 +69,7 @@ export function useActiveProfileField(
               ? validateEmail(account.profileForm.data.email) === true
               : activeField === 'password'
                 ? password.passwordForm.data.current_password.trim().length > 0 &&
-                  validateNewPassword(password.passwordForm.data.password) === true &&
+                  validatePassword(password.passwordForm.data.password) === true &&
                   validatePasswordConfirmation(password.passwordForm.data.password)(
                       password.passwordForm.data.password_confirmation,
                   ) === true
