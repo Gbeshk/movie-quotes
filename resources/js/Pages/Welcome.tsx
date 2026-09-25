@@ -7,7 +7,7 @@ import RegisterModal from '@/Components/Welcome/RegisterModal';
 import ResetPasswordModal from '@/Components/Welcome/ResetPasswordModal';
 import VerifyEmailModal from '@/Components/Welcome/VerifyEmailModal';
 import { PageProps, WelcomeQuote } from '@/types';
-import { router, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -53,6 +53,7 @@ export default function Welcome({
 
     return (
         <>
+            <Head title={t('header.logoText')} />
             <div>
                 <div className="bg-gradient-fade bg-black">
                     <Header
