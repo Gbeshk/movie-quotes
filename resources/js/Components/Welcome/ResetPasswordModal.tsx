@@ -5,7 +5,7 @@ import CheckCircleIcon from '@/Components/Shared/Icons/CheckCircleIcon';
 import CloseIcon from '@/Components/Shared/Icons/CloseIcon';
 import LinkExpiredIcon from '@/Components/Shared/Icons/LinkExpiredIcon';
 import Modal from '@/Components/Shared/Modal';
-import { validateNewPassword, validatePasswordConfirmation } from '@/utils/validators';
+import { validatePassword, validatePasswordConfirmation } from '@/utils/validators';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -138,7 +138,7 @@ export default function ResetPasswordModal({
                     value={data.password}
                     onChange={(value) => setData('password', value)}
                     error={errors.password}
-                    validate={validateNewPassword}
+                    validate={validatePassword}
                     autoComplete="new-password"
                 />
 

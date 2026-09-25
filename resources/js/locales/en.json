@@ -51,7 +51,7 @@
     "feed": {
         "title": "News Feed",
         "writeNewQuote": "Write new quote",
-        "noMorePosts": "No more posts",
+        "noPosts": "No posts yet",
         "noResults": "No results found",
         "chooseMovie": "Choose movie",
         "changeMovie": "Change movie",
@@ -130,7 +130,7 @@
         "title": "Create new password",
         "subtitle": "Your new password must be different from previously used passwords",
         "newPassword": "New password",
-        "newPasswordPlaceholder": "Enter new password",
+        "newPasswordPlaceholder": "At least 8 & max.15 lower case characters",
         "confirmNewPassword": "Confirm new password",
         "confirmNewPasswordPlaceholder": "Confirm new password",
         "submit": "Reset password",
@@ -155,7 +155,7 @@
         "currentPassword": "Current password",
         "currentPasswordPlaceholder": "Enter current password",
         "newPassword": "New password",
-        "newPasswordPlaceholder": "Enter new password",
+        "newPasswordPlaceholder": "At least 8 & max.15 lower case characters",
         "confirmPassword": "Confirm password",
         "confirmPasswordPlaceholder": "Confirm password",
         "confirmSaveChanges": "Are you sure to make changes?",
@@ -188,8 +188,7 @@
         "showLessGenres": "Show less",
         "showMoreDetails": "Show more",
         "showLessDetails": "Show less",
-        "noResults": "No movies found",
-        "noMoreMovies": "No more movies"
+        "noResults": "No movies found"
     },
     "imageUpload": {
         "dragDrop": "Drag & drop your image here",

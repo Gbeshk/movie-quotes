@@ -20,15 +20,15 @@ class PasswordUpdateTest extends TestCase
 			->from('/profile')
 			->put('/password', [
 				'current_password'      => 'password',
-				'password'              => 'new-password',
-				'password_confirmation' => 'new-password',
+				'password'              => 'newpassword',
+				'password_confirmation' => 'newpassword',
 			]);
 
 		$response
 			->assertSessionHasNoErrors()
 			->assertRedirect('/profile');
 
-		$this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+		$this->assertTrue(Hash::check('newpassword', $user->refresh()->password));
 	}
 
 	public function test_correct_password_must_be_provided_to_update_password(): void
@@ -40,12 +40,30 @@ class PasswordUpdateTest extends TestCase
 			->from('/profile')
 			->put('/password', [
 				'current_password'      => 'wrong-password',
-				'password'              => 'new-password',
-				'password_confirmation' => 'new-password',
+				'password'              => 'newpassword',
+				'password_confirmation' => 'newpassword',
 			]);
 
 		$response
 			->assertSessionHasErrors('current_password')
+			->assertRedirect('/profile');
+	}
+
+	public function test_the_new_password_must_be_lowercase_letters_or_numbers(): void
+	{
+		$user = User::factory()->create();
+
+		$response = $this
+			->actingAs($user)
+			->from('/profile')
+			->put('/password', [
+				'current_password'      => 'password',
+				'password'              => 'New-Password1',
+				'password_confirmation' => 'New-Password1',
+			]);
+
+		$response
+			->assertSessionHasErrors(['password' => 'Must be 8-15 lowercase letters or numbers.'])
 			->assertRedirect('/profile');
 	}
 }

@@ -115,4 +115,26 @@ class PasswordResetTest extends TestCase
 			return true;
 		});
 	}
+
+	public function test_the_new_password_must_be_lowercase_letters_or_numbers(): void
+	{
+		Notification::fake();
+
+		$user = User::factory()->create();
+
+		$this->post('/forgot-password', ['email' => $user->email]);
+
+		Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+			$response = $this->post('/reset-password', [
+				'token'                 => $notification->token,
+				'email'                 => $user->email,
+				'password'              => 'New-Password1',
+				'password_confirmation' => 'New-Password1',
+			]);
+
+			$response->assertSessionHasErrors(['password' => 'Must be 8-15 lowercase letters or numbers.']);
+
+			return true;
+		});
+	}
 }
