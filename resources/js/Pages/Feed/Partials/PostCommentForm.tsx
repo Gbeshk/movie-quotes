@@ -1,3 +1,4 @@
+import SendIcon from '@/Components/Shared/Icons/SendIcon';
 import UserAvatar from '@/Components/Shared/UserAvatar';
 import { AuthenticatedPageProps, Comment } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
@@ -50,16 +51,18 @@ const PostCommentForm = forwardRef<
                 onKeyDown={submitOnEnter}
                 disabled={processing}
                 placeholder={t('post.writeComment')}
-                className="bg-header-bg/60 text-input-bg placeholder:text-input-bg h-full flex-1 rounded-xl border-0 px-4 text-xl leading-normal font-normal tracking-normal outline-none focus:border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 max-sm:text-base"
+                className="bg-header-bg/60 text-input-bg placeholder:text-input-bg h-full min-w-0 flex-1 rounded-xl border-0 px-4 text-xl leading-normal font-normal tracking-normal outline-none focus:border-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 max-sm:text-base"
             />
             {data.body.trim() !== '' && (
                 <button
                     type="button"
                     onClick={submit}
                     disabled={processing}
-                    className="bg-danger hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active flex h-full shrink-0 cursor-pointer items-center justify-center rounded-xl px-6 text-xl leading-normal font-normal tracking-normal text-white transition-colors duration-150"
+                    aria-label={t('post.post')}
+                    className="bg-danger hover:bg-sign-up-btn-hover active:bg-sign-up-btn-active flex h-full shrink-0 cursor-pointer items-center justify-center rounded-xl px-6 text-xl leading-normal font-normal tracking-normal text-white transition-colors duration-150 max-sm:w-10 max-sm:px-0"
                 >
-                    {t('post.post')}
+                    <span className="max-sm:hidden">{t('post.post')}</span>
+                    <SendIcon className="hidden max-sm:block" />
                 </button>
             )}
         </div>
